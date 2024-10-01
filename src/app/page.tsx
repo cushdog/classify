@@ -51,6 +51,7 @@ export default function SearchPage() {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+      toast.error("Error fetching data");
     }
   }
 
