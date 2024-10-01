@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
 import { fetchData } from "@/lib/commonFunctions";
@@ -25,7 +25,7 @@ const CourseDetails: React.FC = () => {
 
       const modified_search = `${subj} ${num} ${term.toLowerCase()} ${year}`;
 
-      let url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
+      const url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
         modified_search
       )}`;
 
@@ -34,7 +34,7 @@ const CourseDetails: React.FC = () => {
       return data;
     };
 
-    let data = setupClassData();
+    const data = setupClassData();
     setClassData(data);
   }, []);
 

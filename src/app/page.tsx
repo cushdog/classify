@@ -34,7 +34,7 @@ export default function SearchPage() {
       : searchQuery.replace(/([a-zA-Z])(\d)/, "$1 $2");
     const modified_search = `${formattedQuery} ${semesterConfigs[0].semester.toLowerCase()} ${semesterConfigs[0].year}`;
 
-    let url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
+    const url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
       modified_search
     )}`;
     console.log("Searching: ", url);
