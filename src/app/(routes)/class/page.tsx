@@ -3,12 +3,14 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
-import { fetchData } from "@/lib/commonFunctions";
+import { fetchData, Course } from "@/lib/commonFunctions";
 import { Button } from "@/components/ui/button";
 
+
+
 const CourseDetails: React.FC = () => {
-  
-  const [classData, setClassData] = useState<any[] | null>(null);
+
+  const [classData, setClassData] = useState<Course[] | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -51,7 +53,7 @@ const CourseDetails: React.FC = () => {
   return ( 
   <div>
     <Button onClick={handleBack}>Back</Button>
-    {classData}
+    {classData ? JSON.stringify(classData, null, 2) : "Loading..."}
   </div>
   );
 };

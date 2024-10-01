@@ -3,12 +3,12 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Suspense } from "react";
-import { fetchData } from "@/lib/commonFunctions";
+import { fetchData, Course } from "@/lib/commonFunctions";
 import { Button } from "@/components/ui/button";
 
 const SubjectDetails: React.FC = () => {
   
-  const [subjectData, setSubjectData] = useState<any | null>(null);
+  const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
