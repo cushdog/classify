@@ -7,12 +7,14 @@ import { fetchData } from "@/lib/commonFunctions";
 import { Button } from "@/components/ui/button";
 
 const CourseDetails: React.FC = () => {
-  const [classData, setClassData] = useState<any | null>(null);
+  
+  const [classData, setClassData] = useState<any[] | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
+
     const setupClassData = async () => {
       const classParam = searchParams.get("class")?.split(" ");
       const termParam = searchParams.get("term")?.split(" ");
@@ -34,8 +36,12 @@ const CourseDetails: React.FC = () => {
       return data;
     };
 
-    const data = setupClassData();
-    setClassData(data);
+    const fetchDataAndUpdateState = async () => {
+      const data = await setupClassData();
+      setClassData(data);
+    };
+
+    fetchDataAndUpdateState();
   }, []);
 
   const handleBack = () => {

@@ -7,6 +7,7 @@ import { fetchData } from "@/lib/commonFunctions";
 import { Button } from "@/components/ui/button";
 
 const SubjectDetails: React.FC = () => {
+  
   const [subjectData, setSubjectData] = useState<any | null>(null);
 
   const router = useRouter();
@@ -14,34 +15,35 @@ const SubjectDetails: React.FC = () => {
 
 
 
-useEffect(() => {
+  useEffect(() => {
 
     const setupClassData = async () => {
+      const subjectParam = searchParams.get("subject")?.split(" ");
+      const termParam = searchParams.get("term")?.split(" ");
 
-        const classParam = searchParams.get("subject")?.split(" ");
-        const termParam = searchParams.get("term")?.split(" ");
+      const subj = subjectParam ? subjectParam[0] : "";
 
-        const subj = classParam ? classParam[0] : "";
+      const term = termParam ? termParam[0] : "";
+      const year = termParam ? termParam[1] : "";
 
-        const term = termParam ? termParam[0] : "";
-        const year = termParam ? termParam[1] : "";
+      const modified_search = `${subj} ${term.toLowerCase()} ${year}`;
 
-        const modified_search = `${subj} ${term.toLowerCase()} ${year}`;
-
-        const url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
+      const url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
         modified_search
-        )}`;
+      )}`;
 
-        const data = await fetchData(url);
+      const data = await fetchData(url);
 
-        return data;
-        
+      return data;
     };
 
-    const data = setupClassData();
-    setSubjectData(data);
+    const fetchDataAndUpdateState = async () => {
+      const data = await setupClassData();
+      setSubjectData(data);
+    };
 
-}, []);
+    fetchDataAndUpdateState();
+  }, []);
 
 
 const handleBack = () => {
