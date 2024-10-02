@@ -73,6 +73,6 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-pink-700 text-foreground;
+    @apply bg-teal-400 text-foreground;
   }
 }

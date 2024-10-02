@@ -5,14 +5,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-
-const semesterConfigs = [
-  { semester: "Fall", year: "2024" },
-  { semester: "Spring", year: "2024" },
-  { semester: "Fall", year: "2023" },
-  { semester: "Spring", year: "2023" },
-  { semester: "Fall", year: "2022" },
-];
+import { semesterConfigs } from "@/lib/commonFunctions";
 
 export default function SearchPage() {
   const [search, setSearch] = useState<string>("");
