@@ -63,9 +63,13 @@ export default function SearchPage() {
         <div className="w-full max-w-2xl p-4 flex flex-col space-y-4">
           <div className="flex items-center space-x-2">
             <Input
-              value={search}
+              value={search.toUpperCase()}
               onChange={handleInputChange}
-              onSubmit={() => searchWithoutTerm(search)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  searchWithoutTerm(search);
+                }
+              }}
             />
           </div>
           <Button
