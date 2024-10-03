@@ -2,12 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  fetchData,
-  Course,
-  CourseInfo,
-  Section
-} from "@/lib/commonFunctions";
+import { fetchData, Course, CourseInfo, Section } from "@/lib/commonFunctions";
 import {
   Card,
   CardHeader,
@@ -119,7 +114,11 @@ const CourseDetails: React.FC = () => {
   const handleProfessorClick = async (professor: string) => {
     const [lastName, firstName] = professor.split(", ");
     const url = `https://uiuc-course-api-production.up.railway.app/rmp?query=${firstName}+${lastName}`;
-    const data = await fetchData(url);
+    let data = await fetchData(url);
+
+    if (!data) {
+      data = "Not available";
+    }
     setProfessorInfo(data);
     setSelectedProfessor(professor);
   };
@@ -182,7 +181,8 @@ const CourseDetails: React.FC = () => {
                   <strong>Instructor: </strong>
                   {section.instructor &&
                   typeof section.instructor === "string" &&
-                  section.instructor.length > 0 && section.instructor != "null" ? (
+                  section.instructor.length > 0 &&
+                  section.instructor != "null" ? (
                     <button
                       className="text-blue-500 underline"
                       onClick={() => handleProfessorClick(section.instructor)}
@@ -264,50 +264,61 @@ const CourseDetails: React.FC = () => {
           open={selectedProfessor !== null}
           onOpenChange={() => setSelectedProfessor(null)}
         >
-          <DialogContent>
-            <DialogTitle>
-              Professor{" "}
-              {professorInfo.personal_info.first_name +
-                " " +
-                professorInfo.personal_info.last_name}
-            </DialogTitle>
-            <DialogDescription>
-              <p>
-                <strong>Department:</strong>{" "}
-                {professorInfo.personal_info.department}
-              </p>
-              <p>
-                <strong>Average Rating:</strong>{" "}
-                {professorInfo.ratings.average_rating}
-              </p>
-              <p>
-                <strong>Average Difficulty:</strong>{" "}
-                {professorInfo.ratings.average_difficulty}
-              </p>
-              <p>
-                <strong>Number of Ratings:</strong>{" "}
-                {professorInfo.ratings.number_of_ratings}
-              </p>
-              <p>
-                <strong>Would Take Again:</strong>{" "}
-                {professorInfo.ratings.would_take_again_percent}%
-              </p>
-              <h4 className="mt-4 font-semibold">Recent Ratings:</h4>
-              {professorInfo.recent_ratings.map(
-                /* eslint-disable @typescript-eslint/no-explicit-any */
-                (rating: any, index: number) => (
-                  <div key={index} className="mb-2">
-                    <p>
-                      <strong>Class:</strong> {rating.class}
-                    </p>
-                    <p>
-                      <strong>Comment:</strong> {rating.comment}
-                    </p>
-                  </div>
-                )
-              )}
-            </DialogDescription>
-          </DialogContent>
+          {professorInfo.personal_info ? (
+            <DialogContent>
+              <DialogTitle>
+                Professor{" "}
+                {professorInfo.personal_info.first_name +
+                  " " +
+                  professorInfo.personal_info.last_name}
+              </DialogTitle>
+              <DialogDescription>
+                <p>
+                  <strong>Department:</strong>{" "}
+                  {professorInfo.personal_info.department}
+                </p>
+                <p>
+                  <strong>Average Rating:</strong>{" "}
+                  {professorInfo.ratings.average_rating}
+                </p>
+                <p>
+                  <strong>Average Difficulty:</strong>{" "}
+                  {professorInfo.ratings.average_difficulty}
+                </p>
+                <p>
+                  <strong>Number of Ratings:</strong>{" "}
+                  {professorInfo.ratings.number_of_ratings}
+                </p>
+                <p>
+                  <strong>Would Take Again:</strong>{" "}
+                  {professorInfo.ratings.would_take_again_percent}%
+                </p>
+                <h4 className="mt-4 font-semibold">Recent Ratings:</h4>
+                {professorInfo.recent_ratings.map(
+                  /* eslint-disable @typescript-eslint/no-explicit-any */
+                  (rating: any, index: number) => (
+                    <div key={index} className="mb-2">
+                      <p>
+                        <strong>Class:</strong> {rating.class}
+                      </p>
+                      <p>
+                        <strong>Comment:</strong> {rating.comment}
+                      </p>
+                    </div>
+                  )
+                )}
+              </DialogDescription>
+            </DialogContent>
+          ) : (
+            <DialogContent>
+              <DialogTitle>
+                Professor {selectedProfessor} Information
+              </DialogTitle>
+              <DialogDescription>
+                <p>Not available</p>
+              </DialogDescription>
+            </DialogContent>
+          )}
         </Dialog>
       )}
     </div>
