@@ -19,7 +19,6 @@ import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogTitle,
   DialogDescription,
@@ -60,6 +59,7 @@ const CourseDetails: React.FC = () => {
   const [classObj, setClassObj] = useState<CourseInfo | null>(null);
   const [sections, setSections] = useState<Section[] | null>(null);
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [professorInfo, setProfessorInfo] = useState<any | null>(null);
   const [selectedProfessor, setSelectedProfessor] = useState<string | null>(
     null
@@ -324,6 +324,7 @@ const CourseDetails: React.FC = () => {
               </p>
               <h4 className="mt-4 font-semibold">Recent Ratings:</h4>
               {professorInfo.recent_ratings.map(
+                /* eslint-disable @typescript-eslint/no-explicit-any */
                 (rating: any, index: number) => (
                   <div key={index} className="mb-2">
                     <p>
