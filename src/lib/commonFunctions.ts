@@ -50,7 +50,7 @@ export interface Course {
   gpa: number;
   metadata: string;
   degreeRequirement: string | null;
-};
+}
 
 export interface CourseInfo {
   year: number;
@@ -65,7 +65,7 @@ export interface CourseInfo {
   gpa: number;
   metadata: string;
   degreeRequirement: string;
-};
+}
 
 export interface Section {
   startDate: string | null;
@@ -81,7 +81,7 @@ export interface Section {
   room: string | null;
   building: string | null;
   instructor: string;
-};
+}
 
 export const semesterConfigs = [
   { semester: "Fall", year: "2024" },
@@ -124,5 +124,3 @@ export const fetchData = async (url: string) => {
     return null;
   }
 };
-
-

@@ -6,8 +6,7 @@ import {
   fetchData,
   Course,
   CourseInfo,
-  Section,
-  formatDate,
+  Section
 } from "@/lib/commonFunctions";
 import {
   Card,
