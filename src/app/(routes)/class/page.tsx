@@ -25,35 +25,6 @@ import {
 } from "@/components/ui/dialog";
 import { Suspense } from "react";
 
-/*
-class data format:
-0: class year
-1: semester of class ("fall", "spring", "summer")
-2: class subject
-3: class number
-4: class title
-5: class description
-6: class credit hours
-7: class section code (e.g. "ADA")
-8: part of term i think?
-9: null
-10: null
-11: null
-12: enrollment status of that section
-13: start date
-14: end date
-15: meeting type (e.g. "Discussion/Recitation")
-16: section start time
-17: section end time
-18: section days
-19: section room number
-20: section building
-21: instructor
-22: gpa
-23: metadata (info from the ACTUAL uiuc course api)
-24: degree requirement
-*/
-
 const CourseDetails: React.FC = () => {
   const [classData, setClassData] = useState<Course[][] | null>(null);
   const [classObj, setClassObj] = useState<CourseInfo | null>(null);

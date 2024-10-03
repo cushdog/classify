@@ -1,3 +1,32 @@
+/*
+class data format:
+0: class year
+1: semester of class ("fall", "spring", "summer")
+2: class subject
+3: class number
+4: class title
+5: class description
+6: class credit hours
+7: class section code (e.g. "ADA")
+8: part of term i think?
+9: null
+10: null
+11: null
+12: enrollment status of that section
+13: start date
+14: end date
+15: meeting type (e.g. "Discussion/Recitation")
+16: section start time
+17: section end time
+18: section days
+19: section room number
+20: section building
+21: instructor
+22: gpa
+23: metadata (info from the ACTUAL uiuc course api)
+24: degree requirement
+*/
+
 export interface Course {
   year: number;
   term: string;
@@ -73,17 +102,10 @@ export const formatDate = (dateString: string) => {
   // Extract individual components from the date
   const day = date.getUTCDate();
   const month = date.getUTCMonth() + 1; // Months are zero-indexed
-  const year = date.getUTCFullYear().toString().slice(-2); // Last two digits of the year
-  let hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes().toString().padStart(2, '0');
-  const seconds = date.getUTCSeconds().toString().padStart(2, '0');
-
-  // Convert to 12-hour format
-  const ampm = hours >= 12 ? 'pm' : 'am';
-  hours = hours % 12 || 12; // Convert 0 hour to 12
+  const year = date.getUTCFullYear().toString(); // Last two digits of the year
 
   // Return formatted date string
-  return `${month}-${day}-${year} ${hours}:${minutes}:${seconds}${ampm}`;
+  return `${month}-${day}-${year}`;
 };
 
 export const capitalizeFirstLetter = (string: string) => {
