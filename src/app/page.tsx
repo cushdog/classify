@@ -80,7 +80,10 @@ export default function SearchPage() {
           </Button>
           <Button
             onClick={handleFeedbackClick}
-            className="bg-black text-white p-2 rounded-lg hover:bg-black/80 w-full">Feedback</Button>
+            className="bg-black text-white p-2 rounded-lg hover:bg-black/80 w-full"
+          >
+            Feedback
+          </Button>
         </div>
       </div>
     </div>
