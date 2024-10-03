@@ -304,9 +304,6 @@ const CourseDetails: React.FC = () => {
                     <p>
                       <strong>Comment:</strong> {rating.comment}
                     </p>
-                    <p>
-                      <strong>Date:</strong> {formatDate(rating.date)}
-                    </p>
                   </div>
                 )
               )}
