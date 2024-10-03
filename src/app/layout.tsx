@@ -9,7 +9,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Course Explorer Directors Cut",
+  title: "Classify",
   description: "A redo of the old course explorer",
 };
 
