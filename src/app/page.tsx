@@ -22,34 +22,31 @@ export default function SearchPage() {
     []
   );
 
-  const searchWithoutTerm = (searchQuery: string) => {
+  const searchWithoutTerm = async (searchQuery: string) => {
     const mostRecentTerm = `${semesterConfigs[0].semester} ${semesterConfigs[0].year}`;
     const isSubjectSearch = !/\d{3}/.test(searchQuery);
     const formattedQuery = isSubjectSearch
       ? searchQuery
       : searchQuery.replace(/([a-zA-Z])(\d)/, "$1 $2");
-    const modified_search = `${formattedQuery} ${semesterConfigs[0].semester.toLowerCase()} ${
-      semesterConfigs[0].year
-    }`;
-
-    const url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
-      modified_search
-    )}`;
-    console.log("Searching: ", url);
-
+  
     try {
-      if (isSubjectSearch) {
-        router.push(
-          `/subject?subject=${searchQuery}&term=${encodeURIComponent(
+      const url = isSubjectSearch
+        ? `/subject?subject=${searchQuery}&term=${encodeURIComponent(
             mostRecentTerm
           )}`
-        );
+        : `/class?class=${formattedQuery}&term=${encodeURIComponent(
+            mostRecentTerm
+          )}`;
+  
+      const res = await fetch(
+        `https://uiuc-course-api-production.up.railway.app/search?query=${formattedQuery}+fall+2024`
+      );
+      const data = await res.json();
+  
+      if (data && data.length > 0) {
+        router.push(url);
       } else {
-        router.push(
-          `/class?class=${formattedQuery}&term=${encodeURIComponent(
-            mostRecentTerm
-          )}`
-        );
+        toast.error("No results found");
       }
     } catch (error) {
       console.error("Error fetching data:", error);

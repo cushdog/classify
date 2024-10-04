@@ -8,7 +8,7 @@ import {
   Typography,
   Box,
   Divider,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -18,7 +18,7 @@ import {
   fetchAndGroupSections,
   linkifyClasses,
   lightenColor,
-  getRandomBackgroundColor
+  getRandomBackgroundColor,
 } from "@/lib/commonFunctions";
 import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import { Suspense } from "react";
@@ -108,19 +108,18 @@ const CourseDetails: React.FC = () => {
           // filter: isPanelOpen ? "blur(8px)" : "none", // Blur when panel is open
         }}
       >
-
-<IconButton
-    onClick={handleBackClick}
-    aria-label="Go back"
-    sx={{
-      position: "absolute",
-      top: "20px",
-      left: "20px",
-      color: "#fff",
-    }}
-  >
-    <ArrowBackIcon />
-  </IconButton>
+        <IconButton
+          onClick={handleBackClick}
+          aria-label="Go back"
+          sx={{
+            position: "absolute",
+            top: "20px",
+            left: "20px",
+            color: "#fff",
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
 
         <Typography
           variant="subtitle1"
@@ -172,9 +171,13 @@ const CourseDetails: React.FC = () => {
             <Divider sx={{ marginY: 2 }} />
 
             <Typography variant="body2" gutterBottom>
-              {`Average GPA: ${Number(
-                Math.floor(Number(classData[22]) * 100) / 100
-              ).toFixed(2)}`}
+              {`Average GPA: ${
+                classData[22] && Number(classData[22]) > 0
+                  ? Number(
+                      Math.floor(Number(classData[22]) * 100) / 100
+                    ).toFixed(2)
+                  : "Not available"
+              }`}
             </Typography>
 
             <Divider sx={{ marginY: 2 }} />
