@@ -9,7 +9,7 @@ const mulish = Mulish({
 
 const Typography: React.FC<TypographyProps> = ({ children, ...props }) => {
   return (
-    <MuiTypography {...props} className={mulish.className}>
+    <MuiTypography {...props} style={mulish.style}>
       {children}
     </MuiTypography>
   );

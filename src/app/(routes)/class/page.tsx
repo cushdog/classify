@@ -23,6 +23,12 @@ import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import { Suspense } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@/Custom Components/ui/Typography/page";
+import { Mulish } from 'next/font/google';
+
+const mulish = Mulish({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -149,7 +155,7 @@ const CourseDetails: React.FC = () => {
         {classData && (
           <>
             <Typography variant="subtitle1" gutterBottom>
-              <span
+              <span style={mulish.style}
                 dangerouslySetInnerHTML={{
                   __html: linkifyClasses(classData[5], "/class"),
                 }}

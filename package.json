@@ -22,6 +22,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "framer-motion": "^11.11.1",
     "lucide-react": "^0.446.0",
     "mini-css-extract-plugin": "^2.9.1",
     "next": "14.2.13",

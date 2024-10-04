@@ -72,7 +72,7 @@ const SubjectDetails: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="bg-slate-600">
       <Box
         sx={{
           display: "flex",
