@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Mulish } from "next/font/google";
+import { Mulish } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], display: "swap" });
 const mulish = Mulish({ subsets: ["latin"], weight: ["200", "400", "700"], display: "swap" });
 
 

@@ -25,11 +25,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Mulish } from 'next/font/google';
 import Typography from "@/Custom Components/ui/Typography/page";
 
-const mulish = Mulish({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-});
-
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
