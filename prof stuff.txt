@@ -1,0 +1,22 @@
+setup:
+  const [professorInfo, setProfessorInfo] = useState<any | null>(null);
+  const handleProfessorClick = async (professor: string) => {
+    const [lastName, firstName] = professor.split(", ");
+    const url = `https://uiuc-course-api-production.up.railway.app/rmp?query=${firstName}+${lastName}`;
+    let data = await fetchData(url);
+
+    if (!data) {
+      data = "Not available";
+    }
+    setProfessorInfo(data);
+    setSelectedProfessor(professor);
+  };
+
+
+actually in the component:
+    <button
+                      className="text-blue-500 underline"
+                      onClick={() => handleProfessorClick(section.instructor)}
+                    >
+                      {section.instructor}
+                    </button<>
