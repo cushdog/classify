@@ -30,6 +30,7 @@ export default function RootLayout({
     <html lang="en" className={mulish.variable}>
       <body>
         <Toaster position="top-left" reverseOrder={false} />
+        <RealNavbar/>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           {children}
