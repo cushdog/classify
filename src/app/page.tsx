@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { semesterConfigs } from "@/lib/commonFunctions";
 import { motion } from "framer-motion";
-import { Search, Send, MessageSquare } from "lucide-react";
+import { Search, Send, MessageSquare, NotebookPen } from "lucide-react";
 import { Mulish } from "next/font/google";
 
 const mulish = Mulish({
@@ -113,7 +113,7 @@ export default function SearchPage() {
               variant="outline"
               className="w-full border-white/30 text-white bg-white/20 rounded-full py-2 font-semibold hover:bg-white/30 transition-colors duration-200"
             >
-              <MessageSquare className="mr-2" size={18} />
+              <NotebookPen className="mr-2" size={18} />
               Gen-Eds
             </Button>
           </motion.div>

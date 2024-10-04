@@ -110,129 +110,135 @@ const CourseDetails: React.FC = () => {
     fetchSectionsAndClassData();
   }, [classParam, selectedTerm]);
 
+  useEffect(() => {
+    document.body.style.backgroundColor = "white";
+  }, []);
+
   return (
-    <Box sx={{ minHeight: "100vh", backgroundColor: "white" }}>
-      <Box
-        sx={{
-          width: "100%",
-          minHeight: "200px",
-          backgroundColor: backgroundColor,
-          padding: "20px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between", // Ensure the content is spaced correctly
-        }}
-      >
-        {/* Back Button at the Top Left */}
-        <IconButton
-          onClick={handleBackClick}
-          aria-label="Go back"
+    <div className="classPage">
+      <Box sx={{ minHeight: "100vh", backgroundColor: "white" }}>
+        <Box
           sx={{
-            color: "#fff",
-            alignSelf: "flex-start", // Keeps the button aligned to the left
+            width: "100%",
+            minHeight: "200px",
+            backgroundColor: backgroundColor,
+            padding: "20px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between", // Ensure the content is spaced correctly
           }}
         >
-          <ArrowBackIcon />
-        </IconButton>
+          {/* Back Button at the Top Left */}
+          <IconButton
+            onClick={handleBackClick}
+            aria-label="Go back"
+            sx={{
+              color: "#fff",
+              alignSelf: "flex-start", // Keeps the button aligned to the left
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
 
-        {/* Spacer to push the main title to the bottom */}
-        <Box sx={{ flexGrow: 1 }} />
-        {/* Subtitle Typography */}
-        <Typography
-          variant="subtitle1"
-          sx={{
-            color: "#fff",
-            fontSize: "16px",
-            marginTop: 2,
-          }}
-        >
-          {classData
-            ? `${classData[2]} ${classData[3]} | ${subjectFullName}`
-            : "Loading..."}
-        </Typography>
+          {/* Spacer to push the main title to the bottom */}
+          <Box sx={{ flexGrow: 1 }} />
+          {/* Subtitle Typography */}
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: "#fff",
+              fontSize: "16px",
+              marginTop: 2,
+            }}
+          >
+            {classData
+              ? `${classData[2]} ${classData[3]} | ${subjectFullName}`
+              : "Loading..."}
+          </Typography>
 
-        {/* Main Title */}
-        <Typography
-          variant="h4"
-          sx={{
-            color: "#fff",
-            fontWeight: "bold",
-            marginTop: "4px",
-          }}
-        >
-          {classData ? `${classData[4]}` : "Loading..."}
-        </Typography>
-      </Box>
+          {/* Main Title */}
+          <Typography
+            variant="h4"
+            sx={{
+              color: "#fff",
+              fontWeight: "bold",
+              marginTop: "4px",
+            }}
+          >
+            {classData ? `${classData[4]}` : "Loading..."}
+          </Typography>
+        </Box>
 
-      <Box sx={{ padding: "20px" }}>
-        {classData && (
-          <>
-            <Typography variant="subtitle1" gutterBottom>
-              <span
-                style={mulish.style}
-                dangerouslySetInnerHTML={{
-                  __html: linkifyClasses(classData[5], "/class"),
-                }}
-              />
-            </Typography>
-
-            <Divider sx={{ marginY: 2 }} />
-
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                marginY: 2,
-              }}
-            >
-              <Typography variant="h6" gutterBottom>
-                Average GPA
+        <Box sx={{ padding: "20px" }}>
+          {classData && (
+            <>
+              <Typography variant="subtitle1" gutterBottom>
+                <span
+                  style={mulish.style}
+                  dangerouslySetInnerHTML={{
+                    __html: linkifyClasses(classData[5], "/class"),
+                  }}
+                />
               </Typography>
-              {classData[22] && Number(classData[22]) > 0 ? (
-                <GPAGauge gpa={calculateGPA(classData[22])} />
-              ) : (
-                <Typography variant="body1">Not available</Typography>
-              )}
-            </Box>
 
-            <Divider sx={{ marginY: 2 }} />
+              <Divider sx={{ marginY: 2 }} />
 
-            {/* Render sections grouped by type */}
-            {Object.keys(sectionsByType).map((type) => (
-              <Accordion
-                key={type}
-                expanded={expanded === type}
-                onChange={handleChange(type)}
+              <Box
                 sx={{
-                  backgroundColor: lightenColor(backgroundColor, 20),
-                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  marginY: 2,
                 }}
               >
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography
-                    sx={{
-                      fontSize: "1.2rem",
-                      color: "white",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {type}
-                  </Typography>
-                </AccordionSummary>
-                <AccordionDetails
-                  sx={{ maxHeight: "400px", overflowY: "auto" }}
+                <Typography variant="h6" gutterBottom>
+                  Average GPA
+                </Typography>
+                {classData[22] && Number(classData[22]) > 0 ? (
+                  <GPAGauge gpa={calculateGPA(classData[22])} />
+                ) : (
+                  <Typography variant="body1">Not available</Typography>
+                )}
+              </Box>
+
+              <Divider sx={{ marginY: 2 }} />
+
+              {/* Render sections grouped by type */}
+              {Object.keys(sectionsByType).map((type) => (
+                <Accordion
+                  key={type}
+                  expanded={expanded === type}
+                  onChange={handleChange(type)}
+                  sx={{
+                    backgroundColor: lightenColor(backgroundColor, 20),
+                    padding: "10px",
+                  }}
                 >
-                  {sectionsByType[type].map((section, index) => (
-                    <SectionDetails key={index} section={section} />
-                  ))}
-                </AccordionDetails>
-              </Accordion>
-            ))}
-          </>
-        )}
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography
+                      sx={{
+                        fontSize: "1.2rem",
+                        color: "white",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {type}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails
+                    sx={{ maxHeight: "400px", overflowY: "auto" }}
+                  >
+                    {sectionsByType[type].map((section, index) => (
+                      <SectionDetails key={index} section={section} />
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </>
+          )}
+        </Box>
       </Box>
-    </Box>
+    </div>
   );
 };
 
