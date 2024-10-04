@@ -13,6 +13,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { semesterConfigs } from "@/lib/commonFunctions";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const SubjectDetails: React.FC = () => {
   const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
@@ -69,7 +71,18 @@ const SubjectDetails: React.FC = () => {
 
   return (
     <div>
-      <Button onClick={handleBack}>Back</Button>
+      <IconButton
+        onClick={handleBack}
+        aria-label="Go back"
+        sx={{
+          position: "absolute",
+          top: "20px",
+          left: "20px",
+          color: "#fff",
+        }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {subjectData &&
           subjectData.map((classData, index) => (
@@ -89,7 +102,10 @@ const SubjectDetails: React.FC = () => {
                   <strong>Credit Hours:</strong> {String(classData[6])}
                 </p>
                 <p>
-                  <strong>Average GPA:</strong> {String(classData[22])}
+                  <strong>Average GPA:</strong>{" "}
+                  {classData[22] && Number(classData[22]) > 0
+                    ? Number(classData[22]).toFixed(2)
+                    : "Not available"}
                 </p>
               </CardContent>
               <CardFooter className="bg-black bg-opacity-30 p-4">

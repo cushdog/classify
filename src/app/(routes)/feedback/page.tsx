@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/select";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { IconButton } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const GoogleFormPage: React.FC = () => {
 
@@ -66,8 +68,19 @@ const GoogleFormPage: React.FC = () => {
 
   return (
     <div>
-      <Button onClick={handleBack}>Back</Button>
-      <h1>Submit Feedback</h1>
+      <IconButton
+        onClick={handleBack}
+        aria-label="Go back"
+        sx={{
+          position: "absolute",
+          top: "5px",
+          left: "5px",
+          color: "#fff",
+        }}
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      <h1 style={{ marginTop: '50px' }}>Submit Feedback</h1>
       <form onSubmit={handleSubmit}>
 
         <div>

@@ -21,17 +21,34 @@ const SectionDetails = ({ section }: { section: any[] }) => {
   const [instructors, setInstructors] = useState<string[]>([]);
 
   useEffect(() => {
-    const instructorData = section[21].split(",").map((s: string) => s.trim());
 
-    const instructors = [];
-    for (let i = 0; i < instructorData.length; i += 2) {
-      const lastName = instructorData[i];
-      const firstInitial = instructorData[i + 1] || "";
-      instructors.push(`${lastName}, ${firstInitial}`);
+    const instructorData =
+      section[21]
+        ?.split(",")
+        .map((s: string) => s.trim())
+        .filter(Boolean) || [];
+    
+    console.log("SECTION:", instructorData);
+
+    if (instructorData.length === 0) {
+      setInstructors(["Not available"]);
+      return;
+    } else {
+      const instructors = [];
+      for (let i = 0; i < instructorData.length; i += 2) {
+        const lastName = instructorData[i];
+        const firstInitial = instructorData[i + 1] || "";
+        // Push the formatted instructor name to the instructors array IF the name is not empty
+        if (lastName.trim().length > 0 && firstInitial.trim().length > 0) {
+          instructors.push(`${lastName}, ${firstInitial}`);
+        } else {
+          instructors.push("Not available");
+        }
+      }
+      console.log("INSTRUCTORS:", instructors);
+  
+      setInstructors(instructors);
     }
-    console.log("INSTRUCTORS:",instructors);
-
-    setInstructors(instructors);
   }, []);
 
   const handleProfessorClick = async (professor: string) => {
@@ -112,18 +129,22 @@ const SectionDetails = ({ section }: { section: any[] }) => {
 
         {/* Instructor */}
         <Typography variant="body2">
-          <strong>
-            {instructors.length > 1 ? "Instructors:" : "Instructor:"}
-          </strong>{" "}
-          {instructors.map((instructor: string, index: number) => (
-            <React.Fragment key={index}>
-              <Link style={{cursor: "pointer"}} onClick={() => handleProfessorClick(instructor)}>
-                {instructor}
-              </Link>
-              {index < instructors.length - 1 && "; "}
-            </React.Fragment>
-          ))}
-        </Typography>
+  <strong>
+    {instructors.length > 1 ? "Instructors:" : "Instructor:"}
+  </strong>{" "}
+  {instructors.map((instructor: string, index: number) => (
+    <React.Fragment key={index}>
+      {instructor === "Not available" ? (
+        <strong>{instructor}</strong> // Plain text for "Not available"
+      ) : (
+        <Link sx={{ cursor: "pointer" }} onClick={() => handleProfessorClick(instructor)}>
+          {instructor}
+        </Link>
+      )}
+      {index < instructors.length - 1 && "; "}
+    </React.Fragment>
+  ))}
+</Typography>
       </Box>
       {professorInfo && (
         <Dialog
