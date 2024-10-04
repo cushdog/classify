@@ -2,8 +2,8 @@
 import React from "react";
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import MobileComponent from "./navbarMobile";
-import DesktopComponent from "./navbarDesktop";
+import MobileComponent from "./ui/MobileNav/navbarMobile";
+import DesktopComponent from "./ui/DesktopNav/navbarDesktop";
 
 export default function RealNavbar() {
   const theme = useTheme();
