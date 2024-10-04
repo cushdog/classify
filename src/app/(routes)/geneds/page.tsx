@@ -80,6 +80,7 @@ const genEdMap: { [key: string]: string } = {
 const GenEdRecommender = () => {
   const [category, setCategory] = useState<string>("");
   const [courses, setCourses] = useState<Course[]>([]);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -87,6 +88,19 @@ const GenEdRecommender = () => {
       fetchCourses(category);
     }
   }, [category]);
+
+  useEffect(() => {
+    // Detect if the device is touch-enabled
+    const checkIfTouchDevice = () => {
+      setIsTouchDevice(window.matchMedia("(hover: none)").matches);
+    };
+    checkIfTouchDevice();
+    window.matchMedia("(hover: none)").addEventListener("change", checkIfTouchDevice);
+
+    return () => {
+      window.matchMedia("(hover: none)").removeEventListener("change", checkIfTouchDevice);
+    };
+  }, []);
 
   const handleBackClick = () => {
     router.back();
@@ -100,13 +114,10 @@ const GenEdRecommender = () => {
         )}`
       );
 
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-
       const data = (await response.json()) as any[];
 
       const distinctCourses: Course[] = Array.from(
         new Map(
-          /* eslint-disable @typescript-eslint/no-explicit-any */
           data.map((course: any[]) => [
             `${course[2]} ${course[3]}`,
             {
@@ -180,8 +191,19 @@ const GenEdRecommender = () => {
                   </h2>
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger>
-                        <Info className="text-gray-500" />
+                      <TooltipTrigger asChild>
+                        {isTouchDevice ? (
+                          <button
+                            className="text-gray-500"
+                            onClick={(e) => e.preventDefault()} // Click to show tooltip on mobile
+                          >
+                            <Info />
+                          </button>
+                        ) : (
+                          <div className="text-gray-500"> {/* Hover to show tooltip on desktop */}
+                            <Info />
+                          </div>
+                        )}
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Courses are sorted by highest average GPA</p>
@@ -201,8 +223,19 @@ const GenEdRecommender = () => {
                             Average GPA
                             <TooltipProvider>
                               <Tooltip>
-                                <TooltipTrigger>
-                                  <Info className="ml-1 h-4 w-4 text-gray-500" />
+                                <TooltipTrigger asChild>
+                                  {isTouchDevice ? (
+                                    <button
+                                      className="ml-1 h-4 w-4 text-gray-500"
+                                      onClick={(e) => e.preventDefault()}
+                                    >
+                                      <Info />
+                                    </button>
+                                  ) : (
+                                    <div className="ml-1 h-4 w-4 text-gray-500">
+                                      <Info />
+                                    </div>
+                                  )}
                                 </TooltipTrigger>
                                 <TooltipContent>
                                   <p>Sorted from highest to lowest</p>
