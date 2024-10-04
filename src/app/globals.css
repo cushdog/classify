@@ -68,9 +68,11 @@
 @layer base {
   * {
     @apply border-border;
+    font-family: 'Mulish', sans-serif
     
   }
   body {
     @apply bg-slate-600 text-foreground;
+    font-family: 'Mulish', sans-serif
   }
 }
