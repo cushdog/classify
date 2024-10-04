@@ -5,7 +5,6 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Typography,
   Box,
   Divider,
   IconButton,
@@ -23,6 +22,13 @@ import {
 import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import { Suspense } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Mulish } from 'next/font/google';
+import Typography from "@/Custom Components/ui/Typography/page";
+
+const mulish = Mulish({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+});
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
@@ -92,72 +98,60 @@ const CourseDetails: React.FC = () => {
   }, [classParam, selectedTerm]);
 
   return (
-    <Box sx={{ height: "100vh", backgroundColor: "white" }}>
-      {/* Apply blur effect based on the panel's open state */}
-
+    <Box sx={{ minHeight: "100vh", backgroundColor: "white" }}>
       <Box
         sx={{
           width: "100%",
-          height: "200px",
-          backgroundColor: backgroundColor, // Randomized background color
+          minHeight: "200px",
+          backgroundColor: backgroundColor,
           padding: "20px",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "flex-end",
-          transition: "filter 0.3s ease", // Smooth transition for blur effect
-          // filter: isPanelOpen ? "blur(8px)" : "none", // Blur when panel is open
+          justifyContent: "space-between", // Ensure the content is spaced correctly
         }}
       >
+        {/* Back Button at the Top Left */}
         <IconButton
           onClick={handleBackClick}
           aria-label="Go back"
           sx={{
-            position: "absolute",
-            top: "20px",
-            left: "20px",
             color: "#fff",
+            alignSelf: "flex-start", // Keeps the button aligned to the left
           }}
         >
           <ArrowBackIcon />
         </IconButton>
 
+        {/* Spacer to push the main title to the bottom */}
+        <Box sx={{ flexGrow: 1 }} />
+        {/* Subtitle Typography */}
         <Typography
           variant="subtitle1"
-          sx={{ color: "#fff", fontSize: "16px", marginTop: "4px" }}
+          sx={{
+            color: "#fff",
+            fontSize: "16px",
+            marginTop: 2,
+          }}
         >
           {classData
             ? `${classData[2]} ${classData[3]} | ${subjectFullName}`
             : "Loading..."}
         </Typography>
+
+        {/* Main Title */}
         <Typography
           variant="h4"
-          sx={{ color: "#fff", fontWeight: "bold", marginTop: "4px" }}
+          sx={{
+            color: "#fff",
+            fontWeight: "bold",
+            marginTop: "4px",
+          }}
         >
           {classData ? `${classData[4]}` : "Loading..."}
         </Typography>
-
-        {/* {user && (
-          <Button
-            onClick={handleFavoriteToggle}
-            sx={{ position: "absolute", right: "20px", bottom: "20px" }}
-          >
-            {isFavorited ? (
-              <MdFavorite size={24} color="red" />
-            ) : (
-              <MdFavoriteBorder size={24} />
-            )}
-          </Button>
-        )} */}
       </Box>
 
-      {/* Apply blur effect to the main content when the panel is open */}
-      <Box
-        sx={{
-          padding: "20px",
-          transition: "filter 0.3s ease", // Smooth transition for blur effect
-          // filter: isPanelOpen ? "blur(8px)" : "none", // Blur when panel is open
-        }}
-      >
+      <Box sx={{ padding: "20px" }}>
         {classData && (
           <>
             <Typography variant="subtitle1" gutterBottom>
@@ -189,24 +183,23 @@ const CourseDetails: React.FC = () => {
                 expanded={expanded === type}
                 onChange={handleChange(type)}
                 sx={{
-                  backgroundColor: lightenColor(backgroundColor, 20), // Slightly lighter background color
-                  height: "auto", // Taller accordion height
+                  backgroundColor: lightenColor(backgroundColor, 20),
                   padding: "10px",
                 }}
               >
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                   <Typography
                     sx={{
-                      fontSize: "1.2rem", // Slightly bigger font size
-                      color: "white", // White text
-                      fontWeight: "bold", // Bold text
+                      fontSize: "1.2rem",
+                      color: "white",
+                      fontWeight: "bold",
                     }}
                   >
                     {type}
                   </Typography>
                 </AccordionSummary>
                 <AccordionDetails
-                  sx={{ maxHeight: "400px", overflowY: "auto" }} // Taller height and scrollable
+                  sx={{ maxHeight: "400px", overflowY: "auto" }}
                 >
                   {sectionsByType[type].map((section, index) => (
                     <SectionDetails key={index} section={section} />

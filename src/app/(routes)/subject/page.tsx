@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -15,6 +15,8 @@ import {
 import { semesterConfigs } from "@/lib/commonFunctions";
 import { IconButton } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Box } from "@mui/material";
+import Typography from "@/Custom Components/ui/Typography/page";
 
 const SubjectDetails: React.FC = () => {
   const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
@@ -71,42 +73,51 @@ const SubjectDetails: React.FC = () => {
 
   return (
     <div>
-      <IconButton
-        onClick={handleBack}
-        aria-label="Go back"
+      <Box
         sx={{
-          position: "absolute",
-          top: "20px",
-          left: "20px",
-          color: "#fff",
+          display: "flex",
+          alignItems: "center",
+          padding: "20px",
         }}
       >
-        <ArrowBackIcon />
-      </IconButton>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <IconButton
+          onClick={handleBack}
+          aria-label="Go back"
+          sx={{
+            color: "#fff",
+            marginRight: "16px", // Adds space to the right of the button
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+      </Box>
+
+      {/* Content starts below the back button */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" style={{ alignItems: "start" }}>
         {subjectData &&
           subjectData.map((classData, index) => (
             <Card
               key={index}
               className="max-w-md mx-auto mt-8 overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 text-white shadow-lg"
+              style={{ height: "auto" }} // Ensure card height is determined by content
             >
               <CardHeader className="bg-black bg-opacity-30 p-4">
-                <h2 className="text-2xl font-bold">{`${classData[2]} ${classData[3]}`}</h2>
-                <p className="text-lg">{String(classData[4])}</p>
+                <Typography variant="h4" className="text-2xl font-bold">{`${classData[2]} ${classData[3]}`}</Typography>
+                <Typography component="p" className="text-lg">{String(classData[4])}</Typography>
               </CardHeader>
               <CardContent className="p-4 space-y-2">
-                <p>
+                <Typography component="p">
                   <strong>Description:</strong> {String(classData[5])}
-                </p>
-                <p>
+                </Typography>
+                <Typography component="p">
                   <strong>Credit Hours:</strong> {String(classData[6])}
-                </p>
-                <p>
+                </Typography>
+                <Typography component="p">
                   <strong>Average GPA:</strong>{" "}
                   {classData[22] && Number(classData[22]) > 0
                     ? Number(classData[22]).toFixed(2)
                     : "Not available"}
-                </p>
+                </Typography>
               </CardContent>
               <CardFooter className="bg-black bg-opacity-30 p-4">
                 <Button

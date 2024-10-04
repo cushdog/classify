@@ -67,6 +67,7 @@ export default function SearchPage() {
                   searchWithoutTerm(search);
                 }
               }}
+              style={{ color: "white", fontWeight: "bold" }}
             />
           </div>
           <Button

@@ -11,11 +11,10 @@ import {
 } from "@/components/ui/select";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { IconButton } from "@mui/material";
+import { IconButton, Box, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const GoogleFormPage: React.FC = () => {
-
   const router = useRouter();
   const [formData, setFormData] = useState({
     name: "",
@@ -64,56 +63,87 @@ const GoogleFormPage: React.FC = () => {
 
   const handleBack = () => {
     router.back();
-  }
+  };
 
   return (
-    <div>
-      <IconButton
-        onClick={handleBack}
-        aria-label="Go back"
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh", // Full height of the viewport to center vertically
+        padding: "20px",
+      }}
+    >
+      <Box
         sx={{
-          position: "absolute",
-          top: "5px",
-          left: "5px",
-          color: "#fff",
+          width: "100%", // Full width
+          maxWidth: "600px", // Medium-sized box
+          padding: "20px",
+          backgroundColor: "#fff", // White background for the form
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)", // Shadow for the box
+          borderRadius: "8px", // Rounded corners
         }}
       >
-        <ArrowBackIcon />
-      </IconButton>
-      <h1 style={{ marginTop: '50px' }}>Submit Feedback</h1>
-      <form onSubmit={handleSubmit}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: "20px",
+          }}
+        >
+          <IconButton
+            onClick={handleBack}
+            aria-label="Go back"
+            sx={{
+              color: "#000", // Changed to black or dark color for visibility
+              marginRight: "16px", // Adds space to the right of the button
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h4" component="h1">
+            Submit Feedback
+          </Typography>
+        </Box>
 
-        <div>
-          <label htmlFor="feedbackType">Feedback Type*</label>
-          <Select onValueChange={handleSelectChange} required>
-            <SelectTrigger aria-label="Select Feedback Type">
-              <SelectValue placeholder="Select Feedback Type" />
-            </SelectTrigger>
+        <form onSubmit={handleSubmit}>
+          <Box mb={3}>
+            <Typography variant="h6" gutterBottom>
+              Feedback Type*
+            </Typography>
+            <Select onValueChange={handleSelectChange} required>
+              <SelectTrigger aria-label="Select Feedback Type">
+                <SelectValue placeholder="Select Feedback Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Comments">Comments</SelectItem>
+                <SelectItem value="Suggestions">Suggestions</SelectItem>
+                <SelectItem value="Questions">Questions</SelectItem>
+              </SelectContent>
+            </Select>
+          </Box>
 
-            <SelectContent>
-              <SelectItem value="Comments">Comments</SelectItem>
-              <SelectItem value="Suggestions">Suggestions</SelectItem>
-              <SelectItem value="Questions">Questions</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+          <Box mb={3}>
+            <Typography variant="h6" gutterBottom>
+              Feedback*
+            </Typography>
+            <Textarea
+              name="feedback"
+              id="feedback"
+              value={formData.feedback}
+              onChange={handleChange}
+              required
+            ></Textarea>
+          </Box>
 
-        <div>
-          <label htmlFor="feedback">Feedback*</label>
-          <Textarea
-            name="feedback"
-            id="feedback"
-            value={formData.feedback}
-            onChange={handleChange}
-            required
-          ></Textarea>
-        </div>
-
-        <div>
-          <Button type="submit">Submit</Button>
-        </div>
-      </form>
-    </div>
+          <Box display="flex" justifyContent="center">
+            <Button type="submit">Submit</Button>
+          </Box>
+        </form>
+      </Box>
+    </Box>
   );
 };
 
