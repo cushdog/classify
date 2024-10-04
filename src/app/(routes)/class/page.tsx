@@ -22,7 +22,6 @@ import {
 import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import { Suspense } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Mulish } from 'next/font/google';
 import Typography from "@/Custom Components/ui/Typography/page";
 
 const CourseDetails: React.FC = () => {
