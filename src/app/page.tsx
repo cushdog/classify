@@ -23,6 +23,10 @@ export default function SearchPage() {
     router.push("/feedback");
   };
 
+  const handleGenEdClick = () => {
+    router.push("/geneds");
+  };
+
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearch(e.target.value);
@@ -102,6 +106,18 @@ export default function SearchPage() {
               Search
             </Button>
           </motion.div>
+
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+            <Button
+              onClick={handleGenEdClick}
+              variant="outline"
+              className="w-full border-white/30 text-white bg-white/20 rounded-full py-2 font-semibold hover:bg-white/30 transition-colors duration-200"
+            >
+              <MessageSquare className="mr-2" size={18} />
+              Gen-Eds
+            </Button>
+          </motion.div>
+
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Button
               onClick={handleFeedbackClick}

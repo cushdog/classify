@@ -23,11 +23,12 @@ import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import { Suspense } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Typography from "@/Custom Components/ui/Typography/page";
-import { Mulish } from 'next/font/google';
+import { Mulish } from "next/font/google";
+import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
 
 const mulish = Mulish({
-  subsets: ['latin'],
-  weight: ['400', '700'],
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 const CourseDetails: React.FC = () => {
@@ -54,6 +55,18 @@ const CourseDetails: React.FC = () => {
 
   const handleBackClick = () => {
     router.back();
+  };
+
+  const calculateGPA = (
+    gpaValue: string | number | null | undefined
+  ): number => {
+    if (
+      !gpaValue ||
+      (typeof gpaValue === "string" && isNaN(Number(gpaValue)))
+    ) {
+      return 0;
+    }
+    return Number((Math.floor(Number(gpaValue) * 100) / 100).toFixed(2));
   };
 
   const handleChange =
@@ -155,7 +168,8 @@ const CourseDetails: React.FC = () => {
         {classData && (
           <>
             <Typography variant="subtitle1" gutterBottom>
-              <span style={mulish.style}
+              <span
+                style={mulish.style}
                 dangerouslySetInnerHTML={{
                   __html: linkifyClasses(classData[5], "/class"),
                 }}
@@ -164,15 +178,23 @@ const CourseDetails: React.FC = () => {
 
             <Divider sx={{ marginY: 2 }} />
 
-            <Typography variant="body2" gutterBottom>
-              {`Average GPA: ${
-                classData[22] && Number(classData[22]) > 0
-                  ? Number(
-                      Math.floor(Number(classData[22]) * 100) / 100
-                    ).toFixed(2)
-                  : "Not available"
-              }`}
-            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                marginY: 2,
+              }}
+            >
+              <Typography variant="h6" gutterBottom>
+                Average GPA
+              </Typography>
+              {classData[22] && Number(classData[22]) > 0 ? (
+                <GPAGauge gpa={calculateGPA(classData[22])} />
+              ) : (
+                <Typography variant="body1">Not available</Typography>
+              )}
+            </Box>
 
             <Divider sx={{ marginY: 2 }} />
 
