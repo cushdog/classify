@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,26 @@ const mulish = Mulish({
 export default function SearchPage() {
   const [search, setSearch] = useState("");
   const router = useRouter();
+
+  // Create a ref for the main box
+  const mainBoxRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Scroll to the main box so that it's halfway up the page
+    if (mainBoxRef.current) {
+      const mainBox = mainBoxRef.current;
+      const windowHeight = window.innerHeight;
+      const elementOffset = mainBox.getBoundingClientRect().top + window.scrollY;
+
+      // Calculate the position to scroll to (halfway up the screen)
+      const scrollToY = elementOffset - windowHeight / 2;
+
+      window.scrollTo({
+        top: scrollToY,
+        behavior: "smooth", // Optional: smooth scrolling
+      });
+    }
+  }, []);
 
   const handleFeedbackClick = () => {
     router.push("/feedback");
@@ -71,6 +91,7 @@ export default function SearchPage() {
       className={`min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 to-indigo-800 ${mulish.className}`}
     >
       <motion.div
+        ref={mainBoxRef} // Assign ref to the main box
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
