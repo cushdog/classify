@@ -20,10 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <RealNavbar></RealNavbar>
         <Toaster position="top-left" reverseOrder={false} />
+        <RealNavbar/>
             {children}
         <Analytics />
+
       </body>
     </html>
   );
