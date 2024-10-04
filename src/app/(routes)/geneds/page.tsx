@@ -114,10 +114,13 @@ const GenEdRecommender = () => {
         )}`
       );
 
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       const data = (await response.json()) as any[];
 
       const distinctCourses: Course[] = Array.from(
         new Map(
+
+          /* eslint-disable @typescript-eslint/no-explicit-any */
           data.map((course: any[]) => [
             `${course[2]} ${course[3]}`,
             {
