@@ -142,7 +142,6 @@ const GenEdRecommender = () => {
           className="mb-6 flex items-center text-white hover:text-gray-200 transition-colors"
         >
           <ArrowLeft className="mr-2" />
-          Back
         </button>
 
         <Card className="bg-white/90 backdrop-blur-sm shadow-xl rounded-lg overflow-hidden">
