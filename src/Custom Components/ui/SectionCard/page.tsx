@@ -29,6 +29,7 @@ const SectionDetails = ({ section }: { section: any[] }) => {
       const firstInitial = instructorData[i + 1] || "";
       instructors.push(`${lastName}, ${firstInitial}`);
     }
+    console.log("INSTRUCTORS:",instructors);
 
     setInstructors(instructors);
   }, []);
@@ -102,7 +103,7 @@ const SectionDetails = ({ section }: { section: any[] }) => {
           <strong>Location:</strong> {section[19]}{" "}
           <Link
             onClick={() => handleLocationClick(section[20])}
-            sx={{ textDecoration: "underline" }}
+            sx={{ textDecoration: "underline", cursor: "pointer" }}
           >
             {section[20]}{" "}
             {/* section[19] is the room number, section[20] is the building */}
@@ -116,7 +117,7 @@ const SectionDetails = ({ section }: { section: any[] }) => {
           </strong>{" "}
           {instructors.map((instructor: string, index: number) => (
             <React.Fragment key={index}>
-              <Link onClick={() => handleProfessorClick(instructor)}>
+              <Link style={{cursor: "pointer"}} onClick={() => handleProfessorClick(instructor)}>
                 {instructor}
               </Link>
               {index < instructors.length - 1 && "; "}

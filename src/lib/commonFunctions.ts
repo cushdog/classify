@@ -126,7 +126,7 @@ export function linkifyClasses(text: string, baseUrl: string): string {
     const classCode = `${subject} ${number}`;
     const most_recent_term = `${semesterConfigs[0].semester.toLowerCase()} ${semesterConfigs[0].year}`;
     const classUrl = `${baseUrl}?class=${classCode}&term=${most_recent_term}`;
-    return `<a style="color: blue; text-decoration: underline;" href="${classUrl}">${match}</a>`;
+    return `<a style="color: blue; text-decoration: underline; cursor: pointer;" href="${classUrl}">${match}</a>`;
   });
 }
 
