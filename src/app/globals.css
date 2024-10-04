@@ -73,6 +73,6 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-teal-400 text-foreground;
+    @apply bg-slate-600 text-foreground;
   }
 }
