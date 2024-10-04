@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -35,15 +35,16 @@ const CourseDetails: React.FC = () => {
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
-  
-  const [selectedTerm, setSelectedTerm] = useState<string>("");
+
+  // const [selectedTerm, setSelectedTerm] = useState<string>("");
+  const selectedTerm = "fall 2024";
   const [backgroundColor, setBackgroundColor] = useState<string>("#3f51b5"); // Background color state
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const classParam = searchParams.get("class");
   const termParam = searchParams.get("term");
-  const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
+  // const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
 
   const handleBackClick = () => {
     router.back();
@@ -104,7 +105,7 @@ const CourseDetails: React.FC = () => {
           flexDirection: "column",
           justifyContent: "flex-end",
           transition: "filter 0.3s ease", // Smooth transition for blur effect
-          filter: isPanelOpen ? "blur(8px)" : "none", // Blur when panel is open
+          // filter: isPanelOpen ? "blur(8px)" : "none", // Blur when panel is open
         }}
       >
 
@@ -155,7 +156,7 @@ const CourseDetails: React.FC = () => {
         sx={{
           padding: "20px",
           transition: "filter 0.3s ease", // Smooth transition for blur effect
-          filter: isPanelOpen ? "blur(8px)" : "none", // Blur when panel is open
+          // filter: isPanelOpen ? "blur(8px)" : "none", // Blur when panel is open
         }}
       >
         {classData && (
