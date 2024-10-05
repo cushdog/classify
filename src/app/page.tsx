@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { semesterConfigs } from "@/lib/commonFunctions";
 import { motion } from "framer-motion";
-import { Search, Send, MessageSquare, NotebookPen } from "lucide-react";
+import { Search, Send } from "lucide-react";
 import { Mulish } from "next/font/google";
 
 const mulish = Mulish({
@@ -38,14 +38,6 @@ export default function SearchPage() {
       });
     }
   }, []);
-
-  const handleFeedbackClick = () => {
-    router.push("/feedback");
-  };
-
-  const handleGenEdClick = () => {
-    router.push("/geneds");
-  };
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {

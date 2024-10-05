@@ -1,12 +1,10 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import Link from 'next/link';
 import styles from './Navbar.module.css';
-import { MessageSquare } from "lucide-react";
 
 
 export default function DesktopNavbar() {
-  const [isUpdatesEnabled, setIsUpdatesEnabled] = useState(false);
 
   return (
     <div className={styles.navbarContainer}>
