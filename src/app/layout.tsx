@@ -28,9 +28,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={mulish.variable}>
-      <Head>
+      <head>
       <meta name="viewport" content="width=device-width, user-scalable=no" />
-      </Head>
+      </head>
       <body>
         <Toaster position="top-left" reverseOrder={false} />
         <ThemeProvider theme={theme}>

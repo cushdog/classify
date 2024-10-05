@@ -110,7 +110,7 @@ export default function SearchPage() {
                   searchWithoutTerm(search);
                 }
               }}
-              className="w-full pl-10 pr-4 py-2 text-white bg-white/20 border-2 border-white/30 rounded-full focus:outline-none focus:border-white/50 placeholder:text-white"
+              className="w-full pl-10 pr-4 py-2 text-white bg-white/20 border-2 border-white/30 rounded-full focus:outline-none focus:border-white/50 placeholder:text-white text-lg"
               placeholder="Search for a class or subject..."
             />
             <Search
