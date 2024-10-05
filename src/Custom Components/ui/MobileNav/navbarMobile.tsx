@@ -1,42 +1,38 @@
-import { useState } from 'react';
+"use client";
+import React, { useState } from "react";
 import Link from 'next/link';
-import styles from './MobileNav.module.css'; // Import the CSS module
+import styles from './MobileNav.module.css';
 
-const MobileNav = () => {
-  const [isOpen, setIsOpen] = useState(false);
+export default function MobileNavbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
+    setIsMenuOpen(prev => !prev);
   };
 
   return (
-    <div className={styles.container}>
-      <button className={styles.hamburger} onClick={toggleMenu}>
-        <div className={`${styles.bar} ${isOpen ? styles.bar1Open : ''}`}></div>
-        <div className={`${styles.bar} ${isOpen ? styles.bar2Open : ''}`}></div>
-        <div className={`${styles.bar} ${isOpen ? styles.bar3Open : ''}`}></div>
+    <div className={styles.mobileNavbarContainer}>
+      <div className={styles.logoContainer}>
+        <Link href="/">
+          <img src="./favicon.ico" alt="Logo" className={styles.logo} />
+        </Link>
+      </div>
+      <button className={styles.menuToggle} onClick={toggleMenu}>
+        {isMenuOpen ? '✖' : '☰'}
       </button>
-
-      {isOpen && (
-        <div className={styles.menu}>
-          <nav className={styles.navMenu}>
-            <Link href="/">
-              <a className={styles.navLink}>Home</a>
-            </Link>
-            <Link href="/about">
-              <a className={styles.navLink}>About</a>
-            </Link>
-            <Link href="/services">
-              <a className={styles.navLink}>Services</a>
-            </Link>
-            <Link href="/contact">
-              <a className={styles.navLink}>Contact</a>
-            </Link>
-          </nav>
-        </div>
-      )}
+      <nav className={`${styles.mobileNav} ${isMenuOpen ? styles.open : ''}`}>
+        <ul className={styles.mobileNavList}>
+          <li>
+            <Link href="/" onClick={toggleMenu}>Home</Link>
+          </li>
+          <li>
+            <Link href="/geneds" onClick={toggleMenu}>Gen-Eds</Link>
+          </li>
+          <li>
+            <Link href="/feedback" onClick={toggleMenu}>Feedback</Link>
+          </li>
+        </ul>
+      </nav>
     </div>
   );
-};
-
-export default MobileNav;
+}

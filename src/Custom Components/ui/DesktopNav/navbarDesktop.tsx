@@ -2,29 +2,32 @@
 import React, { useState } from "react";
 import Link from 'next/link';
 import styles from './Navbar.module.css';
+import { MessageSquare } from "lucide-react";
 
-export default function Navbar() {
+
+export default function DesktopNavbar() {
   const [isUpdatesEnabled, setIsUpdatesEnabled] = useState(false);
 
   return (
+    <div className={styles.navbarContainer}>
+    <div className={styles.logoContainer}>
+      <Link href="/">
+        <img src="./favicon.ico" alt="Logo" className={styles.logo} />
+      </Link>
+    </div>
     <nav className={styles.navbar}>
     <ul className={styles.navList}>
       <li>
-        <Link href="/wearable">Wearable</Link>
+        <Link href="/">Home</Link>
       </li>
       <li>
-        <Link href="/neural">Neural</Link>
+        <Link href="/geneds">Gen-Eds</Link>
       </li>
       <li>
-        <Link href="/programs">Programs</Link>
-      </li>
-      <li>
-        <Link href="/updates">Updates</Link>
-      </li>
-      <li>
-        <Link href="/search">Search</Link>
+        <Link href="/feedback">Feedback</Link>
       </li>
     </ul>
-  </nav>
+    </nav>
+    </div>
   );
 }

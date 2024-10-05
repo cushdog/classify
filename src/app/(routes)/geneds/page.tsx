@@ -86,7 +86,7 @@ const GenEdRecommender = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto px-6 pb-6 pt-20">
       <Card className="mb-6">
         <CardHeader className="bg-orange-500 text-white py-4">
           <h1 className="text-2xl font-bold">Gen-Ed Course Recommender</h1>
