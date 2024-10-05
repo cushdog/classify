@@ -9,6 +9,7 @@ import { semesterConfigs } from "@/lib/commonFunctions";
 import { motion } from "framer-motion";
 import { Search, Send, MessageSquare } from "lucide-react";
 import { Mulish } from "next/font/google";
+import RealNavbar from "@/Custom Components/navbar";
 
 const mulish = Mulish({
   subsets: ["latin"],

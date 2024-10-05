@@ -1,0 +1,61 @@
+.container {
+    position: relative;
+  }
+  
+  .hamburger {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 21px;
+  }
+  
+  .bar {
+    height: 3px;
+    width: 100%;
+    background-color: black;
+    transition: 0.4s;
+  }
+  
+  .bar1Open {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  
+  .bar2Open {
+    opacity: 0;
+  }
+  
+  .bar3Open {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+  
+  .menu {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .navLink {
+    margin: 10px 0;
+    font-size: 18px;
+    text-decoration: none;
+    color: black;
+    transition: color 0.3s ease;
+  }
+  
+  .navLink:hover {
+    color: #3b82f6;
+  }
+  
