@@ -1,0 +1,63 @@
+.mobileNavbarContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0; 
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 10px 20px;
+    background: none;
+  }
+  
+  .logoContainer {
+    display: flex;
+    width: 50px;
+    height: auto;
+  }
+  
+  .menuToggle {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 20px;
+    padding: 7px 15px;
+  }
+  
+  .mobileNavList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+    list-style: none;
+  }
+  
+  .mobileNavList li a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 17px;
+    padding: 10px 20px; 
+    display: block;
+  }
+  
+  .mobileNav {
+    position: absolute;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 999;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .mobileNav.open {
+    transform: translateY(0);
+    opacity: 1;
+  }
