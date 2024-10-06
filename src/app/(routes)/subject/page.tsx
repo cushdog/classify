@@ -6,6 +6,7 @@ import { fetchData, Course, semesterConfigs, fetchSubjectFullName } from "@/lib/
 import { Search, ArrowLeft, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Suspense } from "react";
 import {
   Dialog,
   DialogContent,
@@ -179,4 +180,12 @@ const SubjectDetails = () => {
   );
 };
 
-export default SubjectDetails;
+const SubjectDets = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SubjectDetails />
+    </Suspense>
+  );
+};
+
+export default SubjectDets;
