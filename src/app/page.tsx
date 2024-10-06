@@ -10,7 +10,7 @@ import { motion } from "framer-motion";
 import { Search, Send, Filter } from "lucide-react";
 import { Mulish } from "next/font/google";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
-import { Checkbox } from "@/components/ui/checkbox"; // Assuming you have a checkbox component
+import { Checkbox } from "@/components/ui/checkbox";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -19,14 +19,12 @@ const mulish = Mulish({
 
 export default function SearchPage() {
   const [search, setSearch] = useState("");
-  const [useDescriptionSearch, setUseDescriptionSearch] = useState(false); // State for the filter checkbox
+  const [useDescriptionSearch, setUseDescriptionSearch] = useState(false);
+  const [useProfessorSearch, setUseProfessorSearch] = useState(false);
   const router = useRouter();
-
-  // Create a ref for the main box
   const mainBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Handles scrolling so that the main box is halfway up on the page
     if (mainBoxRef.current) {
       const mainBox = mainBoxRef.current;
       const windowHeight = window.innerHeight;
@@ -47,8 +45,12 @@ export default function SearchPage() {
     []
   );
 
-  const handleCheckboxChange = () => {
+  const handleDescriptionCheckboxChange = () => {
     setUseDescriptionSearch((prevState) => !prevState);
+  };
+
+  const handleProfessorCheckboxChange = () => {
+    setUseProfessorSearch((prevState) => !prevState);
   };
 
   const searchWithoutTerm = async (searchQuery: string) => {
@@ -59,20 +61,23 @@ export default function SearchPage() {
       : searchQuery.replace(/([a-zA-Z])(\d)/, "$1 $2");
 
     try {
-      // Check if user wants to search with the description route
-      const url = useDescriptionSearch
-        ? `/titleSearch?searchQuery=${formattedQuery}`
-        : isSubjectSearch
-        ? `/subject?subject=${searchQuery}&term=${encodeURIComponent(
-            mostRecentTerm
-          )}`
-        : `/class?class=${formattedQuery}&term=${encodeURIComponent(
-            mostRecentTerm
-          )}`;
-
-      const apiUrl = useDescriptionSearch
-        ? `https://uiuc-course-api-production.up.railway.app/description?query=${formattedQuery}&term=fall+2024`
-        : `https://uiuc-course-api-production.up.railway.app/search?query=${formattedQuery}+fall+2024`;
+      let apiUrl, url;
+      if (useDescriptionSearch) {
+        apiUrl = `https://uiuc-course-api-production.up.railway.app/description?query=${formattedQuery}&term=fall+2024`;
+        url = `/titleSearch?searchQuery=${formattedQuery}`;
+      } else if (useProfessorSearch) {
+        apiUrl = `https://uiuc-course-api-production.up.railway.app/prof-search?query=${formattedQuery}+fall+2024`;
+        url = `/professorSearch?searchQuery=${formattedQuery}`;
+      } else {
+        apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${formattedQuery}+fall+2024`;
+        url = isSubjectSearch
+          ? `/subject?subject=${searchQuery}&term=${encodeURIComponent(
+              mostRecentTerm
+            )}`
+          : `/class?class=${formattedQuery}&term=${encodeURIComponent(
+              mostRecentTerm
+            )}`;
+      }
 
       const res = await fetch(apiUrl);
       const data = await res.json();
@@ -93,7 +98,7 @@ export default function SearchPage() {
       className={`min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 to-indigo-800 ${mulish.className}`}
     >
       <motion.div
-        ref={mainBoxRef} // Assign ref to the main box
+        ref={mainBoxRef}
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
@@ -105,8 +110,7 @@ export default function SearchPage() {
         <div className="space-y-4">
           <div className="relative">
             <Input
-              // Conditionally transform search input value to uppercase only if `useDescriptionSearch` is false
-              value={useDescriptionSearch ? search : search.toUpperCase()}
+              value={search}
               onChange={handleInputChange}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {
@@ -114,7 +118,7 @@ export default function SearchPage() {
                 }
               }}
               className="w-full pl-10 pr-4 py-2 text-white bg-white/20 border-2 border-white/30 rounded-full focus:outline-none focus:border-white/50 placeholder:text-white text-lg"
-              placeholder="Search for a class or subject..."
+              placeholder="Search for a class, or subject..."
             />
             <Search
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50"
@@ -122,7 +126,6 @@ export default function SearchPage() {
             />
           </div>
 
-          {/* Filters triggered from the search button */}
           <Dialog>
             <DialogTrigger asChild>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -141,10 +144,20 @@ export default function SearchPage() {
                 <Checkbox
                   id="descriptionSearch"
                   checked={useDescriptionSearch}
-                  onCheckedChange={handleCheckboxChange}
+                  onCheckedChange={handleDescriptionCheckboxChange}
                 />
                 <label htmlFor="descriptionSearch" className="text-gray-800">
                   Search courses by title
+                </label>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Checkbox
+                  id="professorSearch"
+                  checked={useProfessorSearch}
+                  onCheckedChange={handleProfessorCheckboxChange}
+                />
+                <label htmlFor="professorSearch" className="text-gray-800">
+                  Search by professor (last name)
                 </label>
               </div>
             </DialogContent>
