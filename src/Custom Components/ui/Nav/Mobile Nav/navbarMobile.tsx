@@ -43,6 +43,9 @@ export default function MobileNavbar() {
               Tutorial
             </Link>
           </li>
+          <li>
+            <Link href="/masterSubjList">Full Catalog</Link>
+          </li>
         </ul>
       </nav>
     </div>

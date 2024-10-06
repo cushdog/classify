@@ -40,9 +40,14 @@ export default function SearchPage() {
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch(e.target.value);
+      let inputValue = e.target.value;
+      // Capitalize the input only when no filters are checked
+      if (!useDescriptionSearch && !useProfessorSearch) {
+        inputValue = inputValue.toUpperCase();
+      }
+      setSearch(inputValue);
     },
-    []
+    [useDescriptionSearch, useProfessorSearch] // Adding the dependencies to re-run when filters change
   );
 
   const handleDescriptionCheckboxChange = () => {

@@ -18,12 +18,14 @@ import {
 const ProfessorDescriptionDetails = () => {
   const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [professorName, setProfessorName] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const fetchProfessorData = async () => {
       const searchQuery = searchParams.get("searchQuery") || "";
+      setProfessorName(searchQuery);
       const url = `https://uiuc-course-api-production.up.railway.app/prof-search?query=${encodeURIComponent(searchQuery)}+fall+2024`;
       const data = await fetchData(url);
       const uniqueData = data.filter(
@@ -59,7 +61,7 @@ const ProfessorDescriptionDetails = () => {
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
-        <h1 className="text-2xl font-bold mt-16 md:mt-2">Matching Courses by Professor</h1>
+        <h1 className="text-2xl font-bold mt-16 md:mt-2">Matching Courses by Professor {professorName}</h1>
       </header>
 
       <main className="container mx-auto px-4 py-8">
