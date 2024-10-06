@@ -137,6 +137,7 @@ const GenEdRecommender = () => {
 
       const distinctCourses: Course[] = Array.from(
         new Map(
+          /* eslint-disable @typescript-eslint/no-explicit-any */
           allCourses.map((course: any) => [
             `${course[2]} ${course[3]}`,
             {
