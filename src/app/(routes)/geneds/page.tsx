@@ -2,29 +2,28 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
+  Container,
+  Paper,
+  Grid,
+  Checkbox,
+  FormControlLabel,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
-  TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { ArrowLeft, Info } from "lucide-react";
-import {
+  Button,
+  IconButton,
   Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  TextField,
+  InputAdornment,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import { ArrowBack, Info, Search } from "@mui/icons-material";
 
 interface Course {
   subject: string;
@@ -36,92 +35,109 @@ interface Course {
 }
 
 const genEdMap: { [key: string]: string } = {
-  SBS_SOC:
-    "Social & Beh Sci - Soc Sci, and Cultural Studies - US Minority course",
-  CS_US: "Cultural Studies - US Minority course",
-  HUM_HIST_CS_US:
-    "Humanities - Hist & Phil, and Cultural Studies - US Minority course",
-  HUM_LIT_CS_US:
-    "Humanities - Lit & Arts, and Cultural Studies - US Minority course",
-  ACP_CS_US: "Advanced Composition, and Cultural Studies - US Minority course",
-  CS_NONWEST_SBS_SOC:
-    "Cultural Studies - Non-West, and Social & Beh Sci - Soc Sci course",
-  QR1: "Quantitative Reasoning I course",
-  HUM_HIST: "Humanities - Hist & Phil course",
-  ACP_HUM_HIST_CS_US:
-    "Advanced Composition, Humanities - Hist & Phil, and Cultural Studies - US Minority course",
-  HUM_HIST_CS_NONWEST:
-    "Humanities - Hist & Phil, and Cultural Studies - Non-West course",
-  JS: "James Scholars course",
-  NAT_LIFE: "Nat Sci & Tech - Life Sciences course",
-  CS_WEST: "Cultural Studies - Western course",
-  SBS_SOC_CS_WEST:
-    "Social & Beh Sci - Soc Sci, and Cultural Studies - Western course",
-  HUM_HIST_CS_WEST:
-    "Humanities - Hist & Phil, and Cultural Studies - Western course",
-  CS_NONWEST: "Cultural Studies - Non-West course",
-  HUM_LIT: "Humanities - Lit & Arts course",
-  CH_HUM_HIST: "Camp Honors/Chanc Schol, and Humanities - Hist & Phil course",
-  HUM_LIT_CS_WEST:
-    "Humanities - Lit & Arts, and Cultural Studies - Western course",
-  HUM_LIT_CS_NONWEST:
-    "Humanities - Lit & Arts, and Cultural Studies - Non-West course",
-  NAT_PHYS: "Nat Sci & Tech - Phys Sciences course",
-  NAT_PHYS_QR2:
-    "Nat Sci & Tech - Phys Sciences, and Quantitative Reasoning II course",
-  CH_NAT_PHYS:
-    "Camp Honors/Chanc Schol, and Nat Sci & Tech - Phys Sciences course",
-  SBS_BEH: "Social & Beh Sci - Beh Sci course",
-  NAT_PHYS_CS_WEST:
-    "Nat Sci & Tech - Phys Sciences, and Cultural Studies - Western course",
-  COMP_I: "Composition I course",
+  // ... (same as before)
 };
 
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+  marginTop: theme.spacing(3),
+  marginBottom: theme.spacing(3),
+}));
+
 const GenEdRecommender = () => {
-  const [category, setCategory] = useState<string>("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
-  const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  useEffect(() => {
-    if (category) {
-      fetchCourses(category);
-    }
-  }, [category]);
-
-  useEffect(() => {
-    // Detect if the device is touch-enabled
-    const checkIfTouchDevice = () => {
-      setIsTouchDevice(window.matchMedia("(hover: none)").matches);
-    };
-    checkIfTouchDevice();
-    window.matchMedia("(hover: none)").addEventListener("change", checkIfTouchDevice);
-
-    return () => {
-      window.matchMedia("(hover: none)").removeEventListener("change", checkIfTouchDevice);
-    };
-  }, []);
-
-  const handleBackClick = () => {
-    router.back();
+  const genEdMap: { [key: string]: string } = {
+    SBS_SOC:
+      "Social & Beh Sci - Soc Sci, and Cultural Studies - US Minority course",
+    CS_US: "Cultural Studies - US Minority course",
+    HUM_HIST_CS_US:
+      "Humanities - Hist & Phil, and Cultural Studies - US Minority course",
+    HUM_LIT_CS_US:
+      "Humanities - Lit & Arts, and Cultural Studies - US Minority course",
+    ACP_CS_US:
+      "Advanced Composition, and Cultural Studies - US Minority course",
+    CS_NONWEST_SBS_SOC:
+      "Cultural Studies - Non-West, and Social & Beh Sci - Soc Sci course",
+    QR1: "Quantitative Reasoning I course",
+    HUM_HIST: "Humanities - Hist & Phil course",
+    ACP_HUM_HIST_CS_US:
+      "Advanced Composition, Humanities - Hist & Phil, and Cultural Studies - US Minority course",
+    HUM_HIST_CS_NONWEST:
+      "Humanities - Hist & Phil, and Cultural Studies - Non-West course",
+    JS: "James Scholars course",
+    CS_WEST: "Cultural Studies - Western course",
+    SBS_SOC_CS_WEST:
+      "Social & Beh Sci - Soc Sci, and Cultural Studies - Western course",
+    HUM_HIST_CS_WEST:
+      "Humanities - Hist & Phil, and Cultural Studies - Western course",
+    CS_NONWEST: "Cultural Studies - Non-West course",
+    HUM_LIT: "Humanities - Lit & Arts course",
+    CH_HUM_HIST: "Camp Honors/Chanc Schol, and Humanities - Hist & Phil course",
+    HUM_LIT_CS_WEST:
+      "Humanities - Lit & Arts, and Cultural Studies - Western course",
+    HUM_LIT_CS_NONWEST:
+      "Humanities - Lit & Arts, and Cultural Studies - Non-West course",
+    CH_NAT_PHYS:
+      "Camp Honors/Chanc Schol, and Nat Sci & Tech - Phys Sciences course",
+    SBS_BEH: "Social & Beh Sci - Beh Sci course",
+    COMP_I: "Composition I course",
+    NAT_LIFE: "Nat Sci & Tech - Life Sciences course",
+    NAT_PHYS: "Nat Sci & Tech - Phys Sciences course",
+    NAT_PHYS_QR2:
+      "Nat Sci & Tech - Phys Sciences, and Quantitative Reasoning II course",
+    NAT_PHYS_CS_WEST:
+      "Nat Sci & Tech - Phys Sciences, and Cultural Studies - Western course",
+    NAT_SCI_US_MIN:
+      "Nat Sci & Tech - Life Sciences, and Cultural Studies - US Minority course",
   };
 
-  const fetchCourses = async (category: string) => {
+  const categoryOptions = Array.from(
+    new Set(
+      Object.values(genEdMap).flatMap((value) =>
+        value.split(", and ").flatMap((part) =>
+          part
+            .split(" - ")
+            .slice(1)
+            .map((category) => category.replace(" course", "").trim())
+        )
+      )
+    )
+  ).sort();
+
+  useEffect(() => {
+    if (selectedCategories.length > 0) {
+      fetchCourses(selectedCategories);
+    } else {
+      setCourses([]);
+    }
+  }, [selectedCategories]);
+
+  const fetchCourses = async (categories: string[]) => {
     try {
-      const response = await fetch(
-        `https://uiuc-course-api-production.up.railway.app/requirements?query=${encodeURIComponent(
-          genEdMap[category]
-        )}`
+      const matchingKeys = Object.entries(genEdMap)
+        .filter(([_, value]) => categories.every((cat) => value.includes(cat)))
+        .map(([key]) => key);
+
+      const promises = matchingKeys.map((key) =>
+        fetch(
+          `https://uiuc-course-api-production.up.railway.app/requirements?query=${encodeURIComponent(
+            genEdMap[key]
+          )}`
+        ).then((response) => response.json())
       );
 
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      const data = (await response.json()) as any[];
+      const results = await Promise.all(promises);
+      const allCourses = results.flat();
 
       const distinctCourses: Course[] = Array.from(
         new Map(
-
-          /* eslint-disable @typescript-eslint/no-explicit-any */
-          data.map((course: any[]) => [
+          allCourses.map((course: any) => [
             `${course[2]} ${course[3]}`,
             {
               subject: course[2],
@@ -148,145 +164,149 @@ const GenEdRecommender = () => {
     );
   };
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((c) => c !== category)
+        : [...prev, category]
+    );
+  };
+
+  const filteredCourses = courses.filter((course) =>
+    `${course.subject} ${course.number} ${course.title}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-500 to-blue-600 p-8">
-      <div className="max-w-6xl mx-auto">
-        <button
-          onClick={handleBackClick}
-          className="mb-6 flex items-center text-white hover:text-gray-200 transition-colors"
+    <>
+      <header
+        className="bg-blue-600 text-white sticky top-0 z-10"
+        style={{
+          width: "100%",
+          minHeight: "200px",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <Button
+          onClick={() => router.back()}
+          variant="text"
+          className="text-white hover:bg-blue-700 hidden md:inline-flex"
+          style={{
+            alignSelf: "flex-start",
+          }}
         >
-          <ArrowLeft className="mr-2" />
-        </button>
+          <ArrowBack className="mr-2 h-4 w-4" /> Back
+        </Button>
 
-        <Card className="bg-white/90 backdrop-blur-sm shadow-xl rounded-lg overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-orange-500 to-pink-500 p-6">
-            <h1 className="text-3xl font-bold text-white">
-              Gen-Ed Course Recommender
-            </h1>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="mb-8">
-              <label
-                htmlFor="category-select"
-                className="block text-sm font-medium text-gray-700 mb-2"
-              >
-                Select a Gen-Ed category
-              </label>
-              <Select onValueChange={(value) => setCategory(value)}>
-                <SelectTrigger id="category-select" className="w-full">
-                  <SelectValue placeholder="Choose a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.entries(genEdMap).map(([key, value_i]) => (
-                    <SelectItem key={key} value={key}>
-                      {value_i}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+        <div style={{ flexGrow: 1 }}></div>
 
-            {courses.length > 0 && (
-              <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-2xl font-semibold text-gray-800">
-                    Recommended Courses
-                  </h2>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        {isTouchDevice ? (
-                          <button
-                            className="text-gray-500"
-                            onClick={(e) => e.preventDefault()} // Click to show tooltip on mobile
-                          >
-                            <Info />
-                          </button>
-                        ) : (
-                          <div className="text-gray-500"> {/* Hover to show tooltip on desktop */}
-                            <Info />
-                          </div>
-                        )}
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Courses are sorted by highest average GPA</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </div>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Course</TableHead>
-                        <TableHead>Title</TableHead>
-                        <TableHead>Credit Hours</TableHead>
-                        <TableHead>
-                          <span className="flex items-center">
-                            Average GPA
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  {isTouchDevice ? (
-                                    <button
-                                      className="ml-1 h-4 w-4 text-gray-500"
-                                      onClick={(e) => e.preventDefault()}
-                                    >
-                                      <Info />
-                                    </button>
-                                  ) : (
-                                    <div className="ml-1 h-4 w-4 text-gray-500">
-                                      <Info />
-                                    </div>
-                                  )}
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <p>Sorted from highest to lowest</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </span>
-                        </TableHead>
-                        <TableHead>Actions</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {courses.map((course, index) => (
-                        <TableRow
-                          key={`${course.subject}${course.number}`}
-                          className={
-                            index % 2 === 0 ? "bg-gray-50" : "bg-white"
+        <h1
+          style={{
+            color: "#fff",
+            fontWeight: "bold",
+            marginTop: "4px",
+            fontSize: "2rem",
+          }}
+        >
+          Gen-Ed Course Offerings
+        </h1>
+      </header>
+
+      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+        <StyledPaper elevation={3}>
+          <Grid container spacing={2}>
+            {categoryOptions.map((category) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={category}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={selectedCategories.includes(category)}
+                      onChange={() => handleCategoryChange(category)}
+                      name={category}
+                    />
+                  }
+                  label={category}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </StyledPaper>
+
+        {filteredCourses.length > 0 && (
+          <StyledPaper elevation={3}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              placeholder="Search courses by name or code"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ mb: 3 }}
+            />
+
+            <TableContainer>
+              <Table aria-label="course table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Course</TableCell>
+                    <TableCell>Title</TableCell>
+                    {!isMobile && <TableCell>Credit Hours</TableCell>}
+                    <TableCell>
+                      Avg. GPA
+                      <Tooltip
+                        title="Sorted from highest to lowest"
+                        placement="top"
+                      >
+                        <IconButton size="small">
+                          <Info fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredCourses.map((course) => (
+                    <TableRow key={`${course.subject}${course.number}`}>
+                      <TableCell component="th" scope="row">
+                        {`${course.subject} ${course.number}`}
+                      </TableCell>
+                      <TableCell>{course.title}</TableCell>
+                      {!isMobile && <TableCell>{course.creditHours}</TableCell>}
+                      <TableCell>
+                        {course.gpa ? course.gpa.toFixed(2) : "N/A"}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                          onClick={() =>
+                            handleVisitClass(course.subject, course.number)
                           }
                         >
-                          <TableCell className="font-medium">{`${course.subject} ${course.number}`}</TableCell>
-                          <TableCell>{course.title}</TableCell>
-                          <TableCell>{course.creditHours}</TableCell>
-                          <TableCell>
-                            <span className="font-semibold">
-                              {course.gpa ? course.gpa.toFixed(2) : "N/A"}
-                            </span>
-                          </TableCell>
-                          <TableCell>
-                            <button
-                              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
-                              onClick={() =>
-                                handleVisitClass(course.subject, course.number)
-                              }
-                            >
-                              Visit Class
-                            </button>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-    </div>
+                          Visit
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </StyledPaper>
+        )}
+      </Container>
+    </>
   );
 };
 
