@@ -67,7 +67,7 @@ const ProfessorDescriptionDetails = () => {
           <Search className="mr-2 h-5 w-5 text-gray-400" />
           <Input
             type="text"
-            placeholder="Search courses by professor..."
+            placeholder="Search courses..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="flex-grow"
