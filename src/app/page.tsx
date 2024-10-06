@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { semesterConfigs } from "@/lib/commonFunctions";
 import { motion } from "framer-motion";
-import { Search, Send, Filter } from "lucide-react";
+import { Search, Send } from "lucide-react";
 import { Mulish } from "next/font/google";
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const mulish = Mulish({

@@ -28,7 +28,7 @@ const SectionDetails = ({ section }: { section: any[] }) => {
         .map((s: string) => s.trim())
         .filter(Boolean) || [];
     
-    console.log("SECTION:", instructorData);
+    console.log("SECTION:", section);
 
     if (instructorData.length === 0) {
       setInstructors(["Not available"]);

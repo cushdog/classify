@@ -34,10 +34,6 @@ interface Course {
   gpa: number;
 }
 
-const genEdMap: { [key: string]: string } = {
-  // ... (same as before)
-};
-
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
   marginTop: theme.spacing(3),
