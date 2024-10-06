@@ -7,6 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import theme from "@/lib/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import RealNavbar from "@/Custom Components/ui/Nav/navbar";
 import Head from "next/head";
 import "./globals.css";
 
@@ -37,6 +38,7 @@ export default function RootLayout({
         <RealNavbar/>
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <RealNavbar />
           {children}
         </ThemeProvider>
         <Analytics />
