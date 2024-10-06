@@ -1,11 +1,15 @@
 .navbarContainer {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: top 0.3s;
+}
   
   .logoContainer {
     margin-right: 20px;

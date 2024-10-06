@@ -38,6 +38,11 @@ export default function MobileNavbar() {
               Feedback
             </Link>
           </li>
+          <li>
+            <Link href="/tutorial" onClick={toggleMenu}>
+              Tutorial
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>

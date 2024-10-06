@@ -36,6 +36,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --background-gradient: linear-gradient(to bottom right, #6b21a8, #3730a3); /* from-purple-700 to-indigo-800 */
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -73,7 +74,8 @@
     font-family: 'Mulish', system-ui, sans-serif;
   }
   body {
-    @apply bg-slate-600 text-foreground;
+    background: var(--background-gradient);
+    @apply text-foreground;
     @apply font-sans;
   }
 }

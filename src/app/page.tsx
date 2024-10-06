@@ -22,19 +22,18 @@ export default function SearchPage() {
   // Create a ref for the main box
   const mainBoxRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    // Scroll to the main box so that it's halfway up the page
+  useEffect(() => { // handles scrolling so that the main box is halfway up on the page
+
     if (mainBoxRef.current) {
       const mainBox = mainBoxRef.current;
       const windowHeight = window.innerHeight;
       const elementOffset = mainBox.getBoundingClientRect().top + window.scrollY;
 
-      // Calculate the position to scroll to (halfway up the screen)
       const scrollToY = elementOffset - windowHeight / 2;
 
       window.scrollTo({
         top: scrollToY,
-        behavior: "smooth", // Optional: smooth scrolling
+        behavior: "smooth",
       });
     }
   }, []);
