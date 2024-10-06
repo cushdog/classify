@@ -39,15 +39,41 @@ const SubjectsList = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <header className="bg-blue-600 text-white p-4 sticky top-0 z-10">
+      <header
+        className="bg-blue-600 text-white sticky top-0 z-10"
+        style={{
+          width: "100%",
+          minHeight: "200px",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        {/* Back Button at the Top Left */}
         <Button
           onClick={() => router.back()}
           variant="ghost"
           className="text-white hover:bg-blue-700 hidden md:inline-flex"
+          style={{
+            alignSelf: "flex-start",
+          }}
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
-        <h1 className="text-2xl font-bold mt-16 md:mt-2">
+
+        {/* Spacer to push the main title to the bottom */}
+        <div style={{ flexGrow: 1 }}></div>
+
+        {/* Main Title */}
+        <h1
+          style={{
+            color: "#fff",
+            fontWeight: "bold",
+            marginTop: "4px",
+            fontSize: "2rem",
+          }}
+        >
           Browse Fall 2024 Offerings
         </h1>
       </header>
@@ -83,7 +109,9 @@ const SubjectsList = () => {
             <tbody className="divide-y divide-gray-200">
               {filteredSubjects.map((subject, index) => (
                 <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">{subject.code}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {subject.code}
+                  </td>
                   <td className="px-6 py-4">{subject.name}</td>
                   <td className="px-6 py-4">
                     <Button
