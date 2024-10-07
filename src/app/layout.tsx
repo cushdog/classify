@@ -34,6 +34,7 @@ export default function RootLayout({
       </Head>
       <body>
         <Toaster position="top-left" reverseOrder={false} />
+        <RealNavbar/>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <RealNavbar />

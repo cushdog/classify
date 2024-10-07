@@ -20,8 +20,10 @@ export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [useDescriptionSearch, setUseDescriptionSearch] = useState(false);
   const [useProfessorSearch, setUseProfessorSearch] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
   const mainBoxRef = useRef<HTMLDivElement>(null);
+  const textSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (mainBoxRef.current) {
@@ -35,6 +37,27 @@ export default function SearchPage() {
         behavior: "smooth",
       });
     }
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      });
+    });
+
+    if (textSectionRef.current) {
+      observer.observe(textSectionRef.current);
+    }
+
+    return () => {
+      if (textSectionRef.current) {
+        observer.unobserve(textSectionRef.current);
+      }
+    };
   }, []);
 
   const handleInputChange = useCallback(
@@ -65,6 +88,9 @@ export default function SearchPage() {
       : searchQuery.replace(/([a-zA-Z])(\d)/, "$1 $2");
 
     try {
+      const url = isSubjectSearch
+        ? `/subject?subject=${searchQuery}&term=${encodeURIComponent(mostRecentTerm)}`
+        : `/class?class=${formattedQuery}&term=${encodeURIComponent(mostRecentTerm)}`;
       let apiUrl, url;
       if (useDescriptionSearch) {
         apiUrl = `https://uiuc-course-api-production.up.railway.app/description?query=${formattedQuery}&term=fall+2024`;

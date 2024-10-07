@@ -5,6 +5,8 @@
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
+    opacity: 0;
+    animation: fadeIn 1s forwards;
   z-index: 1000;
   padding: 10px 20px;
   border-radius: 8px;
@@ -44,6 +46,21 @@
 .navList li a:hover {
   color: #0070f3;
 }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) translateX(-50%);;
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) translateX(-50%);;
+    }
+  }
+  
+  .navbarContainer.fade-in {
+      opacity: 1;
+  }
 
 .dropdown {
   position: relative;
