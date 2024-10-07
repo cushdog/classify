@@ -81,6 +81,7 @@ export default function SearchPage() {
     }
   };
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const performSearch = async (semesterConfig: SemesterConfig): Promise<any> => {
     const { apiUrl, redirectUrl } = getSearchConfig(semesterConfig);
     try {

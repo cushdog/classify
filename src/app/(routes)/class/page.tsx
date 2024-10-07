@@ -35,8 +35,10 @@ const mulish = Mulish({
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>({});
   const [backgroundColor, setBackgroundColor] = useState<string>("#3f51b5");
 
