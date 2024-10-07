@@ -117,9 +117,9 @@ const GenEdRecommender = () => {
   const fetchCourses = async (categories: string[]) => {
     try {
       const matchingKeys = Object.entries(genEdMap)
-        .filter(([_, value]) => categories.every((cat) => value.includes(cat)))
+        .filter(([, value]) => categories.every((cat) => value.includes(cat)))
         .map(([key]) => key);
-
+  
       const promises = matchingKeys.map((key) =>
         fetch(
           `https://uiuc-course-api-production.up.railway.app/requirements?query=${encodeURIComponent(
@@ -127,10 +127,10 @@ const GenEdRecommender = () => {
           )}`
         ).then((response) => response.json())
       );
-
+  
       const results = await Promise.all(promises);
       const allCourses = results.flat();
-
+  
       const distinctCourses: Course[] = Array.from(
         new Map(
           /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -147,12 +147,12 @@ const GenEdRecommender = () => {
           ])
         ).values()
       );
-
+  
       setCourses(distinctCourses.sort((a, b) => b.gpa - a.gpa));
     } catch (error) {
       console.error("Error fetching courses:", error);
     }
-  };
+  };  
 
   const handleVisitClass = (subject: string, number: string) => {
     const formattedQuery = `${subject} ${number}`;
