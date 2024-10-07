@@ -21,13 +21,12 @@ const SectionDetails = ({ section }: { section: any[] }) => {
   const [instructors, setInstructors] = useState<string[]>([]);
 
   useEffect(() => {
-
     const instructorData =
       section[21]
         ?.split(",")
         .map((s: string) => s.trim())
         .filter(Boolean) || [];
-    
+
     console.log("SECTION:", section);
 
     if (instructorData.length === 0) {
@@ -46,7 +45,7 @@ const SectionDetails = ({ section }: { section: any[] }) => {
         }
       }
       console.log("INSTRUCTORS:", instructors);
-  
+
       setInstructors(instructors);
     }
   }, []);
@@ -91,11 +90,25 @@ const SectionDetails = ({ section }: { section: any[] }) => {
           {/* section[7] contains the section identifier (e.g., ADB) */}
         </Typography>
 
+        {section[25] !== "None" && section[25] ? (
+          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
+            <strong>Title:</strong> {section[25]}{" "}
+            {/* section[8] contains the status (e.g., A) */}
+          </Typography>
+        ) : null}
+
         {/* Status */}
         <Typography variant="body2" sx={{ marginBottom: "4px" }}>
           <strong>Status:</strong> {section[8]}{" "}
           {/* section[8] contains the status (e.g., A) */}
         </Typography>
+
+        {section[26] ? (
+          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
+            <strong>CRN:</strong> {section[26]}{" "}
+            {/* section[8] contains the status (e.g., A) */}
+          </Typography>
+        ) : null}
 
         {/* Type */}
         <Typography variant="body2" sx={{ marginBottom: "4px" }}>
@@ -129,22 +142,25 @@ const SectionDetails = ({ section }: { section: any[] }) => {
 
         {/* Instructor */}
         <Typography variant="body2">
-  <strong>
-    {instructors.length > 1 ? "Instructors:" : "Instructor:"}
-  </strong>{" "}
-  {instructors.map((instructor: string, index: number) => (
-    <React.Fragment key={index}>
-      {instructor === "Not available" ? (
-        <strong>{instructor}</strong> // Plain text for "Not available"
-      ) : (
-        <Link sx={{ cursor: "pointer" }} onClick={() => handleProfessorClick(instructor)}>
-          {instructor}
-        </Link>
-      )}
-      {index < instructors.length - 1 && "; "}
-    </React.Fragment>
-  ))}
-</Typography>
+          <strong>
+            {instructors.length > 1 ? "Instructors:" : "Instructor:"}
+          </strong>{" "}
+          {instructors.map((instructor: string, index: number) => (
+            <React.Fragment key={index}>
+              {instructor === "Not available" ? (
+                <strong>{instructor}</strong> // Plain text for "Not available"
+              ) : (
+                <Link
+                  sx={{ cursor: "pointer" }}
+                  onClick={() => handleProfessorClick(instructor)}
+                >
+                  {instructor}
+                </Link>
+              )}
+              {index < instructors.length - 1 && "; "}
+            </React.Fragment>
+          ))}
+        </Typography>
       </Box>
       {professorInfo && (
         <Dialog

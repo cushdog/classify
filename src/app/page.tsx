@@ -20,6 +20,7 @@ export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [useDescriptionSearch, setUseDescriptionSearch] = useState(false);
   const [useProfessorSearch, setUseProfessorSearch] = useState(false);
+  const [useCrnSearch, setUseCrnSearch] = useState(false);
   const router = useRouter();
   const mainBoxRef = useRef<HTMLDivElement>(null);
 
@@ -41,12 +42,12 @@ export default function SearchPage() {
     (e: React.ChangeEvent<HTMLInputElement>) => {
       let inputValue = e.target.value;
       // Capitalize the input only when no filters are checked
-      if (!useDescriptionSearch && !useProfessorSearch) {
+      if (!useDescriptionSearch && !useProfessorSearch && !useCrnSearch) {
         inputValue = inputValue.toUpperCase();
       }
       setSearch(inputValue);
     },
-    [useDescriptionSearch, useProfessorSearch] // Adding the dependencies to re-run when filters change
+    [useDescriptionSearch, useProfessorSearch, useCrnSearch]
   );
 
   const handleDescriptionCheckboxChange = () => {
@@ -55,6 +56,10 @@ export default function SearchPage() {
 
   const handleProfessorCheckboxChange = () => {
     setUseProfessorSearch((prevState) => !prevState);
+  };
+
+  const handleCrnCheckboxChange = () => {
+    setUseCrnSearch((prevState) => !prevState);
   };
 
   const searchWithoutTerm = async (searchQuery: string) => {
@@ -72,6 +77,20 @@ export default function SearchPage() {
       } else if (useProfessorSearch) {
         apiUrl = `https://uiuc-course-api-production.up.railway.app/prof-search?query=${formattedQuery}+fall+2024`;
         url = `/professorSearch?searchQuery=${formattedQuery}`;
+      } else if (useCrnSearch) {
+        apiUrl = `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${searchQuery}`;
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        
+        if (data && data.length > 0) {
+          // Extracting the subject and course number from the response
+          const subject = data[2];
+          const courseNumber = data[3];
+          router.push(`/class?class=${subject}+${courseNumber}&term=${encodeURIComponent(mostRecentTerm)}`);
+        } else {
+          toast.error("No results found for this CRN");
+        }
+        return;
       } else {
         apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${formattedQuery}+fall+2024`;
         url = isSubjectSearch
@@ -137,6 +156,14 @@ export default function SearchPage() {
                   onCheckedChange={handleProfessorCheckboxChange}
                 />
                 <span>Search by professor (last name)</span>
+              </label>
+              <label className="flex items-center space-x-3 text-white">
+                <Checkbox
+                  id="crnSearch"
+                  checked={useCrnSearch}
+                  onCheckedChange={handleCrnCheckboxChange}
+                />
+                <span>Search by CRN</span>
               </label>
             </div>
           </div>
