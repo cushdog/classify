@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { toast } from "react-hot-toast";
+import { ToastLib } from "@/lib/toast";
 import { useRouter } from "next/navigation";
 import { IconButton, Box, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -39,25 +39,33 @@ const GoogleFormPage: React.FC = () => {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    
+    setFormData({
+      name: "",
+      email: "",
+      feedbackType: "",
+      feedback: "",
+    });
+
     e.preventDefault();
-
+    
     const googleFormURL =
-      "https://docs.google.com/forms/d/e/1FAIpQLSczIeiz7eJcUZLWfW-N0hsDw5mCaS8KlHVnrUH0ogL0sQFg1g/formResponse";
-
+    "https://docs.google.com/forms/d/e/1FAIpQLSczIeiz7eJcUZLWfW-N0hsDw5mCaS8KlHVnrUH0ogL0sQFg1g/formResponse";
+    
     const submissionData = new FormData();
     submissionData.append("entry.966562401", formData.feedbackType); // Feedback Type field
     submissionData.append("entry.1715496086", formData.feedback); // Feedback text
-
+    
     try {
       await fetch(googleFormURL, {
         method: "POST",
         body: submissionData,
         mode: "no-cors",
       });
-      toast.success("Your feedback has been submitted!");
+      ToastLib.notifySuccess("Your feedback has been submitted!");
     } catch (error) {
       console.error("Error submitting form: ", error);
-      toast.error("An error occurred while submitting your feedback. Please try again later.");
+      ToastLib.notifyError("An error occurred while submitting your feedback. Please try again later.");
     }
   };
 

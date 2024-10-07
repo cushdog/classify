@@ -97,11 +97,12 @@ const SectionDetails = ({ section }: { section: any[] }) => {
           </Typography>
         ) : null}
 
-        {/* Status */}
-        <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-          <strong>Status:</strong> {section[8]}{" "}
-          {/* section[8] contains the status (e.g., A) */}
-        </Typography>
+        {section[8] ? (
+          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
+            <strong>Status:</strong> {section[8]}{" "}
+            {/* section[8] contains the status (e.g., A) */}
+          </Typography>
+        ) : null}
 
         {section[26] ? (
           <Typography variant="body2" sx={{ marginBottom: "4px" }}>
@@ -110,35 +111,41 @@ const SectionDetails = ({ section }: { section: any[] }) => {
           </Typography>
         ) : null}
 
-        {/* Type */}
-        <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-          <strong>Type:</strong> {section[15]}{" "}
-          {/* section[15] contains the type (e.g., Discussion/Recitation) */}
-        </Typography>
+        {section[15] ? (
+          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
+            <strong>Type:</strong> {section[15]}{" "}
+            {/* section[15] contains the type (e.g., Discussion/Recitation) */}
+          </Typography>
+        ) : null}
 
-        {/* Days */}
-        <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-          <strong>Days:</strong> {section[18]}{" "}
-          {/* section[18] contains the days (e.g., WF) */}
-        </Typography>
+        {section[18] ? (
+          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
+            <strong>Days:</strong> {section[18]}{" "}
+            {/* section[18] contains the days (e.g., WF) */}
+          </Typography>
+        ) : null}
 
-        {/* Time */}
-        <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-          <strong>Time:</strong> {section[16]} - {section[17]}{" "}
-          {/* section[16] is start time, section[17] is end time */}
-        </Typography>
+        {section[16] && section[17] ? (
+          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
+            <strong>Time:</strong> {section[16]} - {section[17]}{" "}
+            {/* section[16] is start time, section[17] is end time */}
+          </Typography>
+        ) : null}
 
-        {/* Location with Link */}
-        <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-          <strong>Location:</strong> {section[19]}{" "}
-          <Link
-            onClick={() => handleLocationClick(section[20])}
-            sx={{ textDecoration: "underline", cursor: "pointer" }}
-          >
-            {section[20]}{" "}
-            {/* section[19] is the room number, section[20] is the building */}
-          </Link>
-        </Typography>
+        {section[19] && section[20] ? (
+          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
+            <strong>Location:</strong> {section[19]}{" "}
+            <Link
+              onClick={() => handleLocationClick(section[20])}
+              sx={{ textDecoration: "underline", cursor: "pointer" }}
+            >
+              {section[20]}{" "}
+              {/* section[19] is the room number, section[20] is the building */}
+            </Link>
+          </Typography>
+        ) : null}
+
+        
 
         {/* Instructor */}
         <Typography variant="body2">
