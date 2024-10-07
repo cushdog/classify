@@ -19,6 +19,19 @@ interface SearchConfig {
   redirectUrl: string;
 }
 
+interface SemesterConfig {
+  semester: string;
+  year: string;
+}
+
+const semesterConfigs: SemesterConfig[] = [
+  { semester: "Fall", year: "2024" },
+  { semester: "Spring", year: "2024" },
+  { semester: "Fall", year: "2023" },
+  { semester: "Spring", year: "2023" },
+  { semester: "Fall", year: "2022" },
+];
+
 export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [searchType, setSearchType] = useState<SearchType>("class");
@@ -26,10 +39,7 @@ export default function SearchPage() {
 
   const formatSearch = (value: string) => {
     if (searchType === "class") {
-      // Auto-capitalize the input
       value = value.toUpperCase();
-
-      // Insert a space between the subject and course number if missing
       const match = value.match(/^([A-Z]+)(\d{3})$/);
       if (match) {
         value = `${match[1]} ${match[2]}`;
@@ -43,67 +53,74 @@ export default function SearchPage() {
     setSearch(formattedValue);
   };
 
-  const handleSearch = useCallback(() => {
+  const getSearchConfig = (semesterConfig: SemesterConfig): SearchConfig => {
+    const term = `${semesterConfig.semester.toLowerCase()}+${semesterConfig.year}`;
+    switch (searchType) {
+      case "class":
+        return {
+          apiUrl: `https://uiuc-course-api-production.up.railway.app/search?query=${search}+${term}`,
+          redirectUrl: `/class?class=${search}&term=${encodeURIComponent(
+            `${semesterConfig.semester} ${semesterConfig.year}`
+          )}`,
+        };
+      case "title":
+        return {
+          apiUrl: `https://uiuc-course-api-production.up.railway.app/description?query=${search}&term=${term}`,
+          redirectUrl: `/titleSearch?searchQuery=${search}`,
+        };
+      case "professor":
+        return {
+          apiUrl: `https://uiuc-course-api-production.up.railway.app/prof-search?query=${search}+${term}`,
+          redirectUrl: `/professorSearch?searchQuery=${search}`,
+        };
+      case "crn":
+        return {
+          apiUrl: `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${search}`,
+          redirectUrl: "", // We'll handle CRN redirect differently
+        };
+    }
+  };
+
+  const performSearch = async (semesterConfig: SemesterConfig): Promise<any> => {
+    const { apiUrl, redirectUrl } = getSearchConfig(semesterConfig);
+    try {
+      const response = await fetch(apiUrl);
+      const data = await response.json();
+      if (data && data.length > 0) {
+        if (searchType === "crn") {
+          const subject = data[2];
+          const courseNumber = data[3];
+          router.push(
+            `/class?class=${subject}+${courseNumber}&term=${encodeURIComponent(
+              `${semesterConfig.semester} ${semesterConfig.year}`
+            )}`
+          );
+        } else {
+          router.push(redirectUrl);
+        }
+        return data;
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    return null;
+  };
+
+  const handleSearch = useCallback(async () => {
     if (!search.trim()) {
       toast.error("Please enter a search term");
       return;
     }
 
-    const mostRecentTerm = "Fall 2024"; // Update this as needed
-
-    const getSearchConfig = (): SearchConfig => {
-      switch (searchType) {
-        case "class":
-          return {
-            apiUrl: `https://uiuc-course-api-production.up.railway.app/search?query=${search}+fall+2024`,
-            redirectUrl: `/class?class=${search}&term=${encodeURIComponent(
-              mostRecentTerm
-            )}`,
-          };
-        case "title":
-          return {
-            apiUrl: `https://uiuc-course-api-production.up.railway.app/description?query=${search}&term=fall+2024`,
-            redirectUrl: `/titleSearch?searchQuery=${search}`,
-          };
-        case "professor":
-          return {
-            apiUrl: `https://uiuc-course-api-production.up.railway.app/prof-search?query=${search}+fall+2024`,
-            redirectUrl: `/professorSearch?searchQuery=${search}`,
-          };
-        case "crn":
-          return {
-            apiUrl: `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${search}`,
-            redirectUrl: "", // We'll handle CRN redirect differently
-          };
+    for (const semesterConfig of semesterConfigs) {
+      const result = await performSearch(semesterConfig);
+      if (result) {
+        return; // Stop if we found a result
       }
-    };
+    }
 
-    const { apiUrl, redirectUrl } = getSearchConfig();
-
-    fetch(apiUrl)
-      .then((res) => res.json())
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      .then((data: any[]) => {
-        if (data && data.length > 0) {
-          if (searchType === "crn") {
-            const subject = data[2];
-            const courseNumber = data[3];
-            router.push(
-              `/class?class=${subject}+${courseNumber}&term=${encodeURIComponent(
-                mostRecentTerm
-              )}`
-            );
-          } else {
-            router.push(redirectUrl);
-          }
-        } else {
-          toast.error("No results found");
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        toast.error("Error fetching data");
-      });
+    // If we've tried all configurations and found nothing
+    toast.error("No results found in any semester");
   }, [search, searchType, router]);
 
   return (

@@ -8,6 +8,7 @@ import {
   Box,
   Divider,
   IconButton,
+  Chip,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -22,6 +23,7 @@ import {
 import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import { Suspense } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import Typography from "@/Custom Components/ui/Typography/page";
 import { Mulish } from "next/font/google";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
@@ -33,49 +35,34 @@ const mulish = Mulish({
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
-
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
-
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
-    {}
-  );
-
-  // const [selectedTerm, setSelectedTerm] = useState<string>("");
-  const selectedTerm = "fall 2024";
-  const [backgroundColor, setBackgroundColor] = useState<string>("#3f51b5"); // Background color state
+  const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>({});
+  const [backgroundColor, setBackgroundColor] = useState<string>("#3f51b5");
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const classParam = searchParams.get("class");
   const termParam = searchParams.get("term");
-  // const [isPanelOpen, setIsPanelOpen] = useState<boolean>(false);
+
+  const selectedTerm = termParam || "Fall 2024";
 
   const handleBackClick = () => {
     router.back();
   };
 
-  const calculateGPA = (
-    gpaValue: string | number | null | undefined
-  ): number => {
-    if (
-      !gpaValue ||
-      (typeof gpaValue === "string" && isNaN(Number(gpaValue)))
-    ) {
+  const calculateGPA = (gpaValue: string | number | null | undefined): number => {
+    if (!gpaValue || (typeof gpaValue === "string" && isNaN(Number(gpaValue)))) {
       return 0;
     }
     return Number((Math.floor(Number(gpaValue) * 100) / 100).toFixed(2));
   };
 
-  const handleChange =
-    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded(isExpanded ? panel : false);
-    };
+  const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   useEffect(() => {
-    // Set random background color on load
     setBackgroundColor(getRandomBackgroundColor());
 
     const fetchSectionsAndClassData = async () => {
@@ -83,7 +70,7 @@ const CourseDetails: React.FC = () => {
         try {
           await fetchClassData(
             classParam,
-            selectedTerm ?? termParam ?? "",
+            selectedTerm,
             setClassData,
             setSectionsByType,
             fetchAndGroupSections
@@ -120,52 +107,73 @@ const CourseDetails: React.FC = () => {
         <Box
           sx={{
             width: "100%",
-            minHeight: "200px",
+            minHeight: "250px",
             backgroundColor: backgroundColor,
             padding: "20px",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between", // Ensure the content is spaced correctly
+            justifyContent: "space-between",
+            position: "relative",
           }}
         >
-          {/* Back Button at the Top Left */}
           <IconButton
             onClick={handleBackClick}
             aria-label="Go back"
             sx={{
               color: "#fff",
-              alignSelf: "flex-start", // Keeps the button aligned to the left
+              alignSelf: "flex-start",
+              position: "absolute",
+              top: 20,
+              left: 20,
             }}
           >
             <ArrowBackIcon />
           </IconButton>
 
-          {/* Spacer to push the main title to the bottom */}
           <Box sx={{ flexGrow: 1 }} />
-          {/* Subtitle Typography */}
-          <Typography
-            variant="subtitle1"
-            sx={{
-              color: "#fff",
-              fontSize: "16px",
-              marginTop: 2,
-            }}
-          >
-            {classData
-              ? `${classData[2]} ${classData[3]} | ${subjectFullName}`
-              : "Loading..."}
-          </Typography>
 
-          {/* Main Title */}
+          <Box sx={{ display: "flex", alignItems: "center", marginBottom: 2 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                color: "#fff",
+                fontWeight: "bold",
+                marginRight: 2,
+              }}
+            >
+              {classData ? `${classData[2]} ${classData[3]}` : "Loading..."}
+            </Typography>
+            <Chip
+              icon={<CalendarTodayIcon />}
+              label={selectedTerm}
+              sx={{
+                backgroundColor: "rgba(255, 255, 255, 0.6)",
+                color: "#fff",
+                fontWeight: "bold",
+                padding: "4px 8px",
+              }}
+            />
+          </Box>
+
           <Typography
-            variant="h4"
+            variant="h5"
             sx={{
               color: "#fff",
               fontWeight: "bold",
-              marginTop: "4px",
+              marginBottom: 1,
             }}
           >
             {classData ? `${classData[4]}` : "Loading..."}
+          </Typography>
+
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: "rgba(255, 255, 255, 0.8)",
+              fontSize: "16px",
+            }}
+          >
+            {subjectFullName}
           </Typography>
         </Box>
 
@@ -203,7 +211,6 @@ const CourseDetails: React.FC = () => {
 
               <Divider sx={{ marginY: 2 }} />
 
-              {/* Render sections grouped by type */}
               {Object.keys(sectionsByType).map((type) => (
                 <Accordion
                   key={type}
@@ -212,9 +219,21 @@ const CourseDetails: React.FC = () => {
                   sx={{
                     backgroundColor: lightenColor(backgroundColor, 20),
                     padding: "10px",
+                    marginBottom: 2,
+                    borderRadius: "8px",
+                    '&:before': {
+                      display: 'none',
+                    },
                   }}
                 >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <AccordionSummary 
+                    expandIcon={<ExpandMoreIcon sx={{ color: '#fff' }} />}
+                    sx={{
+                      '& .MuiAccordionSummary-content': {
+                        margin: '12px 0 !important',
+                      }
+                    }}
+                  >
                     <Typography
                       sx={{
                         fontSize: "1.2rem",
