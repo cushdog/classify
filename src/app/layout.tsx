@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
-import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import theme from "@/lib/theme";
@@ -9,6 +8,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import RealNavbar from "@/Custom Components/ui/Nav/navbar";
 import Head from "next/head";
 import "./globals.css";
+import ClientOnlyToastContainer from "@/lib/clientToast";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -33,11 +33,12 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
       <body>
-        <Toaster position="top-left" reverseOrder={false} />
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <RealNavbar />
           {children}
+          {/* Add ToastContainer here for react-toastify */}
+          <ClientOnlyToastContainer />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { Search, Book, UserCircle, Hash, ALargeSmall } from "lucide-react";
 import { Mulish } from "next/font/google";
-import toast from "react-hot-toast";
+// import toast from "react-hot-toast";
+import { ToastLib } from "@/lib/toast";
 import { semesterConfigs } from "@/lib/commonFunctions";
 
 const mulish = Mulish({ subsets: ["latin"], weight: ["400", "700"] });
@@ -24,6 +25,10 @@ export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [searchType, setSearchType] = useState<SearchType>("class");
   const router = useRouter();
+
+  useEffect(() => {
+    ToastLib.notifyAnnouncement("Announcement: Classify is now live! 🚀 But bear with me, this is my first time having a site like this up so there might be some issues over the first day while I work out the kinks. 2025 classes should be online by the end of the night")
+  }, []); // Empty array means this runs once on mount and once on unmount.
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
@@ -41,7 +46,7 @@ export default function SearchPage() {
 
   const handleSearch = useCallback(async () => {
     if (!search.trim()) {
-      toast.error("Please enter a search term");
+      ToastLib.notifyError("Please enter a search term");
       return;
     }
   
@@ -74,7 +79,7 @@ export default function SearchPage() {
       }
   
       // If no results are found after checking all semesters
-      toast.error("No results found in any semester");
+      ToastLib.notifyError("No results found in any semester");
     } else {
       // The logic for other search types remains unchanged
       const getSearchConfig = (): SearchConfig => {
@@ -115,12 +120,12 @@ export default function SearchPage() {
               router.push(redirectUrl);
             }
           } else {
-            toast.error("No results found");
+            ToastLib.notifyError("No results found");
           }
         })
         .catch((error) => {
           console.error("Error fetching data:", error);
-          toast.error("Error fetching data");
+          ToastLib.notifyError("Error fetching data");
         });
     }
   }, [search, searchType, router]);
