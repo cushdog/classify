@@ -9,6 +9,7 @@ import RealNavbar from "@/Custom Components/ui/Nav/navbar";
 import Head from "next/head";
 import "./globals.css";
 import ClientOnlyToastContainer from "@/lib/clientToast";
+import { Toaster } from "react-hot-toast";
 
 const mulish = Mulish({
   subsets: ["latin"],
