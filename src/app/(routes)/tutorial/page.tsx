@@ -44,7 +44,7 @@ const TutorialPage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8  text-white min-h-screen">
+    <div className="max-w-4xl mx-auto p-8  text-white min-h-screen ">
       <h1 className="text-4xl font-bold mt-16 mb-8 text-center">
         How to Use Our Site
       </h1>

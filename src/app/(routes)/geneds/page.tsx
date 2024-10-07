@@ -161,6 +161,16 @@ const GenEdRecommender = () => {
     );
   };
 
+  useEffect(() => {
+    // Add a class to the body when this component is mounted
+    document.body.classList.add("no-background-gradient");
+
+    // Remove the class when the component is unmounted
+    return () => {
+      document.body.classList.remove("no-background-gradient");
+    };
+  }, []);
+
   const handleCategoryChange = (category: string) => {
     setSelectedCategories((prev) =>
       prev.includes(category)
@@ -176,7 +186,7 @@ const GenEdRecommender = () => {
   );
 
   return (
-    <>
+    <div style={{ backgroundColor: 'white', width: '100%', height: '100%' }}>
       <header
         className="bg-blue-600 text-white sticky top-0 z-10"
         style={{
@@ -303,7 +313,7 @@ const GenEdRecommender = () => {
           </StyledPaper>
         )}
       </Container>
-    </>
+    </div>
   );
 };
 

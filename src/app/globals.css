@@ -78,4 +78,8 @@
     @apply text-foreground;
     @apply font-sans;
   }
+
+  body.no-background-gradient {
+    background: var(--background, white); /* Use the background variable or set it directly to white */
+  }
 }
