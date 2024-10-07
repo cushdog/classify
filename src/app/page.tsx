@@ -24,6 +24,25 @@ export default function SearchPage() {
   const [searchType, setSearchType] = useState<SearchType>("class");
   const router = useRouter();
 
+  const formatSearch = (value: string) => {
+    if (searchType === "class") {
+      // Auto-capitalize the input
+      value = value.toUpperCase();
+
+      // Insert a space between the subject and course number if missing
+      const match = value.match(/^([A-Z]+)(\d{3})$/);
+      if (match) {
+        value = `${match[1]} ${match[2]}`;
+      }
+    }
+    return value;
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedValue = formatSearch(e.target.value);
+    setSearch(formattedValue);
+  };
+
   const handleSearch = useCallback(() => {
     if (!search.trim()) {
       toast.error("Please enter a search term");
@@ -162,9 +181,7 @@ export default function SearchPage() {
         <div className="relative mb-4">
           <Input
             value={search}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setSearch(e.target.value)
-            }
+            onChange={handleSearchChange}
             onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) =>
               e.key === "Enter" && handleSearch()
             }
