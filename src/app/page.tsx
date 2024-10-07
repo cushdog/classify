@@ -61,6 +61,7 @@ export default function SearchPage() {
 
     fetch(apiUrl)
       .then((res) => res.json())
+      /* eslint-disable @typescript-eslint/no-explicit-any */
       .then((data: any[]) => {
         if (data && data.length > 0) {
           if (searchType === "crn") {
