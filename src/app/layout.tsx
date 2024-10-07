@@ -33,6 +33,8 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
       <body>
+        <Toaster position="top-left" reverseOrder={false} />
+        <RealNavbar/>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <RealNavbar />
