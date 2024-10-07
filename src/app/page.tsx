@@ -149,7 +149,7 @@ export default function SearchPage() {
               onChange={handleInputChange}
               onKeyDown={(e) => e.key === "Enter" && searchWithoutTerm(search)}
               className={`w-full pl-10 pr-4 py-2 text-white bg-white/20 border-2 border-white/30 rounded-full focus:outline-none focus:border-white/50 placeholder:text-white text-lg ${mulish.className}`}
-              placeholder="Search for a class..."
+              placeholder="Search for a class or subject..."
             />
             <Search
               className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/50"
@@ -164,7 +164,7 @@ export default function SearchPage() {
                   className={`w-full bg-white text-purple-700 rounded-full py-2 font-semibold hover:bg-white/90 transition-colors duration-200 ${mulish.className}`}
                 >
                   <Filter className="mr-2" size={18} />
-                  Search by...
+                  More Search Options
                 </Button>
               </DialogTrigger>
               <DialogContent>
