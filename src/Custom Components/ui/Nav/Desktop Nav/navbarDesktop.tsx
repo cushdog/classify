@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { useEffect } from "react";
 
 export default function DesktopNavbar() {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
