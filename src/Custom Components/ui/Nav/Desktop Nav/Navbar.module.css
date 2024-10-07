@@ -10,37 +10,76 @@
   border-radius: 8px;
   transition: top 0.3s;
 }
-  
-  .logoContainer {
-    margin-right: 20px;
-  }
-  
-  .logo {
-    height: 47px;
-    width: auto;
-  }
-  
-  .navbar {
-    display: flex;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 50px;
-    padding: 10px 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navList {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-  }
-  
-  .navList li a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-    font-size: 17px;
-  }
-  
-  .navList li a:hover {
-    color: #0070f3;
-  }
+
+.logoContainer {
+  margin-right: 20px;
+}
+
+.logo {
+  height: 47px;
+  width: auto;
+}
+
+.navbar {
+  display: flex;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50px;
+  padding: 12px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.navList {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.navList li a {
+  text-decoration: none;
+  color: black;
+  font-weight: 400;
+  font-size: 17px;
+}
+
+.navList li a:hover {
+  color: #0070f3;
+}
+
+.dropdown {
+  position: relative;
+  transform: translateY(15%);
+}
+
+.dropdownToggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 130%;
+  right: 0;
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 0 0 8px 8px;
+  display: none; /* Initially hidden */
+  padding: 10px 0;
+}
+
+.dropdownMenu li {
+  padding: 8px 20px;
+}
+
+.dropdownMenu li a {
+  color: black;
+}
+
+.dropdownMenu li a:hover {
+  color: #0070f3;
+}
+
+/* Show dropdown when the menu is open */
+.dropdownMenu {
+  display: block; /* Display the dropdown when open */
+}
