@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Search, Book, User, Hash } from "lucide-react";
+import { Search, Book, UserCircle, Hash, ALargeSmall } from "lucide-react";
 import { Mulish } from "next/font/google";
 import toast from "react-hot-toast";
 
@@ -118,14 +118,14 @@ export default function SearchPage() {
               value="title"
               className="data-[state=active]:bg-white data-[state=active]:text-purple-700"
             >
-              <Search className="w-4 h-4 mr-2" />
+              <ALargeSmall className="w-4 h-4 mr-2" />
               Title
             </TabsTrigger>
             <TabsTrigger
               value="professor"
               className="data-[state=active]:bg-white data-[state=active]:text-purple-700"
             >
-              <User className="w-4 h-4 mr-2" />
+              <UserCircle className="w-4 h-4 mr-2" />
               Professor
             </TabsTrigger>
             <TabsTrigger
