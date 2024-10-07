@@ -78,7 +78,7 @@ export default function SearchPage() {
     } else {
       // The logic for other search types remains unchanged
       const getSearchConfig = (): SearchConfig => {
-        const mostRecentTerm = "Fall 2024";
+        // const mostRecentTerm = "Fall 2024";
         switch (searchType) {
           case "title":
             return {
