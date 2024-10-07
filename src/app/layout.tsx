@@ -9,6 +9,7 @@ import RealNavbar from "@/Custom Components/ui/Nav/navbar";
 import Head from "next/head";
 import "./globals.css";
 import ClientOnlyToastContainer from "@/lib/clientToast";
+import { Toaster } from "react-hot-toast";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -33,6 +34,8 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
       <body>
+        <Toaster position="top-left" reverseOrder={false} />
+        <RealNavbar/>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <RealNavbar />
