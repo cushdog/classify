@@ -1,5 +1,5 @@
 import React from 'react';
-import { toast, ToastContainer, IconProps } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AlertCircle, CheckCircle, Info, Bell } from 'lucide-react';
 
