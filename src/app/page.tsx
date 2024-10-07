@@ -45,6 +45,7 @@ export default function SearchPage() {
   };
 
   const handleSearch = useCallback(async () => {
+
     if (!search.trim()) {
       ToastLib.notifyError("Please enter a search term");
       return;
@@ -52,9 +53,18 @@ export default function SearchPage() {
   
     // Function to perform a class search for a specific semester
     const performClassSearch = async (semester: string, year: string) => {
+
+      
       const term = `${semester.toLowerCase()}+${year}`;
       const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${search}+${term}`;
-      const redirectUrl = `/class?class=${search}&term=${encodeURIComponent(`${semester} ${year}`)}`;
+      let redirectUrl = `/class?class=${search}&term=${encodeURIComponent(`${semester} ${year}`)}`;
+
+
+      const threeNumbersCheck = /\d{3}/;
+
+      if (!threeNumbersCheck.test(search)) {
+        redirectUrl = `/subject?subject=${search}&term=${encodeURIComponent(`${semester} ${year}`)}`;
+      }
       
       try {
         const response = await fetch(apiUrl);
@@ -188,7 +198,7 @@ export default function SearchPage() {
           </TabsContent>
           <TabsContent value="title">
             <p className="text-white text-sm mb-2">
-              Search for courses by title or keywords
+              Search for courses by title (e.g., Data Structures)
             </p>
           </TabsContent>
           <TabsContent value="professor">
