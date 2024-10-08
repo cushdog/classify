@@ -96,7 +96,7 @@ const ProfessorDescriptionDetails = () => {
             fontSize: "2rem",
           }}
         >
-          Matching Courses by Professor {professorName.charAt(0).toUpperCase() + professorName.slice(1)} from {term}
+          Matching Courses from {term}
         </h1>
       </header>
 
