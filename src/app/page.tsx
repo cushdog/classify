@@ -27,7 +27,7 @@ export default function SearchPage() {
 
   useEffect(() => {
     ToastLib.notifyAnnouncement(
-      "Announcement: Classify is now live! 🚀 But bear with me, this is my first time having a site like this up so there might be some issues over the first day while I work out the kinks. 2025 classes should be online by the end of the night"
+      "Announcement: 2025 classes are live! 🎉 If you want to see a past course offering, click/tap on the calendar icon on a class page, and pick the term you wish to view"
     );
   }, []); // Empty array means this runs once on mount and once on unmount.
 
