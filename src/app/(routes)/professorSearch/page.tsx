@@ -18,7 +18,6 @@ import {
 const ProfessorDescriptionDetails = () => {
   const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [professorName, setProfessorName] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
   const term = searchParams.get("term") || "";
@@ -33,7 +32,6 @@ const ProfessorDescriptionDetails = () => {
 
       const search_term = `${semester.toLowerCase()} ${year}`;
 
-      setProfessorName(searchQuery);
       const url = `https://uiuc-course-api-production.up.railway.app/prof-search?query=${encodeURIComponent(searchQuery)}+${search_term}`;
       const data = await fetchData(url);
       const uniqueData = data.filter(
