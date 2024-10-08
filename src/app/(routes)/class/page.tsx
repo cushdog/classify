@@ -308,7 +308,7 @@ const CourseDetails: React.FC = () => {
                   <AccordionDetails
                     sx={{ maxHeight: "400px", overflowY: "auto" }}
                   >
-                    /* eslint-disable @typescript-eslint/no-explicit-any */
+                    {/* eslint-disable @typescript-eslint/no-explicit-any */}
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}
