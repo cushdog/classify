@@ -27,28 +27,22 @@ const SectionDetails = ({ section }: { section: any[] }) => {
         .map((s: string) => s.trim())
         .filter(Boolean) || [];
 
-    console.log("SECTION:", section);
-
     if (instructorData.length === 0) {
       setInstructors(["Not available"]);
-      return;
     } else {
       const instructors = [];
       for (let i = 0; i < instructorData.length; i += 2) {
         const lastName = instructorData[i];
         const firstInitial = instructorData[i + 1] || "";
-        // Push the formatted instructor name to the instructors array IF the name is not empty
         if (lastName.trim().length > 0 && firstInitial.trim().length > 0) {
           instructors.push(`${lastName}, ${firstInitial}`);
         } else {
           instructors.push("Not available");
         }
       }
-      console.log("INSTRUCTORS:", instructors);
-
       setInstructors(instructors);
     }
-  }, []);
+  }, [section]);
 
   const handleProfessorClick = async (professor: string) => {
     const [lastName, firstName] = professor.split(", ");

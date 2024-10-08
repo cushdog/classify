@@ -26,6 +26,7 @@ const SubjectDetails = () => {
   const [subjectFullName, setSubjectFullName] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const term = searchParams.get("term");
 
   useEffect(() => {
     const fetchSubjectData = async () => {
@@ -102,7 +103,7 @@ const SubjectDetails = () => {
             fontSize: "2rem",
           }}
         >
-          {subjectFullName && subjectFullName} Offerings
+          {subjectFullName && subjectFullName} Offerings in {term}
         </h1>
       </header>
 

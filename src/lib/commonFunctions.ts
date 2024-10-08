@@ -84,6 +84,7 @@ export interface Section {
 }
 
 export const semesterConfigs = [
+  { semester: "Spring", year: "2025" },
   { semester: "Fall", year: "2024" },
   { semester: "Spring", year: "2024" },
   { semester: "Fall", year: "2023" },
@@ -120,11 +121,13 @@ export const getRandomBackgroundColor = () => {
 export function linkifyClasses(text: string, baseUrl: string): string {
   // Regular expression to match the class codes like CS 173 or MATH 213
   const classRegex = /\b([A-Z]{2,4})\s(\d{3})\b/g;
-  
+
   // Replace matched class codes with a link
   return text.replace(classRegex, (match, subject, number) => {
     const classCode = `${subject} ${number}`;
-    const most_recent_term = `${semesterConfigs[0].semester.toLowerCase()} ${semesterConfigs[0].year}`;
+    const most_recent_term = `${semesterConfigs[0].semester.toLowerCase()} ${
+      semesterConfigs[0].year
+    }`;
     const classUrl = `${baseUrl}?class=${classCode}&term=${most_recent_term}`;
     return `<a style="color: blue; text-decoration: underline; cursor: pointer;" href="${classUrl}">${match}</a>`;
   });
@@ -165,8 +168,17 @@ export const fetchData = async (url: string) => {
 };
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const fetchAndGroupSections = async (SUBJECT: string, COURSE_NUM: string): Promise<Record<string, any[][]>> => {
-  const url = `https://uiuc-course-api-production.up.railway.app/sections?query=${SUBJECT}+${COURSE_NUM}+fall+2024`;
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export const fetchAndGroupSections = async (
+  SUBJECT: string,
+  COURSE_NUM: string,
+  term: string
+): Promise<Record<string, any[][]>> => {
+  // Extract semester and year from the term parameter
+  const [semester, year] = term.split(" ");
+
+  // Construct the URL using the dynamic term values
+  const url = `https://uiuc-course-api-production.up.railway.app/sections?query=${SUBJECT}+${COURSE_NUM}+${semester.toLowerCase()}+${year}`;
 
   try {
     // Fetch data from the API
@@ -178,18 +190,19 @@ export const fetchAndGroupSections = async (SUBJECT: string, COURSE_NUM: string)
     }
 
     // Parse the JSON response
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     const data: any[][] = await response.json(); // Since it's an array of arrays
 
     console.log("DATA: ", data);
 
     // Initialize an empty object to store grouped sections
-    /* eslint-disable @typescript-eslint/no-explicit-any */
     const groupedSections: Record<string, any[][]> = {};
 
-    // Loop through the data and group by the "type", which is at index 13
+    // Create a Set to keep track of unique section identifiers
+    const seenSections = new Set<string>();
+
+    // Loop through the data and group by the "type", which is at index 15
     data.forEach((section) => {
-      const type = section[15]; // Assuming "type" is stored at index 13
+      const type = section[15]; // Assuming "type" is stored at index 15
       console.log("TYPE: ", type);
 
       // If the type key doesn't exist, initialize it as an empty array
@@ -197,8 +210,20 @@ export const fetchAndGroupSections = async (SUBJECT: string, COURSE_NUM: string)
         groupedSections[type] = [];
       }
 
-      // Push the section into the appropriate group
-      groupedSections[type].push(section);
+      // Create a unique identifier for the section
+      // Let's use the section code at index 7 and CRN at index 12
+      const sectionCode = section[7]; // Section code
+      const crn = section[12];        // CRN or enrollment status
+      const uniqueIdentifier = `${sectionCode}-${crn}`;
+
+      // Check if this section has already been added
+      if (!seenSections.has(uniqueIdentifier)) {
+        seenSections.add(uniqueIdentifier);
+        // Push the section into the appropriate group
+        groupedSections[type].push(section);
+      } else {
+        console.log(`Duplicate section found: ${uniqueIdentifier}`);
+      }
     });
 
     console.log("GROUPED SECTIONS: ", groupedSections);
@@ -210,6 +235,8 @@ export const fetchAndGroupSections = async (SUBJECT: string, COURSE_NUM: string)
     throw error;
   }
 };
+
+
 
 export const fetchSubjectFullName = async (subject: string) => {
   const url = `https://uiuc-course-api-production.up.railway.app/subject-info?subject=${subject}`;
@@ -239,9 +266,14 @@ export const fetchClassData = async (
   /* eslint-disable @typescript-eslint/no-explicit-any */
   setClassData: React.Dispatch<React.SetStateAction<any>>,
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  setSectionsByType: React.Dispatch<React.SetStateAction<Record<string, any[][]>>>,
+  setSectionsByType: React.Dispatch<
+    React.SetStateAction<Record<string, any[][]>>
+  >,
   /* eslint-disable @typescript-eslint/no-explicit-any */
-  fetchAndGroupSections: (SUBJECT: string, COURSE_NUM: string) => Promise<Record<string, any[][]>>
+  fetchAndGroupSections: (
+    SUBJECT: string,
+    COURSE_NUM: string
+  ) => Promise<Record<string, any[][]>>
 ) => {
   let data = null;
 
@@ -274,11 +306,12 @@ export const fetchClassData = async (
   // If valid course data is found, proceed to fetch and group sections
   if (data && data !== "Course not found") {
     setClassData(data); // Set the course data in state
-    const subject = data[2];  // Subject is at index 2
-    const courseNumber = data[3];  // Course number is at index 3
+    const subject = data[2]; // Subject is at index 2
+    const courseNumber = data[3]; // Course number is at index 3
 
     // Fetch and group sections by type using the new helper function
     const groupedSections = await fetchAndGroupSections(subject, courseNumber);
+    console.log("GROUPED SECTIONS: ", groupedSections);
     setSectionsByType(groupedSections); // Set the grouped sections in state
   } else {
     console.log("Course not found in any recent term");

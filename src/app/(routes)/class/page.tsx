@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -9,9 +9,17 @@ import {
   Divider,
   IconButton,
   Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  List,
+  ListItem,
+  ListItemText,
+  CircularProgress,
+  ListItemButton,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import {
   fetchClassData,
   fetchSubjectFullName,
@@ -21,7 +29,6 @@ import {
   getRandomBackgroundColor,
 } from "@/lib/commonFunctions";
 import SectionDetails from "@/Custom Components/ui/SectionCard/page";
-import { Suspense } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import Typography from "@/Custom Components/ui/Typography/page";
@@ -33,72 +40,112 @@ const mulish = Mulish({
   weight: ["400", "700"],
 });
 
+const termOptions = [
+  "Fall 2023",
+  "Spring 2024",
+  "Summer 2024",
+  "Fall 2024",
+  "Spring 2025",
+];
+
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>({});
+  const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
+    {}
+  );
   const [backgroundColor, setBackgroundColor] = useState<string>("#3f51b5");
+  const [openTermDialog, setOpenTermDialog] = useState<boolean>(false);
+  const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
 
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const classParam = searchParams.get("class");
-  const termParam = searchParams.get("term");
 
-  const selectedTerm = termParam || "Fall 2024";
+  // Synchronize selectedTerm with URL parameter
+  useEffect(() => {
+    console.log(searchParams.get("term"));
+    setSelectedTerm(searchParams.get("term"));
+  }, [searchParams]);
 
   const handleBackClick = () => {
     router.back();
   };
 
-  const calculateGPA = (gpaValue: string | number | null | undefined): number => {
-    if (!gpaValue || (typeof gpaValue === "string" && isNaN(Number(gpaValue)))) {
+  const calculateGPA = (
+    gpaValue: string | number | null | undefined
+  ): number => {
+    if (
+      !gpaValue ||
+      (typeof gpaValue === "string" && isNaN(Number(gpaValue)))
+    ) {
       return 0;
     }
     return Number((Math.floor(Number(gpaValue) * 100) / 100).toFixed(2));
   };
 
-  const handleChange = (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
-    setExpanded(isExpanded ? panel : false);
+  const handleChange =
+    (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded(isExpanded ? panel : false);
+    };
+
+  // Handle term selection from dialog
+  const handleTermSelect = (term: string) => {
+    setSelectedTerm(term);
+    setOpenTermDialog(false);
+    updateURLWithNewTerm(term);
   };
 
+  // Update URL with new term parameter
+  const updateURLWithNewTerm = (term: string) => {
+    const newParams = new URLSearchParams(Array.from(searchParams.entries()));
+
+    if (term) {
+      newParams.set("term", term);
+    } else {
+      newParams.delete("term");
+    }
+
+    const newPath = `${pathname}?${newParams.toString()}`;
+    router.push(newPath);
+  };
+
+  // Set random background color on mount
   useEffect(() => {
     setBackgroundColor(getRandomBackgroundColor());
+  }, []);
 
-    const fetchSectionsAndClassData = async () => {
+  // Fetch data whenever classParam or selectedTerm changes
+  useEffect(() => {
+    const fetchData = async () => {
       if (classParam) {
         try {
+          // Fetch class data
           await fetchClassData(
             classParam,
-            selectedTerm,
+            selectedTerm ?? undefined,
             setClassData,
             setSectionsByType,
-            fetchAndGroupSections
+            (subject: string, courseNum: string) =>
+              fetchAndGroupSections(subject, courseNum, selectedTerm ?? "")
           );
 
-          if (classData) {
-            const groupedSections = await fetchAndGroupSections(
-              classData[2],
-              classData[3]
-            );
-            setSectionsByType(groupedSections);
-          }
+          // Fetch subject full name
+          const subject = classParam.split(" ")[0];
+          const fullName = await fetchSubjectFullName(subject);
+          setSubjectFullName(fullName);
         } catch (error) {
           console.error("Error fetching class data or sections:", error);
         }
       }
-
-      if (classParam) {
-        const subject = classParam.split(" ")[0];
-        fetchSubjectFullName(subject).then(setSubjectFullName);
-      }
     };
 
-    fetchSectionsAndClassData();
+    fetchData();
   }, [classParam, selectedTerm]);
 
+  // Ensure body background color is white
   useEffect(() => {
     document.body.style.backgroundColor = "white";
   }, []);
@@ -106,11 +153,15 @@ const CourseDetails: React.FC = () => {
   return (
     <div className="classPage">
       <Box sx={{ minHeight: "100vh", backgroundColor: "white" }}>
+        {/* Header Section */}
         <Box
           sx={{
             width: "100%",
             minHeight: "250px",
-            backgroundColor: backgroundColor,
+            background: `linear-gradient(to bottom right, ${backgroundColor}, ${lightenColor(
+              backgroundColor,
+              20
+            )})`,
             padding: "20px",
             display: "flex",
             flexDirection: "column",
@@ -153,7 +204,9 @@ const CourseDetails: React.FC = () => {
                 color: "#fff",
                 fontWeight: "bold",
                 padding: "4px 8px",
+                cursor: "pointer",
               }}
+              onClick={() => setOpenTermDialog(true)}
             />
           </Box>
 
@@ -179,8 +232,9 @@ const CourseDetails: React.FC = () => {
           </Typography>
         </Box>
 
+        {/* Content Section */}
         <Box sx={{ padding: "20px" }}>
-          {classData && (
+          {classData ? (
             <>
               <Typography variant="subtitle1" gutterBottom>
                 <span
@@ -193,6 +247,7 @@ const CourseDetails: React.FC = () => {
 
               <Divider sx={{ marginY: 2 }} />
 
+              {/* GPA Gauge Section */}
               <Box
                 sx={{
                   display: "flex",
@@ -213,9 +268,11 @@ const CourseDetails: React.FC = () => {
 
               <Divider sx={{ marginY: 2 }} />
 
+              {/* Sections Accordion */}
+              {/* Sections Accordion */}
               {Object.keys(sectionsByType).map((type) => (
                 <Accordion
-                  key={type}
+                  key={`${type}-${selectedTerm}`}
                   expanded={expanded === type}
                   onChange={handleChange(type)}
                   sx={{
@@ -223,17 +280,17 @@ const CourseDetails: React.FC = () => {
                     padding: "10px",
                     marginBottom: 2,
                     borderRadius: "8px",
-                    '&:before': {
-                      display: 'none',
+                    "&:before": {
+                      display: "none",
                     },
                   }}
                 >
-                  <AccordionSummary 
-                    expandIcon={<ExpandMoreIcon sx={{ color: '#fff' }} />}
+                  <AccordionSummary
+                    expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
                     sx={{
-                      '& .MuiAccordionSummary-content': {
-                        margin: '12px 0 !important',
-                      }
+                      "& .MuiAccordionSummary-content": {
+                        margin: "12px 0 !important",
+                      },
                     }}
                   >
                     <Typography
@@ -249,21 +306,52 @@ const CourseDetails: React.FC = () => {
                   <AccordionDetails
                     sx={{ maxHeight: "400px", overflowY: "auto" }}
                   >
-                    {sectionsByType[type].map((section, index) => (
-                      <SectionDetails key={index} section={section} />
+                    {sectionsByType[type].map((section: any, index: number) => (
+                      <SectionDetails
+                        key={`${selectedTerm}-${type}-${index}`}
+                        section={section}
+                      />
                     ))}
                   </AccordionDetails>
                 </Accordion>
               ))}
             </>
+          ) : (
+            // Loading Indicator
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "50vh",
+              }}
+            >
+              <CircularProgress />
+            </Box>
           )}
         </Box>
       </Box>
+
+      {/* Term Selection Dialog */}
+      <Dialog open={openTermDialog} onClose={() => setOpenTermDialog(false)}>
+        <DialogTitle>Select Term</DialogTitle>
+        <DialogContent dividers>
+          <List>
+            {termOptions.map((term) => (
+              <ListItem key={term} disablePadding>
+                <ListItemButton onClick={() => handleTermSelect(term)}>
+                  <ListItemText primary={term} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
 
-const CourseDets = () => {
+const CourseDets: React.FC = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <CourseDetails />

@@ -20,11 +20,18 @@ const DescriptionDetails = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const term = searchParams.get("term") || "";
 
   useEffect(() => {
     const fetchDescriptionData = async () => {
       const searchQuery = searchParams.get("searchQuery") || "";
-      const url = `https://uiuc-course-api-production.up.railway.app/description?query=${encodeURIComponent(searchQuery)}&term=fall+2024`;
+
+      const semester = term.split(" ")[0];
+      const year = term.split(" ")[1];
+
+      const search_term = `${semester.toLowerCase()} ${year}`;
+
+      const url = `https://uiuc-course-api-production.up.railway.app/description?query=${encodeURIComponent(searchQuery)}&term=${search_term}`;
       const data = await fetchData(url);
       const uniqueData = data.filter(
         (item: Course[], index: number, self: Course[][]) =>
@@ -86,7 +93,7 @@ const DescriptionDetails = () => {
             fontSize: "2rem",
           }}
         >
-          Matching Courses
+          Matching Courses in {term}
         </h1>
       </header>
 

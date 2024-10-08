@@ -21,12 +21,20 @@ const ProfessorDescriptionDetails = () => {
   const [professorName, setProfessorName] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const term = searchParams.get("term") || "";
 
   useEffect(() => {
     const fetchProfessorData = async () => {
       const searchQuery = searchParams.get("searchQuery") || "";
+      const term = searchParams.get("term") || "";
+
+      const semester = term.split(" ")[0];
+      const year = term.split(" ")[1];
+
+      const search_term = `${semester.toLowerCase()} ${year}`;
+
       setProfessorName(searchQuery);
-      const url = `https://uiuc-course-api-production.up.railway.app/prof-search?query=${encodeURIComponent(searchQuery)}+fall+2024`;
+      const url = `https://uiuc-course-api-production.up.railway.app/prof-search?query=${encodeURIComponent(searchQuery)}+${search_term}`;
       const data = await fetchData(url);
       const uniqueData = data.filter(
         (item: Course[], index: number, self: Course[][]) =>
@@ -88,7 +96,7 @@ const ProfessorDescriptionDetails = () => {
             fontSize: "2rem",
           }}
         >
-          Matching Courses by Professor {professorName}
+          Matching Courses by Professor {professorName.charAt(0).toUpperCase() + professorName.slice(1)} from {term}
         </h1>
       </header>
 

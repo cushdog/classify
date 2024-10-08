@@ -74,7 +74,7 @@ const SubjectsList = () => {
             fontSize: "2rem",
           }}
         >
-          Browse Fall 2024 Offerings
+          Browse Spring 2025 Offerings
         </h1>
       </header>
 
