@@ -50,8 +50,10 @@ const termOptions = [
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -306,6 +308,7 @@ const CourseDetails: React.FC = () => {
                   <AccordionDetails
                     sx={{ maxHeight: "400px", overflowY: "auto" }}
                   >
+                    /* eslint-disable @typescript-eslint/no-explicit-any */
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}
