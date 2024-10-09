@@ -39,11 +39,6 @@ const theme = createTheme({
   },
 });
 
-// Define the props for the component
-interface ReviewPageProps {
-  onSubmit?: (review: ReviewData) => void;
-}
-
 // Define the structure of the review data
 interface ReviewData {
   isClassReview: boolean;
@@ -59,7 +54,7 @@ interface ReviewData {
   assignmentQuality?: number;
 }
 
-const ReviewPage: React.FC<ReviewPageProps> = ({ onSubmit = () => {} }) => {
+const ReviewPage: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0);
   const [name, setName] = useState('');
   const [overallRating, setOverallRating] = useState<number | null>(null);
@@ -90,7 +85,9 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ onSubmit = () => {} }) => {
           ? { conceptualDifficulty, weeklyWorkload, recommendability }
           : { professorEngagement, lectureQuality, assignmentQuality }),
       };
-      onSubmit(reviewData);
+      // Here you can handle the submission of reviewData
+      // For example, you could send it to an API or store it locally
+      console.log(reviewData);
       setSnackbarOpen(true);
       // Reset form
       setName('');
