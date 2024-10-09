@@ -39,7 +39,7 @@ import Typography from "@/Custom Components/ui/Typography/page";
 import { Mulish } from "next/font/google";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
 import { pdfjs } from "react-pdf";
-import HTMLFlipBook from "react-pageflip";
+// import HTMLFlipBook from "react-pageflip";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -164,8 +164,6 @@ const CourseDetails: React.FC = () => {
   useEffect(() => {
     document.body.style.backgroundColor = "white";
   }, []);
-
-
 
   return (
     <div className="classPage">
@@ -390,32 +388,33 @@ const CourseDetails: React.FC = () => {
               padding: isSmallScreen ? 2 : 8,
             }}
           >
-<HTMLFlipBook
-  className=""
-  style={{}}
-  size="fixed"
-  startPage={1}
-  width={isSmallScreen ? 300 : 600}
-  height={isSmallScreen ? 400 : 800}
-  minWidth={315}
-  maxWidth={1000}
-  minHeight={400}
-  maxHeight={1350}
-  maxShadowOpacity={0.5}
-  showCover={true}
-  drawShadow={true}
-  flippingTime={1000}
-  usePortrait={false}
-  startZIndex={1}
-  autoSize={true}
-  mobileScrollSupport={true}
-  clickEventForward={false}
-  useMouseEvents={true}
-  showPageCorners={true}
-  swipeDistance={100}
-  disableFlipByClick={false}>
+            {/* <HTMLFlipBook
+              className=""
+              style={{}}
+              size="fixed"
+              startPage={1}
+              width={isSmallScreen ? 300 : 600}
+              height={isSmallScreen ? 400 : 800}
+              minWidth={315}
+              maxWidth={1000}
+              minHeight={400}
+              maxHeight={1350}
+              maxShadowOpacity={0.5}
+              showCover={true}
+              drawShadow={true}
+              flippingTime={1000}
+              usePortrait={false}
+              startZIndex={1}
+              autoSize={true}
+              mobileScrollSupport={true}
+              clickEventForward={false}
+              useMouseEvents={true}
+              showPageCorners={true}
+              swipeDistance={100}
+              disableFlipByClick={false}
+            > */}
               {/* Sample syllabus pages */}
-              {[...Array(5)].map((_, index) => (
+              {/* {[...Array(5)].map((_, index) => (
                 <Box
                   key={index}
                   sx={{
@@ -438,7 +437,7 @@ const CourseDetails: React.FC = () => {
                   </Typography>
                 </Box>
               ))}
-            </HTMLFlipBook>
+            </HTMLFlipBook> */}
           </Box>
         </Dialog>
       </Box>
