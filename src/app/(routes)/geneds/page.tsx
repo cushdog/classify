@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   Container,
@@ -27,6 +27,8 @@ import {
 import { styled } from "@mui/system";
 import { ArrowBack, Info, Search } from "@mui/icons-material";
 import { genEdMap } from "@/lib/commonFunctions";
+import { ToastLib } from "@/lib/toast";
+import { semesterConfigs } from "@/lib/commonFunctions";
 
 interface Course {
   subject: string;
@@ -95,6 +97,7 @@ const GenEdRecommender = () => {
 
       const distinctCourses: Course[] = Array.from(
         new Map(
+          /* eslint-disable @typescript-eslint/no-explicit-any */
           allCourses.map((course: any) => [
             `${course[2]} ${course[3]}`,
             {
@@ -118,12 +121,45 @@ const GenEdRecommender = () => {
     }
   };
 
-  const handleVisitClass = (subject: string, number: string) => {
-    const formattedQuery = `${subject} ${number}`;
-    router.push(
-      `/class?class=${encodeURIComponent(formattedQuery)}&term=fall%202024`
-    );
-  };
+  const handleVisitClass = useCallback(
+    async (searchTerm: string) => {
+      // Function to perform a class search for a specific semester
+      const performClassSearch = async (semester: string, year: string) => {
+        const term = `${semester.toLowerCase()}+${year}`;
+        const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
+          searchTerm
+        )}+${term}`;
+        const redirectUrl = `/class?class=${searchTerm}&term=${encodeURIComponent(
+          `${semester} ${year}`
+        )}`;
+
+        try {
+          console.log("API URL", apiUrl);
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+          if (data && data.length > 0) {
+            router.push(redirectUrl);
+            return true;
+          }
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        }
+        return false;
+      };
+
+      // Iterate over the semester configurations until we find results
+      for (const { semester, year } of semesterConfigs) {
+        const found = await performClassSearch(semester, year);
+        if (found) {
+          return; // Stop if we found a result
+        }
+      }
+
+      // If no results are found after checking all semesters
+      ToastLib.notifyError("No results found for this class in any semester");
+    },
+    [router]
+  );
 
   useEffect(() => {
     document.body.classList.add("no-background-gradient");
@@ -147,7 +183,7 @@ const GenEdRecommender = () => {
   );
 
   return (
-    <div style={{ backgroundColor: 'white', width: '100%', height: '100%' }}>
+    <div style={{ backgroundColor: "white", width: "100%", height: "100%" }}>
       <header
         className="bg-blue-600 text-white sticky top-0 z-10"
         style={{
@@ -205,14 +241,26 @@ const GenEdRecommender = () => {
         </StyledPaper>
 
         {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              margin: "20px 0",
+            }}
+          >
             <CircularProgress />
-            <p style={{ marginLeft: '10px' }}>Fetching classes, please wait...</p>
+            <p style={{ marginLeft: "10px" }}>
+              Fetching classes, please wait...
+            </p>
           </div>
         ) : error ? (
-          <Alert severity="error">Error fetching courses. Please try again later.</Alert>
+          <Alert severity="error">
+            Error fetching courses. Please try again later.
+          </Alert>
         ) : filteredCourses.length === 0 ? (
-          <Alert severity="info">No courses found matching your criteria.</Alert>
+          <Alert severity="info">
+            No courses found matching your criteria.
+          </Alert>
         ) : (
           <StyledPaper elevation={3}>
             <TextField
@@ -269,7 +317,9 @@ const GenEdRecommender = () => {
                           color="primary"
                           size="small"
                           onClick={() =>
-                            handleVisitClass(course.subject, course.number)
+                            handleVisitClass(
+                              course.subject + " " + course.number
+                            )
                           }
                         >
                           Visit
