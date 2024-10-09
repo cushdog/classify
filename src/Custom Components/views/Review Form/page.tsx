@@ -14,7 +14,7 @@ import {
   Tab,
 } from '@mui/material';
 import { School, Person } from '@mui/icons-material';
-import { submitReview } from '@/app/api/reviews/route';
+// import { submitReview } from '@/app/api/reviews/route';
 
 interface ReviewData {
   isClassReview: boolean;
@@ -50,17 +50,17 @@ const ReviewForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (name && overallRating && comment) {
-      const isClassReview = tabIndex === 0;
-      const reviewData: ReviewData = {
-        isClassReview,
-        name,
-        overallRating,
-        comment,
-        tags,
-        ...(isClassReview
-          ? { conceptualDifficulty, weeklyWorkload, recommendability }
-          : { professorEngagement, lectureQuality, assignmentQuality }),
-      };
+      // const isClassReview = tabIndex === 0;
+      // const reviewData: ReviewData = {
+      //   isClassReview,
+      //   name,
+      //   overallRating,
+      //   comment,
+      //   tags,
+      //   ...(isClassReview
+      //     ? { conceptualDifficulty, weeklyWorkload, recommendability }
+      //     : { professorEngagement, lectureQuality, assignmentQuality }),
+      // };
 
       try {
         // const result = await submitReview(reviewData);
