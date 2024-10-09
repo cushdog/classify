@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:push": "drizzle-kit push"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -26,6 +27,7 @@
     "@vercel/speed-insights": "^1.0.12",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "drizzle-kit": "^0.25.0",
     "drizzle-orm": "^0.34.1",
     "drizzle-orm-pg": "^0.16.3",
     "framer-motion": "^11.11.1",
@@ -45,6 +47,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/pg": "^8.11.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",

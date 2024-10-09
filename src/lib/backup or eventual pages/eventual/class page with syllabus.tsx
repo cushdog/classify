@@ -38,10 +38,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import Typography from "@/Custom Components/ui/Typography/page";
 import { Mulish } from "next/font/google";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
-import { pdfjs } from "react-pdf";
-// import HTMLFlipBook from "react-pageflip";
-
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import { PdfPreviewer } from "@/Custom Components/Misc/PDF Preview/page"; // Adjust this path as necessary
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -58,10 +55,8 @@ const termOptions = [
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -69,8 +64,7 @@ const CourseDetails: React.FC = () => {
   const [openTermDialog, setOpenTermDialog] = useState<boolean>(false);
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [openSyllabus, setOpenSyllabus] = useState<boolean>(false);
-  // const [numPages, setNumPages] = useState<number>(0);
-  // const [pageNumber, setPageNumber] = useState<number>(1);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -80,7 +74,6 @@ const CourseDetails: React.FC = () => {
   const pathname = usePathname();
   const classParam = searchParams.get("class");
 
-  // Synchronize selectedTerm with URL parameter
   useEffect(() => {
     setSelectedTerm(searchParams.get("term"));
   }, [searchParams]);
@@ -92,10 +85,7 @@ const CourseDetails: React.FC = () => {
   const calculateGPA = (
     gpaValue: string | number | null | undefined
   ): number => {
-    if (
-      !gpaValue ||
-      (typeof gpaValue === "string" && isNaN(Number(gpaValue)))
-    ) {
+    if (!gpaValue || (typeof gpaValue === "string" && isNaN(Number(gpaValue)))) {
       return 0;
     }
     return Number((Math.floor(Number(gpaValue) * 100) / 100).toFixed(2));
@@ -106,38 +96,31 @@ const CourseDetails: React.FC = () => {
       setExpanded(isExpanded ? panel : false);
     };
 
-  // Handle term selection from dialog
   const handleTermSelect = (term: string) => {
     setSelectedTerm(term);
     setOpenTermDialog(false);
     updateURLWithNewTerm(term);
   };
 
-  // Update URL with new term parameter
   const updateURLWithNewTerm = (term: string) => {
     const newParams = new URLSearchParams(Array.from(searchParams.entries()));
-
     if (term) {
       newParams.set("term", term);
     } else {
       newParams.delete("term");
     }
-
     const newPath = `${pathname}?${newParams.toString()}`;
     router.push(newPath);
   };
 
-  // Set random background color on mount
   useEffect(() => {
     setBackgroundColor(getRandomBackgroundColor());
   }, []);
 
-  // Fetch data whenever classParam or selectedTerm changes
   useEffect(() => {
     const fetchData = async () => {
       if (classParam) {
         try {
-          // Fetch class data
           await fetchClassData(
             classParam,
             selectedTerm ?? undefined,
@@ -146,8 +129,6 @@ const CourseDetails: React.FC = () => {
             (subject: string, courseNum: string) =>
               fetchAndGroupSections(subject, courseNum, selectedTerm ?? "")
           );
-
-          // Fetch subject full name
           const subject = classParam.split(" ")[0];
           const fullName = await fetchSubjectFullName(subject);
           setSubjectFullName(fullName);
@@ -160,7 +141,6 @@ const CourseDetails: React.FC = () => {
     fetchData();
   }, [classParam, selectedTerm]);
 
-  // Ensure body background color is white
   useEffect(() => {
     document.body.style.backgroundColor = "white";
   }, []);
@@ -168,7 +148,6 @@ const CourseDetails: React.FC = () => {
   return (
     <div className="classPage">
       <Box sx={{ minHeight: "100vh", backgroundColor: "white" }}>
-        {/* Header Section */}
         <Box
           sx={{
             width: "100%",
@@ -248,7 +227,6 @@ const CourseDetails: React.FC = () => {
           </Typography>
         </Box>
 
-        {/* Content Section */}
         <Box sx={{ padding: "20px" }}>
           {classData ? (
             <>
@@ -263,7 +241,6 @@ const CourseDetails: React.FC = () => {
 
               <Divider sx={{ marginY: 2 }} />
 
-              {/* GPA Gauge Section */}
               <Box
                 sx={{
                   display: "flex",
@@ -284,7 +261,6 @@ const CourseDetails: React.FC = () => {
 
               <Divider sx={{ marginY: 2 }} />
 
-              {/* Sections Accordion */}
               {Object.keys(sectionsByType).map((type) => (
                 <Accordion
                   key={`${type}-${selectedTerm}`}
@@ -321,7 +297,6 @@ const CourseDetails: React.FC = () => {
                   <AccordionDetails
                     sx={{ maxHeight: "400px", overflowY: "auto" }}
                   >
-                    {/* eslint-disable @typescript-eslint/no-explicit-any */}
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}
@@ -333,7 +308,6 @@ const CourseDetails: React.FC = () => {
               ))}
             </>
           ) : (
-            // Loading Indicator
             <Box
               sx={{
                 display: "flex",
@@ -347,116 +321,35 @@ const CourseDetails: React.FC = () => {
           )}
         </Box>
 
-        {/* Floating Action Button for Syllabus */}
         <Fab
           color="primary"
           aria-label="syllabus"
           sx={{ position: "fixed", bottom: 16, right: 16 }}
-          onClick={() => setOpenSyllabus(true)}
+          onClick={() => setPdfUrl("/path/to/syllabus.pdf")}
         >
           <MenuBookIcon />
         </Fab>
 
-        {/* Syllabus Dialog */}
-        <Dialog
-          fullScreen
-          open={openSyllabus}
-          onClose={() => setOpenSyllabus(false)}
-          TransitionProps={{
-            appear: true,
-            in: openSyllabus,
-            timeout: 500,
-          }}
-        >
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={() => setOpenSyllabus(false)}
-            aria-label="close"
-            sx={{ position: "absolute", top: 16, right: 16, zIndex: 1 }}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-          <Box
-            sx={{
-              width: "100%",
-              height: "100%",
-              backgroundColor: "#fafafa",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              padding: isSmallScreen ? 2 : 8,
-            }}
-          >
-            {/* <HTMLFlipBook
-              className=""
-              style={{}}
-              size="fixed"
-              startPage={1}
-              width={isSmallScreen ? 300 : 600}
-              height={isSmallScreen ? 400 : 800}
-              minWidth={315}
-              maxWidth={1000}
-              minHeight={400}
-              maxHeight={1350}
-              maxShadowOpacity={0.5}
-              showCover={true}
-              drawShadow={true}
-              flippingTime={1000}
-              usePortrait={false}
-              startZIndex={1}
-              autoSize={true}
-              mobileScrollSupport={true}
-              clickEventForward={false}
-              useMouseEvents={true}
-              showPageCorners={true}
-              swipeDistance={100}
-              disableFlipByClick={false}
-            > */}
-              {/* Sample syllabus pages */}
-              {/* {[...Array(5)].map((_, index) => (
-                <Box
-                  key={index}
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "#fff",
-                    boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-                    padding: 4,
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography variant="h4" gutterBottom>
-                    Syllabus Page {index + 1}
-                  </Typography>
-                  <Typography variant="body1">
-                    This is a sample page of the syllabus. You can replace this
-                    content with the actual syllabus content.
-                  </Typography>
-                </Box>
+        <PdfPreviewer
+          pdfUrl={pdfUrl}
+          onClose={() => setPdfUrl(null)}
+        />
+
+        <Dialog open={openTermDialog} onClose={() => setOpenTermDialog(false)}>
+          <DialogTitle>Select Term</DialogTitle>
+          <DialogContent dividers>
+            <List>
+              {termOptions.map((term) => (
+                <ListItem key={term} disablePadding>
+                  <ListItemButton onClick={() => handleTermSelect(term)}>
+                    <ListItemText primary={term} />
+                  </ListItemButton>
+                </ListItem>
               ))}
-            </HTMLFlipBook> */}
-          </Box>
+            </List>
+          </DialogContent>
         </Dialog>
       </Box>
-
-      {/* Term Selection Dialog */}
-      <Dialog open={openTermDialog} onClose={() => setOpenTermDialog(false)}>
-        <DialogTitle>Select Term</DialogTitle>
-        <DialogContent dividers>
-          <List>
-            {termOptions.map((term) => (
-              <ListItem key={term} disablePadding>
-                <ListItemButton onClick={() => handleTermSelect(term)}>
-                  <ListItemText primary={term} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
