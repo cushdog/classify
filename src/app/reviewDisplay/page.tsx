@@ -8,16 +8,25 @@ import {
   CardContent,
   Avatar,
   Chip,
-  Rating,
   Grid,
   Tabs,
   Tab,
   ThemeProvider,
   createTheme,
-  alpha,
-  CircularProgress,
+  LinearProgress,
+  Typography,
+  IconButton,
 } from "@mui/material";
-import { School, Person, ThumbUp, AccessTime, Tag } from "@mui/icons-material";
+import {
+  School,
+  Person,
+  ThumbUp,
+  AccessTime,
+  Tag,
+  SentimentVerySatisfied,
+  SentimentNeutral,
+  SentimentVeryDissatisfied,
+} from "@mui/icons-material";
 import { Mulish } from "next/font/google";
 
 const mulish = Mulish({
@@ -29,13 +38,13 @@ const mulish = Mulish({
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#3f51b5",
+      main: "#6200ea",
     },
     secondary: {
-      main: "#f50057",
+      main: "#03dac6",
     },
     background: {
-      default: "#f5f5f5",
+      default: "#f9f9f9",
     },
   },
   typography: {
@@ -46,17 +55,23 @@ const theme = createTheme({
     h6: {
       fontWeight: 600,
     },
+    body1: {
+      fontSize: "1rem",
+    },
+    body2: {
+      fontSize: "0.875rem",
+    },
   },
   components: {
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          boxShadow: "0 4px 20px 0 rgba(0,0,0,0.12)",
-          transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+          borderRadius: 12,
+          boxShadow: "0 8px 16px rgba(0,0,0,0.1)",
+          transition: "transform 0.2s, box-shadow 0.2s",
           "&:hover": {
-            transform: "translateY(-5px)",
-            boxShadow: "0 12px 30px 0 rgba(0,0,0,0.18)",
+            transform: "translateY(-4px)",
+            boxShadow: "0 12px 24px rgba(0,0,0,0.15)",
           },
         },
       },
@@ -64,7 +79,7 @@ const theme = createTheme({
     MuiChip: {
       styleOverrides: {
         root: {
-          borderRadius: 8,
+          borderRadius: 6,
           fontWeight: 500,
         },
       },
@@ -123,35 +138,26 @@ const sampleReviews: Review[] = [
   // Add more sample reviews as needed
 ];
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const Typography = ({
-  variant,
-  children,
-  ...props
-}: {
-  variant: string;
-  children: React.ReactNode;
-  [key: string]: any;
-}) => (
-  <Box {...props} className={`${mulish.className} ${variant}`}>
-    {children}
-  </Box>
-);
+const getRatingIcon = (rating: number) => {
+  if (rating >= 8) return <SentimentVerySatisfied color="success" />;
+  if (rating >= 5) return <SentimentNeutral color="warning" />;
+  return <SentimentVeryDissatisfied color="error" />;
+};
 
 const ReviewCard: React.FC<{ review: Review }> = ({ review }) => {
   return (
     <Card>
       <CardContent>
-        <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb={2}
-        >
-          <Typography variant="h6" fontWeight="bold">
-            {review.name}
-          </Typography>
-          <Rating value={review.overallRating} readOnly precision={0.5} />
+        <Box display="flex" alignItems="center" mb={2}>
+          <Avatar sx={{ bgcolor: "primary.main", mr: 2 }}>
+            {review.type === "class" ? <School /> : <Person />}
+          </Avatar>
+          <Box>
+            <Typography variant="h6">{review.name}</Typography>
+            <Typography variant="body2" color="textSecondary">
+              Reviewed on {new Date(review.date).toLocaleDateString()}
+            </Typography>
+          </Box>
         </Box>
         <Typography variant="body1" mb={2}>
           {review.comment}
@@ -167,65 +173,71 @@ const ReviewCard: React.FC<{ review: Review }> = ({ review }) => {
             />
           ))}
         </Box>
-        <Grid container spacing={2}>
+        <Grid container spacing={2} mb={2}>
           {review.type === "class" && (
             <>
-              <Grid item xs={4}>
-                <Typography variant="body2" fontWeight="bold">
-                  Difficulty
+              <Grid item xs={12} sm={4}>
+                <Typography variant="body2" fontWeight="bold" gutterBottom>
+                  Conceptual Difficulty
                 </Typography>
-                <CircularProgress
+                <LinearProgress
                   variant="determinate"
                   value={review.conceptualDifficulty! * 10}
+                  color="secondary"
                 />
               </Grid>
-              <Grid item xs={4}>
-                <Typography variant="body2" fontWeight="bold">
-                  Workload
+              <Grid item xs={12} sm={4}>
+                <Typography variant="body2" fontWeight="bold" gutterBottom>
+                  Weekly Workload
                 </Typography>
-                <CircularProgress
+                <LinearProgress
                   variant="determinate"
                   value={review.weeklyWorkload! * 10}
+                  color="secondary"
                 />
               </Grid>
-              <Grid item xs={4}>
-                <Typography variant="body2" fontWeight="bold">
+              <Grid item xs={12} sm={4}>
+                <Typography variant="body2" fontWeight="bold" gutterBottom>
                   Recommendability
                 </Typography>
-                <CircularProgress
+                <LinearProgress
                   variant="determinate"
                   value={review.recommendability! * 10}
+                  color="secondary"
                 />
               </Grid>
             </>
           )}
           {review.type === "professor" && (
             <>
-              <Grid item xs={4}>
-                <Typography variant="body2" fontWeight="bold">
+              <Grid item xs={12} sm={4}>
+                <Typography variant="body2" fontWeight="bold" gutterBottom>
                   Engagement
                 </Typography>
-                <CircularProgress
+                <LinearProgress
                   variant="determinate"
                   value={review.professorEngagement! * 10}
+                  color="secondary"
                 />
               </Grid>
-              <Grid item xs={4}>
-                <Typography variant="body2" fontWeight="bold">
+              <Grid item xs={12} sm={4}>
+                <Typography variant="body2" fontWeight="bold" gutterBottom>
                   Lecture Quality
                 </Typography>
-                <CircularProgress
+                <LinearProgress
                   variant="determinate"
                   value={review.lectureQuality! * 10}
+                  color="secondary"
                 />
               </Grid>
-              <Grid item xs={4}>
-                <Typography variant="body2" fontWeight="bold">
+              <Grid item xs={12} sm={4}>
+                <Typography variant="body2" fontWeight="bold" gutterBottom>
                   Assignment Quality
                 </Typography>
-                <CircularProgress
+                <LinearProgress
                   variant="determinate"
                   value={review.assignmentQuality! * 10}
+                  color="secondary"
                 />
               </Grid>
             </>
@@ -235,19 +247,19 @@ const ReviewCard: React.FC<{ review: Review }> = ({ review }) => {
           display="flex"
           justifyContent="space-between"
           alignItems="center"
-          mt={2}
+          mt={1}
         >
           <Box display="flex" alignItems="center">
-            <ThumbUp fontSize="small" color="action" />
+            {getRatingIcon(review.overallRating * 2)}
             <Typography variant="body2" ml={1}>
-              {review.helpful} found helpful
+              Overall Rating: {review.overallRating}/5
             </Typography>
           </Box>
           <Box display="flex" alignItems="center">
-            <AccessTime fontSize="small" color="action" />
-            <Typography variant="body2" ml={1}>
-              {review.date}
-            </Typography>
+            <IconButton size="small" color="primary">
+              <ThumbUp />
+            </IconButton>
+            <Typography variant="body2">{review.helpful}</Typography>
           </Box>
         </Box>
       </CardContent>
@@ -270,36 +282,44 @@ const ReviewDisplayPage: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Typography variant="h4" fontWeight="bold" textAlign="center" mb={4}>
-          Course and Professor Reviews
+      <Container maxWidth="md" sx={{ py: 4 }}>
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          textAlign="center"
+          mb={4}
+          className={mulish.className}
+        >
+          📚 Course & Professor Reviews
         </Typography>
         <Tabs
           value={tabValue}
           onChange={handleTabChange}
           centered
           sx={{ mb: 4 }}
+          textColor="primary"
+          indicatorColor="primary"
         >
           <Tab
             label={
               <Box display="flex" alignItems="center">
-                <School sx={{ mr: 1 }} /> Class Reviews
+                <School sx={{ mr: 1 }} /> Classes
               </Box>
             }
-            sx={{ fontWeight: "bold" }}
+            sx={{ fontWeight: "bold", textTransform: "none" }}
           />
           <Tab
             label={
               <Box display="flex" alignItems="center">
-                <Person sx={{ mr: 1 }} /> Professor Reviews
+                <Person sx={{ mr: 1 }} /> Professors
               </Box>
             }
-            sx={{ fontWeight: "bold" }}
+            sx={{ fontWeight: "bold", textTransform: "none" }}
           />
         </Tabs>
         <Grid container spacing={3}>
           {filteredReviews.map((review) => (
-            <Grid item xs={12} md={6} key={review.id}>
+            <Grid item xs={12} key={review.id}>
               <ReviewCard review={review} />
             </Grid>
           ))}
