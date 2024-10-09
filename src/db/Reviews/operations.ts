@@ -6,7 +6,7 @@ import { IReview, IReviewInsert, reviews } from './schema';
 
 export const getReviewById = async (id: number): Promise<IReview | null> => {
   const res = await db.select().from(reviews).where(eq(reviews.id, id));
-  return res?.[0] ?? null;5
+  return res?.[0] ?? null;
 };
 
 export const insertReview = async (data: IReviewInsert): Promise<IReview | null> => {

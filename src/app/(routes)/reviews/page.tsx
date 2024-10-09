@@ -3,13 +3,13 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Container, Paper } from '@mui/material';
-import { Mulish } from "next/font/google";
+// import { Mulish } from "next/font/google";
 import ReviewForm from '@/Custom Components/views/Review Form/page';
 
-const mulish = Mulish({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "700"],
-});
+// const mulish = Mulish({
+//   subsets: ["latin"],
+//   weight: ["300", "400", "500", "700"],
+// });
 
 const theme = createTheme({
   palette: {

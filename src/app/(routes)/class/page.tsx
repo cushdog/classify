@@ -58,8 +58,10 @@ const termOptions = [
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -68,10 +70,11 @@ const CourseDetails: React.FC = () => {
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
 
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  // const theme = useTheme();
+  // const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const router = useRouter();
   const searchParams = useSearchParams();

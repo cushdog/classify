@@ -13,7 +13,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogDescription,
 } from '@/components/ui/dialog';
 
 interface PdfPreviewerProps {
@@ -43,7 +42,7 @@ export const PdfPreviewer = ({ pdfUrl, onClose }: PdfPreviewerProps) => {
   const [dialogWidth, setDialogWidth] = useState<number | string>('90vw');
   const [scale, setScale] = useState(1);
   const [defaultWidth, setDefaultWidth] = useState<number | null>(null);
-  const [pdfText, setPdfText] = useState<string>('');
+  // const [pdfText, setPdfText] = useState<string>('');
   const pdfContainerRef = useRef<HTMLDivElement>(null);
 
   const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
@@ -58,11 +57,11 @@ export const PdfPreviewer = ({ pdfUrl, onClose }: PdfPreviewerProps) => {
     }
   };
 
-  const onPageRenderSuccess = async (page: any) => {
-    const textContent = await page.getTextContent();
-    const pageText = textContent.items.map((item: { str: string }) => item.str).join('');
-    setPdfText(pageText);
-  };
+  // const onPageRenderSuccess = async (page: any) => {
+  //   // const textContent = await page.getTextContent();
+  //   // const pageText = textContent.items.map((item: { str: string }) => item.str).join('');
+  //   // setPdfText(pageText);
+  // };
 
   const changePage = (offset: number) => {
     setPageNumber((prevPageNumber) =>
@@ -101,7 +100,7 @@ export const PdfPreviewer = ({ pdfUrl, onClose }: PdfPreviewerProps) => {
               <Page
                 pageNumber={pageNumber}
                 onLoadSuccess={onPageLoadSuccess}
-                onRenderSuccess={onPageRenderSuccess}
+                // onRenderSuccess={onPageRenderSuccess}
                 scale={scale}
               />
             </Document>

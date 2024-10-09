@@ -63,7 +63,7 @@ const ReviewForm: React.FC = () => {
       };
 
       try {
-        const result = await submitReview(reviewData);
+        // const result = await submitReview(reviewData);
         setSnackbarMessage('Review submitted successfully!');
         setSnackbarOpen(true);
         // Reset form
@@ -79,6 +79,7 @@ const ReviewForm: React.FC = () => {
         setLectureQuality(5);
         setAssignmentQuality(5);
       } catch (error) {
+        console.error(error);
         setSnackbarMessage('Error submitting review. Please try again.');
         setSnackbarOpen(true);
       }
