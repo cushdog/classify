@@ -19,11 +19,14 @@ import {
   Tooltip,
   TextField,
   InputAdornment,
+  CircularProgress,
+  Alert,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { ArrowBack, Info, Search } from "@mui/icons-material";
+import { genEdMap } from "@/lib/commonFunctions";
 
 interface Course {
   subject: string;
@@ -44,54 +47,11 @@ const GenEdRecommender = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [courses, setCourses] = useState<Course[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const genEdMap: { [key: string]: string } = {
-    SBS_SOC:
-      "Social & Beh Sci - Soc Sci, and Cultural Studies - US Minority course",
-    CS_US: "Cultural Studies - US Minority course",
-    HUM_HIST_CS_US:
-      "Humanities - Hist & Phil, and Cultural Studies - US Minority course",
-    HUM_LIT_CS_US:
-      "Humanities - Lit & Arts, and Cultural Studies - US Minority course",
-    ACP_CS_US:
-      "Advanced Composition, and Cultural Studies - US Minority course",
-    CS_NONWEST_SBS_SOC:
-      "Cultural Studies - Non-West, and Social & Beh Sci - Soc Sci course",
-    QR1: "Quantitative Reasoning I course",
-    HUM_HIST: "Humanities - Hist & Phil course",
-    ACP_HUM_HIST_CS_US:
-      "Advanced Composition, Humanities - Hist & Phil, and Cultural Studies - US Minority course",
-    HUM_HIST_CS_NONWEST:
-      "Humanities - Hist & Phil, and Cultural Studies - Non-West course",
-    JS: "James Scholars course",
-    CS_WEST: "Cultural Studies - Western course",
-    SBS_SOC_CS_WEST:
-      "Social & Beh Sci - Soc Sci, and Cultural Studies - Western course",
-    HUM_HIST_CS_WEST:
-      "Humanities - Hist & Phil, and Cultural Studies - Western course",
-    CS_NONWEST: "Cultural Studies - Non-West course",
-    HUM_LIT: "Humanities - Lit & Arts course",
-    CH_HUM_HIST: "Camp Honors/Chanc Schol, and Humanities - Hist & Phil course",
-    HUM_LIT_CS_WEST:
-      "Humanities - Lit & Arts, and Cultural Studies - Western course",
-    HUM_LIT_CS_NONWEST:
-      "Humanities - Lit & Arts, and Cultural Studies - Non-West course",
-    CH_NAT_PHYS:
-      "Camp Honors/Chanc Schol, and Nat Sci & Tech - Phys Sciences course",
-    SBS_BEH: "Social & Beh Sci - Beh Sci course",
-    COMP_I: "Composition I course",
-    NAT_LIFE: "Nat Sci & Tech - Life Sciences course",
-    NAT_PHYS: "Nat Sci & Tech - Phys Sciences course",
-    NAT_PHYS_QR2:
-      "Nat Sci & Tech - Phys Sciences, and Quantitative Reasoning II course",
-    NAT_PHYS_CS_WEST:
-      "Nat Sci & Tech - Phys Sciences, and Cultural Studies - Western course",
-    NAT_SCI_US_MIN:
-      "Nat Sci & Tech - Life Sciences, and Cultural Studies - US Minority course",
-  };
 
   const categoryOptions = Array.from(
     new Set(
@@ -115,11 +75,13 @@ const GenEdRecommender = () => {
   }, [selectedCategories]);
 
   const fetchCourses = async (categories: string[]) => {
+    setLoading(true);
+    setError(false);
     try {
       const matchingKeys = Object.entries(genEdMap)
         .filter(([, value]) => categories.every((cat) => value.includes(cat)))
         .map(([key]) => key);
-  
+
       const promises = matchingKeys.map((key) =>
         fetch(
           `https://uiuc-course-api-production.up.railway.app/requirements?query=${encodeURIComponent(
@@ -127,13 +89,12 @@ const GenEdRecommender = () => {
           )}`
         ).then((response) => response.json())
       );
-  
+
       const results = await Promise.all(promises);
       const allCourses = results.flat();
-  
+
       const distinctCourses: Course[] = Array.from(
         new Map(
-          /* eslint-disable @typescript-eslint/no-explicit-any */
           allCourses.map((course: any) => [
             `${course[2]} ${course[3]}`,
             {
@@ -147,12 +108,15 @@ const GenEdRecommender = () => {
           ])
         ).values()
       );
-  
+
       setCourses(distinctCourses.sort((a, b) => b.gpa - a.gpa));
     } catch (error) {
       console.error("Error fetching courses:", error);
+      setError(true);
+    } finally {
+      setLoading(false);
     }
-  };  
+  };
 
   const handleVisitClass = (subject: string, number: string) => {
     const formattedQuery = `${subject} ${number}`;
@@ -162,10 +126,7 @@ const GenEdRecommender = () => {
   };
 
   useEffect(() => {
-    // Add a class to the body when this component is mounted
     document.body.classList.add("no-background-gradient");
-
-    // Remove the class when the component is unmounted
     return () => {
       document.body.classList.remove("no-background-gradient");
     };
@@ -243,7 +204,16 @@ const GenEdRecommender = () => {
           </Grid>
         </StyledPaper>
 
-        {filteredCourses.length > 0 && (
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center', margin: '20px 0' }}>
+            <CircularProgress />
+            <p style={{ marginLeft: '10px' }}>Fetching classes, please wait...</p>
+          </div>
+        ) : error ? (
+          <Alert severity="error">Error fetching courses. Please try again later.</Alert>
+        ) : filteredCourses.length === 0 ? (
+          <Alert severity="info">No courses found matching your criteria.</Alert>
+        ) : (
           <StyledPaper elevation={3}>
             <TextField
               fullWidth
