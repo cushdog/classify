@@ -38,7 +38,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import Typography from "@/Custom Components/ui/Typography/page";
 import { Mulish } from "next/font/google";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
-import { Page, Document, pdfjs } from "react-pdf";
+import { pdfjs } from "react-pdf";
 import HTMLFlipBook from "react-pageflip";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -69,8 +69,8 @@ const CourseDetails: React.FC = () => {
   const [openTermDialog, setOpenTermDialog] = useState<boolean>(false);
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [openSyllabus, setOpenSyllabus] = useState<boolean>(false);
-  const [numPages, setNumPages] = useState<number>(0);
-  const [pageNumber, setPageNumber] = useState<number>(1);
+  // const [numPages, setNumPages] = useState<number>(0);
+  // const [pageNumber, setPageNumber] = useState<number>(1);
 
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -165,10 +165,7 @@ const CourseDetails: React.FC = () => {
     document.body.style.backgroundColor = "white";
   }, []);
 
-  const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
-    setNumPages(numPages);
-    setPageNumber(1);
-  };
+
 
   return (
     <div className="classPage">
