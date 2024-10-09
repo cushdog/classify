@@ -137,6 +137,15 @@ export const semesterConfigs = [
   { semester: "Fall", year: "2022" },
 ];
 
+export const calculateGPA = (
+  gpaValue: string | number | null | undefined
+): number => {
+  if (!gpaValue || (typeof gpaValue === "string" && isNaN(Number(gpaValue)))) {
+    return 0;
+  }
+  return Number((Math.floor(Number(gpaValue) * 100) / 100).toFixed(2));
+};
+
 // Helper to slightly lighten a color
 export const lightenColor = (color: string, percent: number) => {
   const num = parseInt(color.replace("#", ""), 16),

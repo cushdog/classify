@@ -9,14 +9,20 @@ import {
   Divider,
   IconButton,
   Chip,
+  CircularProgress,
+  ListItemButton,
+  Fab,
+  useMediaQuery,
+  useTheme,
+  Menu,
+  MenuItem,
+  Typography,
   Dialog,
-  DialogTitle,
   DialogContent,
   List,
   ListItem,
   ListItemText,
-  CircularProgress,
-  ListItemButton,
+  DialogTitle,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
@@ -31,9 +37,11 @@ import {
 import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
-import Typography from "@/Custom Components/ui/Typography/page";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { Mulish } from "next/font/google";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
+import GPABreakdownDialog from "@/Custom Components/ui/Visual GPA Breakdown/page"; // Import your new GPABreakdownDialog component
+import { calculateGPA } from "@/lib/commonFunctions";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -50,25 +58,27 @@ const termOptions = [
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
   const [backgroundColor, setBackgroundColor] = useState<string>("#3f51b5");
   const [openTermDialog, setOpenTermDialog] = useState<boolean>(false);
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
+  const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
+  const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
+  const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
+
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const classParam = searchParams.get("class");
 
-  // Synchronize selectedTerm with URL parameter
   useEffect(() => {
-    console.log(searchParams.get("term"));
     setSelectedTerm(searchParams.get("term"));
   }, [searchParams]);
 
@@ -76,55 +86,60 @@ const CourseDetails: React.FC = () => {
     router.back();
   };
 
-  const calculateGPA = (
-    gpaValue: string | number | null | undefined
-  ): number => {
-    if (
-      !gpaValue ||
-      (typeof gpaValue === "string" && isNaN(Number(gpaValue)))
-    ) {
-      return 0;
-    }
-    return Number((Math.floor(Number(gpaValue) * 100) / 100).toFixed(2));
-  };
-
   const handleChange =
     (panel: string) => (_: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
     };
 
-  // Handle term selection from dialog
   const handleTermSelect = (term: string) => {
     setSelectedTerm(term);
     setOpenTermDialog(false);
     updateURLWithNewTerm(term);
   };
 
-  // Update URL with new term parameter
   const updateURLWithNewTerm = (term: string) => {
     const newParams = new URLSearchParams(Array.from(searchParams.entries()));
-
     if (term) {
       newParams.set("term", term);
     } else {
       newParams.delete("term");
     }
-
     const newPath = `${pathname}?${newParams.toString()}`;
     router.push(newPath);
   };
 
-  // Set random background color on mount
+  const fetchProfessorGpaData = async () => {
+    if (classParam) {
+      const response = await fetch(
+        `https://uiuc-course-api-production.up.railway.app/professor-stats?class=${classParam}`
+      );
+      const data = await response.json();
+      setProfessorGpaData(data);
+    }
+  };
+
+  const handleFabClick = (event: React.MouseEvent<HTMLElement>) => {
+    setMenuAnchor(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setMenuAnchor(null);
+  };
+
+  const handleGpaBreakdownClick = () => {
+    setMenuAnchor(null);
+    fetchProfessorGpaData();
+    setOpenGpaDialog(true);
+  };
+
   useEffect(() => {
     setBackgroundColor(getRandomBackgroundColor());
   }, []);
 
-  // Fetch data whenever classParam or selectedTerm changes
   useEffect(() => {
     const fetchData = async () => {
       if (classParam) {
         try {
-          // Fetch class data
           await fetchClassData(
             classParam,
             selectedTerm ?? undefined,
@@ -133,8 +148,6 @@ const CourseDetails: React.FC = () => {
             (subject: string, courseNum: string) =>
               fetchAndGroupSections(subject, courseNum, selectedTerm ?? "")
           );
-
-          // Fetch subject full name
           const subject = classParam.split(" ")[0];
           const fullName = await fetchSubjectFullName(subject);
           setSubjectFullName(fullName);
@@ -147,7 +160,6 @@ const CourseDetails: React.FC = () => {
     fetchData();
   }, [classParam, selectedTerm]);
 
-  // Ensure body background color is white
   useEffect(() => {
     document.body.style.backgroundColor = "white";
   }, []);
@@ -155,7 +167,6 @@ const CourseDetails: React.FC = () => {
   return (
     <div className="classPage">
       <Box sx={{ minHeight: "100vh", backgroundColor: "white" }}>
-        {/* Header Section */}
         <Box
           sx={{
             width: "100%",
@@ -169,6 +180,7 @@ const CourseDetails: React.FC = () => {
             flexDirection: "column",
             justifyContent: "space-between",
             position: "relative",
+            overflow: "hidden",
           }}
         >
           <IconButton
@@ -234,7 +246,6 @@ const CourseDetails: React.FC = () => {
           </Typography>
         </Box>
 
-        {/* Content Section */}
         <Box sx={{ padding: "20px" }}>
           {classData ? (
             <>
@@ -249,7 +260,6 @@ const CourseDetails: React.FC = () => {
 
               <Divider sx={{ marginY: 2 }} />
 
-              {/* GPA Gauge Section */}
               <Box
                 sx={{
                   display: "flex",
@@ -270,8 +280,6 @@ const CourseDetails: React.FC = () => {
 
               <Divider sx={{ marginY: 2 }} />
 
-              {/* Sections Accordion */}
-              {/* Sections Accordion */}
               {Object.keys(sectionsByType).map((type) => (
                 <Accordion
                   key={`${type}-${selectedTerm}`}
@@ -308,7 +316,6 @@ const CourseDetails: React.FC = () => {
                   <AccordionDetails
                     sx={{ maxHeight: "400px", overflowY: "auto" }}
                   >
-                    {/* eslint-disable @typescript-eslint/no-explicit-any */}
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}
@@ -320,7 +327,6 @@ const CourseDetails: React.FC = () => {
               ))}
             </>
           ) : (
-            // Loading Indicator
             <Box
               sx={{
                 display: "flex",
@@ -333,23 +339,46 @@ const CourseDetails: React.FC = () => {
             </Box>
           )}
         </Box>
-      </Box>
 
-      {/* Term Selection Dialog */}
-      <Dialog open={openTermDialog} onClose={() => setOpenTermDialog(false)}>
-        <DialogTitle>Select Term</DialogTitle>
-        <DialogContent dividers>
-          <List>
-            {termOptions.map((term) => (
-              <ListItem key={term} disablePadding>
-                <ListItemButton onClick={() => handleTermSelect(term)}>
-                  <ListItemText primary={term} />
-                </ListItemButton>
-              </ListItem>
-            ))}
-          </List>
-        </DialogContent>
-      </Dialog>
+        <Fab
+          color="primary"
+          aria-label="menu"
+          sx={{ position: "fixed", bottom: 16, right: 16 }}
+          onClick={handleFabClick}
+        >
+          <MenuBookIcon />
+        </Fab>
+        <Menu
+          anchorEl={menuAnchor}
+          open={Boolean(menuAnchor)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleGpaBreakdownClick}>
+            View Detailed GPA Breakdown
+          </MenuItem>
+        </Menu>
+
+        <GPABreakdownDialog
+          open={openGpaDialog}
+          onClose={() => setOpenGpaDialog(false)}
+          professorGpaData={professorGpaData}
+        />
+
+        <Dialog open={openTermDialog} onClose={() => setOpenTermDialog(false)}>
+          <DialogTitle>Select Term</DialogTitle>
+          <DialogContent dividers>
+            <List>
+              {termOptions.map((term) => (
+                <ListItem key={term} disablePadding>
+                  <ListItemButton onClick={() => handleTermSelect(term)}>
+                    <ListItemText primary={term} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </List>
+          </DialogContent>
+        </Dialog>
+      </Box>
     </div>
   );
 };
