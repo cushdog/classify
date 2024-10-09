@@ -21,7 +21,6 @@ import {
   School,
   Person,
   ThumbUp,
-  AccessTime,
   Tag,
   SentimentVerySatisfied,
   SentimentNeutral,
