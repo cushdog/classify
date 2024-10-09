@@ -41,7 +41,7 @@ const theme = createTheme({
 
 // Define the props for the component
 interface ReviewPageProps {
-  onSubmit: (review: ReviewData) => void;
+  onSubmit?: (review: ReviewData) => void;
 }
 
 // Define the structure of the review data
@@ -59,8 +59,8 @@ interface ReviewData {
   assignmentQuality?: number;
 }
 
-const ReviewPage: React.FC<ReviewPageProps> = ({ onSubmit }) => {
-  const [tabIndex, setTabIndex] = useState(0); // 0 for Class Review, 1 for Professor Review
+const ReviewPage: React.FC<ReviewPageProps> = ({ onSubmit = () => {} }) => {
+  const [tabIndex, setTabIndex] = useState(0);
   const [name, setName] = useState('');
   const [overallRating, setOverallRating] = useState<number | null>(null);
   const [comment, setComment] = useState('');
@@ -143,8 +143,7 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ onSubmit }) => {
     </Box>
   );
 
-  // Adjust the navbar height as needed
-  const navbarHeight = '64px'; // Replace with your actual navbar height
+  const navbarHeight = '64px';
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
@@ -158,8 +157,8 @@ const ReviewPage: React.FC<ReviewPageProps> = ({ onSubmit }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          minHeight: `calc(100vh - ${navbarHeight})`, // Adjusted minHeight
-          paddingTop: navbarHeight, // Added paddingTop to push content below navbar
+          minHeight: `calc(100vh - ${navbarHeight})`,
+          paddingTop: navbarHeight,
         }}
       >
         <Paper elevation={3} sx={{ p: 4, borderRadius: 2, width: '100%' }}>
