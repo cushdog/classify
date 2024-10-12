@@ -6,7 +6,6 @@ import theme from "@/lib/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import RealNavbar from "@/Custom Components/ui/Nav/navbar";
-import Head from "next/head";
 import Script from "next/script";
 import "./globals.css";
 import ClientOnlyToastContainer from "@/lib/clientToast";
@@ -30,9 +29,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={mulish.variable}>
-      <Head>
+      <head>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
-      </Head>
+        <Script defer src="https://cloud.umami.is/script.js" data-website-id="40840f54-8943-4182-b05a-655053624927"></Script>
+      </head>
       <Script
         async
         src="https://www.googletagmanager.com/gtag/js?id=G-CJX91GC6JV"
