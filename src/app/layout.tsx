@@ -32,20 +32,20 @@ export default function RootLayout({
     <html lang="en" className={mulish.variable}>
       <Head>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-CJX91GC6JV"
-        ></Script>
-        <Script>
-          {`
+      </Head>
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-CJX91GC6JV"
+      ></Script>
+      <Script>
+        {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
             gtag('config', 'G-CJX91GC6JV');
           `}
-        </Script>
-      </Head>
+      </Script>
       <body>
         <ThemeProvider theme={theme}>
           <CssBaseline />
