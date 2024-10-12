@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import RealNavbar from "@/Custom Components/ui/Nav/navbar";
 import Head from "next/head";
+import Script from "next/script";
 import "./globals.css";
 import ClientOnlyToastContainer from "@/lib/clientToast";
 
@@ -32,6 +33,19 @@ export default function RootLayout({
       <Head>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
       </Head>
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-CJX91GC6JV"
+      ></Script>
+      <Script>
+        {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-CJX91GC6JV');
+          `}
+      </Script>
       <body>
         <ThemeProvider theme={theme}>
           <CssBaseline />
