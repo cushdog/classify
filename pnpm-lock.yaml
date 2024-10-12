@@ -10,49 +10,49 @@ importers:
     dependencies:
       '@emotion/react':
         specifier: ^11.13.3
-        version: 11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react)
+        version: 11.13.3(@types/react@18.3.10)(react@18.3.1)
       '@emotion/styled':
         specifier: ^11.13.0
-        version: 11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)
+        version: 11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)
       '@ionic/react':
         specifier: ^8.3.1
-        version: 8.3.1(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 8.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/icons-material':
         specifier: ^6.1.2
-        version: 6.1.2(@mui/material@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)
+        version: 6.1.2(@mui/material@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)
       '@mui/material':
         specifier: ^6.1.2
-        version: 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@mui/system':
         specifier: ^6.1.2
-        version: 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)
+        version: 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)
       '@radix-ui/react-checkbox':
         specifier: ^1.1.2
-        version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-dialog':
         specifier: ^1.1.2
-        version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-icons':
         specifier: ^1.3.0
-        version: 1.3.0(react@@vercel+analytics+react)
+        version: 1.3.0(react@18.3.1)
       '@radix-ui/react-select':
         specifier: ^2.1.1
-        version: 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-slot':
         specifier: ^1.1.0
-        version: 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
+        version: 1.1.0(@types/react@18.3.10)(react@18.3.1)
       '@radix-ui/react-tabs':
         specifier: ^1.1.1
-        version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@radix-ui/react-tooltip':
         specifier: ^1.1.3
-        version: 1.1.3(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 1.1.3(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@vercel/analytics':
         specifier: ^1.3.1
-        version: 1.3.1(next@14.2.13(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 1.3.1(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@vercel/speed-insights':
         specifier: ^1.0.12
-        version: 1.0.12(next@14.2.13(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 1.0.12(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -64,46 +64,46 @@ importers:
         version: 0.25.0
       drizzle-orm:
         specifier: ^0.34.1
-        version: 0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@@vercel+analytics+react)
+        version: 0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@18.3.1)
       drizzle-orm-pg:
         specifier: ^0.16.3
-        version: 0.16.3(@types/pg@8.11.10)(drizzle-orm@0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@@vercel+analytics+react))(pg@8.13.0)
+        version: 0.16.3(@types/pg@8.11.10)(drizzle-orm@0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@18.3.1))(pg@8.13.0)
       framer-motion:
         specifier: ^11.11.1
-        version: 11.11.1(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 11.11.1(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       lucide-react:
         specifier: ^0.446.0
-        version: 0.446.0(react@@vercel+analytics+react)
+        version: 0.446.0(react@18.3.1)
       mini-css-extract-plugin:
         specifier: ^2.9.1
         version: 2.9.1(webpack@5.95.0(esbuild@0.19.12))
       next:
         specifier: 14.2.13
-        version: 14.2.13(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       pg:
         specifier: ^8.13.0
         version: 8.13.0
       react:
-        specifier: link:@vercel/analytics/react
-        version: link:@vercel/analytics/react
+        specifier: ^18.2.0
+        version: 18.3.1
       react-dom:
         specifier: ^18
-        version: 18.3.1(react@@vercel+analytics+react)
+        version: 18.3.1(react@18.3.1)
       react-hot-toast:
         specifier: ^2.4.1
-        version: 2.4.1(csstype@3.1.3)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 2.4.1(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-icons:
         specifier: ^5.3.0
-        version: 5.3.0(react@@vercel+analytics+react)
+        version: 5.3.0(react@18.3.1)
       react-pdf:
         specifier: ^9.1.1
-        version: 9.1.1(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 9.1.1(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-toastify:
         specifier: ^10.0.5
-        version: 10.0.5(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 10.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       recharts:
         specifier: ^2.12.7
-        version: 2.12.7(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+        version: 2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tailwind-merge:
         specifier: ^2.5.2
         version: 2.5.2
@@ -3049,6 +3049,10 @@ packages:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
 
+  react@18.3.1:
+    resolution: {integrity: sha512-wS+hAgJShR0KhEvPJArfuPVN1+Hz1t0Y6n5jLrGQbkb4urgPE/0Rve+1kMB1v/oWgHgm4WIcV+i7F2pTVj+2iQ==}
+    engines: {node: '>=0.10.0'}
+
   read-cache@1.0.0:
     resolution: {integrity: sha512-Owdv/Ft7IjOgm/i0xvNDZ1LrRANRfew4b2prF3OWMQLxLfu3bS8FVhCsrSCMK4lR56Y9ya+AThoTpDCTxCmpRA==}
 
@@ -3633,17 +3637,17 @@ snapshots:
 
   '@emotion/memoize@0.9.0': {}
 
-  '@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
       '@emotion/babel-plugin': 11.12.0
       '@emotion/cache': 11.13.1
       '@emotion/serialize': 1.3.2
-      '@emotion/use-insertion-effect-with-fallbacks': 1.1.0(react@@vercel+analytics+react)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.1.0(react@18.3.1)
       '@emotion/utils': 1.4.1
       '@emotion/weak-memoize': 0.4.0
       hoist-non-react-statics: 3.3.2
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
     transitivePeerDependencies:
@@ -3659,16 +3663,16 @@ snapshots:
 
   '@emotion/sheet@1.4.0': {}
 
-  '@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
       '@emotion/babel-plugin': 11.12.0
       '@emotion/is-prop-valid': 1.3.1
-      '@emotion/react': 11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@emotion/react': 11.13.3(@types/react@18.3.10)(react@18.3.1)
       '@emotion/serialize': 1.3.2
-      '@emotion/use-insertion-effect-with-fallbacks': 1.1.0(react@@vercel+analytics+react)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.1.0(react@18.3.1)
       '@emotion/utils': 1.4.1
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
     transitivePeerDependencies:
@@ -3676,9 +3680,9 @@ snapshots:
 
   '@emotion/unitless@0.10.0': {}
 
-  '@emotion/use-insertion-effect-with-fallbacks@1.1.0(react@@vercel+analytics+react)':
+  '@emotion/use-insertion-effect-with-fallbacks@1.1.0(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
 
   '@emotion/utils@1.4.1': {}
 
@@ -3861,11 +3865,11 @@ snapshots:
       '@floating-ui/core': 1.6.8
       '@floating-ui/utils': 0.2.8
 
-  '@floating-ui/react-dom@2.1.2(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@floating-ui/react-dom@2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@floating-ui/dom': 1.6.11
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@floating-ui/utils@0.2.8': {}
 
@@ -3887,12 +3891,12 @@ snapshots:
       ionicons: 7.4.0
       tslib: 2.7.0
 
-  '@ionic/react@8.3.1(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@ionic/react@8.3.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@ionic/core': 8.3.1
       ionicons: 7.4.0
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
       tslib: 2.7.0
 
   '@isaacs/cliui@8.0.2':
@@ -3944,84 +3948,84 @@ snapshots:
 
   '@mui/core-downloads-tracker@6.1.2': {}
 
-  '@mui/icons-material@6.1.2(@mui/material@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@mui/icons-material@6.1.2(@mui/material@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
-      '@mui/material': 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
+      '@mui/material': 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@mui/material@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@mui/material@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
       '@mui/core-downloads-tracker': 6.1.2
-      '@mui/system': 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@mui/system': 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)
       '@mui/types': 7.2.17(@types/react@18.3.10)
-      '@mui/utils': 6.1.2(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@mui/utils': 6.1.2(@types/react@18.3.10)(react@18.3.1)
       '@popperjs/core': 2.11.8
       '@types/react-transition-group': 4.4.11
       clsx: 2.1.1
       csstype: 3.1.3
       prop-types: 15.8.1
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
       react-is: 18.3.1
-      react-transition-group: 4.4.5(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+      react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
     optionalDependencies:
-      '@emotion/react': 11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@emotion/styled': 11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@emotion/react': 11.13.3(@types/react@18.3.10)(react@18.3.1)
+      '@emotion/styled': 11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)
       '@types/react': 18.3.10
 
-  '@mui/private-theming@6.1.2(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@mui/private-theming@6.1.2(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
-      '@mui/utils': 6.1.2(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@mui/utils': 6.1.2(@types/react@18.3.10)(react@18.3.1)
       prop-types: 15.8.1
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@mui/styled-engine@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@mui/styled-engine@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
       '@emotion/cache': 11.13.1
       '@emotion/sheet': 1.4.0
       csstype: 3.1.3
       prop-types: 15.8.1
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
-      '@emotion/react': 11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@emotion/styled': 11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@emotion/react': 11.13.3(@types/react@18.3.10)(react@18.3.1)
+      '@emotion/styled': 11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)
 
-  '@mui/system@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@mui/system@6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
-      '@mui/private-theming': 6.1.2(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@mui/styled-engine': 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+      '@mui/private-theming': 6.1.2(@types/react@18.3.10)(react@18.3.1)
+      '@mui/styled-engine': 6.1.2(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@emotion/styled@11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1))(react@18.3.1)
       '@mui/types': 7.2.17(@types/react@18.3.10)
-      '@mui/utils': 6.1.2(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@mui/utils': 6.1.2(@types/react@18.3.10)(react@18.3.1)
       clsx: 2.1.1
       csstype: 3.1.3
       prop-types: 15.8.1
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
-      '@emotion/react': 11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@emotion/styled': 11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@@vercel+analytics+react))(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@emotion/react': 11.13.3(@types/react@18.3.10)(react@18.3.1)
+      '@emotion/styled': 11.13.0(@emotion/react@11.13.3(@types/react@18.3.10)(react@18.3.1))(@types/react@18.3.10)(react@18.3.1)
       '@types/react': 18.3.10
 
   '@mui/types@7.2.17(@types/react@18.3.10)':
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@mui/utils@6.1.2(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@mui/utils@6.1.2(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
       '@babel/runtime': 7.25.7
       '@mui/types': 7.2.17(@types/react@18.3.10)
       '@types/prop-types': 15.7.13
       clsx: 2.1.1
       prop-types: 15.8.1
-      react: link:@vercel/analytics/react
+      react: 18.3.1
       react-is: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
@@ -4082,346 +4086,346 @@ snapshots:
 
   '@radix-ui/primitive@1.1.0': {}
 
-  '@radix-ui/react-arrow@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-arrow@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-checkbox@1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-checkbox@1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-context': 1.1.1(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-previous': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-size': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.1(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-previous': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-size': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-collection@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-collection@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-context': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-compose-refs@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-compose-refs@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-context@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-context@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-context@1.1.1(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-context@1.1.1(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-dialog@1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-dialog@1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-context': 1.1.1(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-dismissable-layer': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-focus-guards': 1.1.1(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-focus-scope': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-portal': 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.1(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-dismissable-layer': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-focus-guards': 1.1.1(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-focus-scope': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-portal': 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@18.3.1)
       aria-hidden: 1.2.4
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
-      react-remove-scroll: 2.6.0(@types/react@18.3.10)(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-remove-scroll: 2.6.0(@types/react@18.3.10)(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-direction@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-direction@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-dismissable-layer@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-dismissable-layer@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-escape-keydown': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-escape-keydown': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-dismissable-layer@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-dismissable-layer@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-escape-keydown': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-escape-keydown': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-focus-guards@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-focus-guards@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-focus-guards@1.1.1(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-focus-guards@1.1.1(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-focus-scope@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-focus-scope@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-icons@1.3.0(react@@vercel+analytics+react)':
+  '@radix-ui/react-icons@1.3.0(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
 
-  '@radix-ui/react-id@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-id@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
+      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-popper@1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-popper@1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-arrow': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-context': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-rect': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-size': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
+      '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-arrow': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-rect': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-size': 1.1.0(@types/react@18.3.10)(react@18.3.1)
       '@radix-ui/rect': 1.1.0
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-portal@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-portal@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-portal@1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-portal@1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-presence@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-presence@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-primitive@2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-primitive@2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-roving-focus@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-roving-focus@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
-      '@radix-ui/react-collection': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-context': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-direction': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-collection': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-direction': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-select@2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-select@2.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/number': 1.1.0
       '@radix-ui/primitive': 1.1.0
-      '@radix-ui/react-collection': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-context': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-direction': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-dismissable-layer': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-focus-guards': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-focus-scope': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-popper': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-portal': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-previous': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-visually-hidden': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+      '@radix-ui/react-collection': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-direction': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-dismissable-layer': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-focus-guards': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-focus-scope': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-popper': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-portal': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-previous': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-visually-hidden': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       aria-hidden: 1.2.4
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
-      react-remove-scroll: 2.5.7(@types/react@18.3.10)(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-remove-scroll: 2.5.7(@types/react@18.3.10)(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-slot@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-slot@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-tabs@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-tabs@1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
-      '@radix-ui/react-context': 1.1.1(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-direction': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-roving-focus': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-context': 1.1.1(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-direction': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-roving-focus': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-tooltip@1.1.3(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-tooltip@1.1.3(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@radix-ui/primitive': 1.1.0
-      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-context': 1.1.1(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-dismissable-layer': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-popper': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-portal': 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      '@radix-ui/react-visually-hidden': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-compose-refs': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-context': 1.1.1(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-dismissable-layer': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-id': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-popper': 1.2.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-portal': 1.1.2(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-presence': 1.1.1(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-use-controllable-state': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      '@radix-ui/react-visually-hidden': 1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
 
-  '@radix-ui/react-use-callback-ref@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-use-callback-ref@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-use-controllable-state@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-use-controllable-state@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
+      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-use-escape-keydown@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-use-escape-keydown@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
+      '@radix-ui/react-use-callback-ref': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-use-layout-effect@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-use-layout-effect@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-use-previous@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-use-previous@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-use-rect@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-use-rect@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
       '@radix-ui/rect': 1.1.0
-      react: link:@vercel/analytics/react
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-use-size@1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)':
+  '@radix-ui/react-use-size@1.1.0(@types/react@18.3.10)(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
+      '@radix-ui/react-use-layout-effect': 1.1.0(@types/react@18.3.10)(react@18.3.1)
+      react: 18.3.1
     optionalDependencies:
       '@types/react': 18.3.10
 
-  '@radix-ui/react-visually-hidden@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@radix-ui/react-visually-hidden@1.1.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
-      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      '@radix-ui/react-primitive': 2.0.0(@types/react-dom@18.3.0)(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
       '@types/react-dom': 18.3.0
@@ -4583,17 +4587,17 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vercel/analytics@1.3.1(next@14.2.13(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@vercel/analytics@1.3.1(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       server-only: 0.0.1
     optionalDependencies:
-      next: 14.2.13(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
+      next: 14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
 
-  '@vercel/speed-insights@1.0.12(next@14.2.13(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react))(react@@vercel+analytics+react)':
+  '@vercel/speed-insights@1.0.12(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     optionalDependencies:
-      next: 14.2.13(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
-      react: link:@vercel/analytics/react
+      next: 14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
 
   '@webassemblyjs/ast@1.12.1':
     dependencies:
@@ -5125,19 +5129,19 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm-pg@0.16.3(@types/pg@8.11.10)(drizzle-orm@0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@@vercel+analytics+react))(pg@8.13.0):
+  drizzle-orm-pg@0.16.3(@types/pg@8.11.10)(drizzle-orm@0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@18.3.1))(pg@8.13.0):
     dependencies:
-      drizzle-orm: 0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@@vercel+analytics+react)
+      drizzle-orm: 0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@18.3.1)
     optionalDependencies:
       '@types/pg': 8.11.10
       pg: 8.13.0
 
-  drizzle-orm@0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@@vercel+analytics+react):
+  drizzle-orm@0.34.1(@types/pg@8.11.10)(@types/react@18.3.10)(pg@8.13.0)(react@18.3.1):
     optionalDependencies:
       '@types/pg': 8.11.10
       '@types/react': 18.3.10
       pg: 8.13.0
-      react: link:@vercel/analytics/react
+      react: 18.3.1
 
   eastasianwidth@0.2.0: {}
 
@@ -5591,13 +5595,13 @@ snapshots:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
 
-  framer-motion@11.11.1(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react):
+  framer-motion@11.11.1(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       tslib: 2.7.0
     optionalDependencies:
       '@emotion/is-prop-valid': 1.3.1
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   fs-minipass@2.1.0:
     dependencies:
@@ -5988,9 +5992,9 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  lucide-react@0.446.0(react@@vercel+analytics+react):
+  lucide-react@0.446.0(react@18.3.1):
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
 
   make-cancellable-promise@1.3.2: {}
 
@@ -6075,7 +6079,7 @@ snapshots:
 
   neo-async@2.6.2: {}
 
-  next@14.2.13(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react):
+  next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@next/env': 14.2.13
       '@swc/helpers': 0.5.5
@@ -6083,9 +6087,9 @@ snapshots:
       caniuse-lite: 1.0.30001664
       graceful-fs: 4.2.11
       postcss: 8.4.31
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
-      styled-jsx: 5.1.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      styled-jsx: 5.1.1(react@18.3.1)
     optionalDependencies:
       '@next/swc-darwin-arm64': 14.2.13
       '@next/swc-darwin-x64': 14.2.13
@@ -6367,29 +6371,29 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  react-dom@18.3.1(react@@vercel+analytics+react):
+  react-dom@18.3.1(react@18.3.1):
     dependencies:
       loose-envify: 1.4.0
-      react: link:@vercel/analytics/react
+      react: 18.3.1
       scheduler: 0.23.2
 
-  react-hot-toast@2.4.1(csstype@3.1.3)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react):
+  react-hot-toast@2.4.1(csstype@3.1.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       goober: 2.1.14(csstype@3.1.3)
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     transitivePeerDependencies:
       - csstype
 
-  react-icons@5.3.0(react@@vercel+analytics+react):
+  react-icons@5.3.0(react@18.3.1):
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
 
   react-is@16.13.1: {}
 
   react-is@18.3.1: {}
 
-  react-pdf@9.1.1(@types/react@18.3.10)(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react):
+  react-pdf@9.1.1(@types/react@18.3.10)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       clsx: 2.1.1
       dequal: 2.0.3
@@ -6397,8 +6401,8 @@ snapshots:
       make-event-props: 1.6.2
       merge-refs: 1.3.0(@types/react@18.3.10)
       pdfjs-dist: 4.4.168
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
       tiny-invariant: 1.3.3
       warning: 4.0.3
     optionalDependencies:
@@ -6407,67 +6411,71 @@ snapshots:
       - encoding
       - supports-color
 
-  react-remove-scroll-bar@2.3.6(@types/react@18.3.10)(react@@vercel+analytics+react):
+  react-remove-scroll-bar@2.3.6(@types/react@18.3.10)(react@18.3.1):
     dependencies:
-      react: link:@vercel/analytics/react
-      react-style-singleton: 2.2.1(@types/react@18.3.10)(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-style-singleton: 2.2.1(@types/react@18.3.10)(react@18.3.1)
       tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.10
 
-  react-remove-scroll@2.5.7(@types/react@18.3.10)(react@@vercel+analytics+react):
+  react-remove-scroll@2.5.7(@types/react@18.3.10)(react@18.3.1):
     dependencies:
-      react: link:@vercel/analytics/react
-      react-remove-scroll-bar: 2.3.6(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react-style-singleton: 2.2.1(@types/react@18.3.10)(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-remove-scroll-bar: 2.3.6(@types/react@18.3.10)(react@18.3.1)
+      react-style-singleton: 2.2.1(@types/react@18.3.10)(react@18.3.1)
       tslib: 2.7.0
-      use-callback-ref: 1.3.2(@types/react@18.3.10)(react@@vercel+analytics+react)
-      use-sidecar: 1.1.2(@types/react@18.3.10)(react@@vercel+analytics+react)
+      use-callback-ref: 1.3.2(@types/react@18.3.10)(react@18.3.1)
+      use-sidecar: 1.1.2(@types/react@18.3.10)(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
 
-  react-remove-scroll@2.6.0(@types/react@18.3.10)(react@@vercel+analytics+react):
+  react-remove-scroll@2.6.0(@types/react@18.3.10)(react@18.3.1):
     dependencies:
-      react: link:@vercel/analytics/react
-      react-remove-scroll-bar: 2.3.6(@types/react@18.3.10)(react@@vercel+analytics+react)
-      react-style-singleton: 2.2.1(@types/react@18.3.10)(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-remove-scroll-bar: 2.3.6(@types/react@18.3.10)(react@18.3.1)
+      react-style-singleton: 2.2.1(@types/react@18.3.10)(react@18.3.1)
       tslib: 2.7.0
-      use-callback-ref: 1.3.2(@types/react@18.3.10)(react@@vercel+analytics+react)
-      use-sidecar: 1.1.2(@types/react@18.3.10)(react@@vercel+analytics+react)
+      use-callback-ref: 1.3.2(@types/react@18.3.10)(react@18.3.1)
+      use-sidecar: 1.1.2(@types/react@18.3.10)(react@18.3.1)
     optionalDependencies:
       '@types/react': 18.3.10
 
-  react-smooth@4.0.1(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react):
+  react-smooth@4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       fast-equals: 5.0.1
       prop-types: 15.8.1
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
-      react-transition-group: 4.4.5(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
 
-  react-style-singleton@2.2.1(@types/react@18.3.10)(react@@vercel+analytics+react):
+  react-style-singleton@2.2.1(@types/react@18.3.10)(react@18.3.1):
     dependencies:
       get-nonce: 1.0.1
       invariant: 2.2.4
-      react: link:@vercel/analytics/react
+      react: 18.3.1
       tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.10
 
-  react-toastify@10.0.5(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react):
+  react-toastify@10.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       clsx: 2.1.1
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
-  react-transition-group@4.4.5(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react):
+  react-transition-group@4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       '@babel/runtime': 7.25.7
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  react@18.3.1:
+    dependencies:
+      loose-envify: 1.4.0
 
   read-cache@1.0.0:
     dependencies:
@@ -6488,15 +6496,15 @@ snapshots:
     dependencies:
       decimal.js-light: 2.5.1
 
-  recharts@2.12.7(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react):
+  recharts@2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
       clsx: 2.1.1
       eventemitter3: 4.0.7
       lodash: 4.17.21
-      react: link:@vercel/analytics/react
-      react-dom: 18.3.1(react@@vercel+analytics+react)
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
       react-is: 16.13.1
-      react-smooth: 4.0.1(react-dom@18.3.1(react@@vercel+analytics+react))(react@@vercel+analytics+react)
+      react-smooth: 4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       recharts-scale: 0.4.5
       tiny-invariant: 1.3.3
       victory-vendor: 36.9.2
@@ -6729,10 +6737,10 @@ snapshots:
 
   strip-json-comments@3.1.1: {}
 
-  styled-jsx@5.1.1(react@@vercel+analytics+react):
+  styled-jsx@5.1.1(react@18.3.1):
     dependencies:
       client-only: 0.0.1
-      react: link:@vercel/analytics/react
+      react: 18.3.1
 
   stylis@4.2.0: {}
 
@@ -6918,17 +6926,17 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  use-callback-ref@1.3.2(@types/react@18.3.10)(react@@vercel+analytics+react):
+  use-callback-ref@1.3.2(@types/react@18.3.10)(react@18.3.1):
     dependencies:
-      react: link:@vercel/analytics/react
+      react: 18.3.1
       tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.10
 
-  use-sidecar@1.1.2(@types/react@18.3.10)(react@@vercel+analytics+react):
+  use-sidecar@1.1.2(@types/react@18.3.10)(react@18.3.1):
     dependencies:
       detect-node-es: 1.1.0
-      react: link:@vercel/analytics/react
+      react: 18.3.1
       tslib: 2.7.0
     optionalDependencies:
       '@types/react': 18.3.10
