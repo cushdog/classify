@@ -25,12 +25,6 @@ export default function SearchPage() {
   const [searchType, setSearchType] = useState<SearchType>("class");
   const router = useRouter();
 
-  useEffect(() => {
-    ToastLib.notifyAnnouncement(
-      "Announcement: 2025 classes are live! 🎉 If you want to see a past course offering, click/tap on the calendar icon on a class page, and pick the term you wish to view"
-    );
-  }, []); // Empty array means this runs once on mount and once on unmount.
-
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
 
