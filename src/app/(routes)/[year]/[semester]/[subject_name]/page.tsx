@@ -152,7 +152,7 @@ const SubjectDetails = () => {
                   <td className="px-6 py-4">
                     <Button
                       onClick={() =>
-                        handleClassClick(`${course[2]} ${course[3]}`)
+                        handleClassClick(`${course[3]}`)
                       }
                       className="bg-blue-600 text-white hover:bg-blue-700"
                     >
@@ -198,7 +198,7 @@ const SubjectDetails = () => {
                 </Dialog>
                 <Button
                   onClick={() =>
-                    handleClassClick(`${course[2]} ${course[3]}`)
+                    handleClassClick(`${course[3]}`)
                   }
                   className="bg-blue-600 text-white hover:bg-blue-700"
                   size="sm"

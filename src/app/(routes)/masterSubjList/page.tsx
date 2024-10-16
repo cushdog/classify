@@ -27,7 +27,7 @@ const SubjectsList = () => {
 
   const handleSubjectClick = (subjectCode: string) => {
     router.push(
-      `/subject?subject=${encodeURIComponent(subjectCode)}&term=fall+2024`
+      `/2025/Spring/${subjectCode}`
     );
   };
 
