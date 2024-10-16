@@ -15,7 +15,7 @@ export default function MobileNavbar() {
     <div className={styles.mobileNavbarContainer}>
       <div className={styles.logoContainer}>
         <Link href="/">
-          <img src="./favicon.ico" alt="Logo" className={styles.logo} />
+          <img src="/favicon.ico" alt="Logo" className={styles.logo} />
         </Link>
       </div>
       <button className={styles.menuToggle} onClick={toggleMenu}>

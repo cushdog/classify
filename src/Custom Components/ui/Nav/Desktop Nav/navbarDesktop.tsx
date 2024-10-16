@@ -8,7 +8,7 @@ export default function DesktopNavbar() {
     <header className={`${styles.navbarContainer} sticky top-0 z-50`}>
       <div className={styles.logoContainer}>
         <Link href="/">
-          <img src="./favicon.ico" alt="Logo" className={styles.logo} />
+          <img src="/favicon.ico" alt="Logo" className={styles.logo} />
         </Link>
       </div>
       <nav className={styles.navbar}>
