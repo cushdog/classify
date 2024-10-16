@@ -252,7 +252,7 @@ const CourseDetails: React.FC = () => {
                 <span
                   style={mulish.style}
                   dangerouslySetInnerHTML={{
-                    __html: linkifyClasses(classData[5], "/class"),
+                    __html: linkifyClasses(classData[5], `/${year}/${semester}/`),
                   }}
                 />
               </Typography>

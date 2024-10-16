@@ -178,11 +178,7 @@ export function linkifyClasses(text: string, baseUrl: string): string {
 
   // Replace matched class codes with a link
   return text.replace(classRegex, (match, subject, number) => {
-    const classCode = `${subject} ${number}`;
-    const most_recent_term = `${semesterConfigs[0].semester.toLowerCase()} ${
-      semesterConfigs[0].year
-    }`;
-    const classUrl = `${baseUrl}?class=${classCode}&term=${most_recent_term}`;
+    const classUrl = `${baseUrl}/${subject}/${number}`;
     return `<a style="color: blue; text-decoration: underline; cursor: pointer;" href="${classUrl}">${match}</a>`;
   });
 }
