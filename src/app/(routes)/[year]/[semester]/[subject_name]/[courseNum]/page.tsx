@@ -12,8 +12,6 @@ import {
   CircularProgress,
   ListItemButton,
   Fab,
-  // useMediaQuery,
-  // useTheme,
   Menu,
   MenuItem,
   Typography,
@@ -25,7 +23,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import {
   fetchClassData,
   fetchSubjectFullName,
@@ -40,7 +38,7 @@ import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { Mulish } from "next/font/google";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
-import GPABreakdownDialog from "@/Custom Components/ui/Visual GPA Breakdown/page"; // Import your new GPABreakdownDialog component
+import GPABreakdownDialog from "@/Custom Components/ui/Visual GPA Breakdown/page";
 import { calculateGPA } from "@/lib/commonFunctions";
 
 const mulish = Mulish({
@@ -58,10 +56,8 @@ const termOptions = [
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -70,20 +66,16 @@ const CourseDetails: React.FC = () => {
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
 
-  // const theme = useTheme();
-  // const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const classParam = searchParams.get("class");
+  const params = useParams();
+
+  const { year, semester, subject_name, courseNum } = params;
 
   useEffect(() => {
-    setSelectedTerm(searchParams.get("term"));
-  }, [searchParams]);
+    setBackgroundColor(getRandomBackgroundColor());
+  }, []);
 
   const handleBackClick = () => {
     router.back();
@@ -97,22 +89,11 @@ const CourseDetails: React.FC = () => {
   const handleTermSelect = (term: string) => {
     setSelectedTerm(term);
     setOpenTermDialog(false);
-    updateURLWithNewTerm(term);
-  };
-
-  const updateURLWithNewTerm = (term: string) => {
-    const newParams = new URLSearchParams(Array.from(searchParams.entries()));
-    if (term) {
-      newParams.set("term", term);
-    } else {
-      newParams.delete("term");
-    }
-    const newPath = `${pathname}?${newParams.toString()}`;
-    router.push(newPath);
   };
 
   const fetchProfessorGpaData = async () => {
-    if (classParam) {
+    if (subject_name && courseNum) {
+      const classParam = `${subject_name} ${courseNum}`;
       const response = await fetch(
         `https://uiuc-course-api-production.up.railway.app/professor-stats?class=${classParam}`
       );
@@ -136,32 +117,29 @@ const CourseDetails: React.FC = () => {
   };
 
   useEffect(() => {
-    setBackgroundColor(getRandomBackgroundColor());
-  }, []);
-
-  useEffect(() => {
     const fetchData = async () => {
-      if (classParam) {
+      if (subject_name && courseNum) {
         try {
+          const classParam = `${subject_name} ${courseNum}`;
           await fetchClassData(
             classParam,
-            selectedTerm ?? undefined,
+            selectedTerm ?? `${semester} ${year}`,
             setClassData,
             setSectionsByType,
-            (subject: string, courseNum: string) =>
-              fetchAndGroupSections(subject, courseNum, selectedTerm ?? "")
+            (subj: string, course: string) =>
+              fetchAndGroupSections(subj, course, selectedTerm ?? `${semester} ${year}`)
           );
-          const subject = classParam.split(" ")[0];
-          const fullName = await fetchSubjectFullName(subject);
+          const fullName = await fetchSubjectFullName(subject_name as string);
           setSubjectFullName(fullName);
         } catch (error) {
           console.error("Error fetching class data or sections:", error);
         }
       }
     };
-
+  
+    console.log("FETCHING DATA: ", subject_name, courseNum, semester, year, selectedTerm);
     fetchData();
-  }, [classParam, selectedTerm]);
+  }, [subject_name, courseNum, semester, year, selectedTerm]);
 
   useEffect(() => {
     document.body.style.backgroundColor = "white";
@@ -215,7 +193,7 @@ const CourseDetails: React.FC = () => {
             </Typography>
             <Chip
               icon={<CalendarTodayIcon />}
-              label={selectedTerm}
+              label={selectedTerm ?? `${semester} ${year}`}
               sx={{
                 backgroundColor: "rgba(255, 255, 255, 0.6)",
                 color: "#fff",

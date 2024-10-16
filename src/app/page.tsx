@@ -44,25 +44,27 @@ export default function SearchPage() {
       ToastLib.notifyError("Please enter a search term");
       return;
     }
-
-    // Function to perform a class search for a specific semester
+  
+    console.log("Search Type:", searchType);
+  
     const performClassSearch = async (semester: string, year: string) => {
       const term = `${semester.toLowerCase()}+${year}`;
-      const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(search)}+${term}`;
-      let redirectUrl = `/class?class=${search}&term=${encodeURIComponent(
-        `${semester} ${year}`
-      )}`;
-
+      const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
+        search
+      )}+${term}`;
+      let redirectUrl = `/${year}/${semester}/${encodeURIComponent(search)}`;
+  
       const threeNumbersCheck = /\d{3}/;
-
-      if (!threeNumbersCheck.test(search)) {
-        redirectUrl = `/subject?subject=${search}&term=${encodeURIComponent(
-          `${semester} ${year}`
-        )}`;
+  
+      if (threeNumbersCheck.test(search)) {
+        const [subject, courseNumber] = search.split(" ");
+        redirectUrl = `/${year}/${semester}/${encodeURIComponent(
+          subject
+        )}/${encodeURIComponent(courseNumber)}`;
       }
-
+  
       try {
-        console.log("API URL", apiUrl);
+        console.log("API URL for Class Search:", apiUrl);
         const response = await fetch(apiUrl);
         const data = await response.json();
         if (data && data.length > 0) {
@@ -70,11 +72,11 @@ export default function SearchPage() {
           return true;
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching class data:", error);
       }
       return false;
     };
-
+  
     // Function to perform other types of searches for a specific semester
     const performOtherSearch = async (semester: string, year: string) => {
       const term = `${semester.toLowerCase()}+${year}`;
@@ -83,32 +85,33 @@ export default function SearchPage() {
           case "title":
             return {
               apiUrl: `https://uiuc-course-api-production.up.railway.app/description?query=${search}&term=${term}`,
-              redirectUrl: `/titleSearch?searchQuery=${search}&term=${encodeURIComponent(
-                `${semester} ${year}`
-              )}`,
+              redirectUrl: `/titleSearch?searchQuery=${encodeURIComponent(
+                search
+              )}&term=${encodeURIComponent(`${semester} ${year}`)}`,
             };
           case "professor":
             return {
               apiUrl: `https://uiuc-course-api-production.up.railway.app/prof-search?query=${search}+${term}`,
-              redirectUrl: `/professorSearch?searchQuery=${search}&term=${encodeURIComponent(
-                `${semester} ${year}`
-              )}`,
+              redirectUrl: `/professorSearch?searchQuery=${encodeURIComponent(
+                search
+              )}&term=${encodeURIComponent(`${semester} ${year}`)}`,
             };
           case "crn":
             return {
-              apiUrl: `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${search}`,
+              apiUrl: `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${search}+${term}`,
               redirectUrl: "", // CRN redirect logic remains unchanged
             };
           default:
-            return undefined; // Explicitly return undefined if no case matches
+            return undefined;
         }
       };
-      
-
+  
       const searchConfig = getSearchConfig();
+  
       if (searchConfig) {
         const { apiUrl, redirectUrl } = searchConfig;
         try {
+          console.log("API URL for Other Search:", apiUrl);
           const response = await fetch(apiUrl);
           const data = await response.json();
           if (data && data.length > 0) {
@@ -116,9 +119,9 @@ export default function SearchPage() {
               const subject = data[2];
               const courseNumber = data[3];
               router.push(
-                `/class?class=${subject}+${courseNumber}&term=${encodeURIComponent(
-                  `${semester} ${year}`
-                )}`
+                `/${year}/${semester}/${encodeURIComponent(
+                  subject
+                )}/${encodeURIComponent(courseNumber)}`
               );
             } else {
               router.push(redirectUrl);
@@ -126,35 +129,29 @@ export default function SearchPage() {
             return true;
           }
         } catch (error) {
-          console.error("Error fetching data:", error);
+          console.error("Error fetching other search data:", error);
         }
       }
-
+  
       return false;
     };
-
-    if (searchType === "class") {
-      // Iterate over the semester configurations until we find results
-      for (const { semester, year } of semesterConfigs) {
-        const found = await performClassSearch(semester, year);
-        if (found) {
-          return; // Stop if we found a result
-        }
+  
+    // Handle other search types: class, title, professor, crn
+    for (const { semester, year } of semesterConfigs) {
+      const found = await performClassSearch(semester, year);
+      if (found) {
+        return; // Stop if a result is found
       }
-
-      // If no results are found after checking all semesters
-      ToastLib.notifyError("No results found in any semester");
-    } else {
-      // Iterate over the semester configurations for other search types
-      for (const { semester, year } of semesterConfigs) {
-        const found = await performOtherSearch(semester, year);
-        if (found) {
-          return; // Stop if we found a result
-        }
-      }
-
-      ToastLib.notifyError("No results found in any semester");
     }
+  
+    // Handle title, professor, crn searches
+    for (const { semester, year } of semesterConfigs) {
+      const found = await performOtherSearch(semester, year);
+      if (found) return; // Stop if a result is found
+    }
+  
+    // If no results are found after checking all semesters
+    ToastLib.notifyError("No results found in any semester");
   }, [search, searchType, router]);
 
   return (
