@@ -56,8 +56,13 @@ const termOptions = [
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
+  
   const [subjectFullName, setSubjectFullName] = useState<string>("");
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -66,6 +71,8 @@ const CourseDetails: React.FC = () => {
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
+
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
 
   const router = useRouter();
@@ -127,7 +134,11 @@ const CourseDetails: React.FC = () => {
             setClassData,
             setSectionsByType,
             (subj: string, course: string) =>
-              fetchAndGroupSections(subj, course, selectedTerm ?? `${semester} ${year}`)
+              fetchAndGroupSections(
+                subj,
+                course,
+                selectedTerm ?? `${semester} ${year}`
+              )
           );
           const fullName = await fetchSubjectFullName(subject_name as string);
           setSubjectFullName(fullName);
@@ -136,8 +147,15 @@ const CourseDetails: React.FC = () => {
         }
       }
     };
-  
-    console.log("FETCHING DATA: ", subject_name, courseNum, semester, year, selectedTerm);
+
+    console.log(
+      "FETCHING DATA: ",
+      subject_name,
+      courseNum,
+      semester,
+      year,
+      selectedTerm
+    );
     fetchData();
   }, [subject_name, courseNum, semester, year, selectedTerm]);
 
@@ -297,6 +315,7 @@ const CourseDetails: React.FC = () => {
                   <AccordionDetails
                     sx={{ maxHeight: "400px", overflowY: "auto" }}
                   >
+                    /* eslint-disable @typescript-eslint/no-explicit-any */
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}
