@@ -70,7 +70,7 @@ const SubjectDetails = () => {
   return (
     <div className="bg-gray-50 min-h-screen">
       <header
-        className="bg-blue-600 text-white sticky top-0 z-10"
+        className="bg-blue-600 text-white top-0 z-10"
         style={{
           width: '100%',
           minHeight: minHeight,
