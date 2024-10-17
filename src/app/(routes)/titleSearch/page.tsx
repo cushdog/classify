@@ -44,9 +44,9 @@ const DescriptionDetails = () => {
   }, [searchParams]);
 
   const handleClassClick = (classNumber: string) => {
-    const mostRecentTerm = `${semesterConfigs[0].semester} ${semesterConfigs[0].year}`;
+    const classNumberSplit = classNumber.split(" ");
     router.push(
-      `/class?class=${classNumber}&term=${encodeURIComponent(mostRecentTerm)}`
+      `/${semesterConfigs[0].year}/${semesterConfigs[0].semester}/${classNumberSplit[0]}/${classNumberSplit[1]}`
     );
   };
 
