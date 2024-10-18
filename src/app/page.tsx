@@ -6,14 +6,27 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Search, Book, UserCircle, Hash, ALargeSmall } from "lucide-react";
+import {
+  Search,
+  Book,
+  UserCircle,
+  Hash,
+  ALargeSmall,
+  Star,
+} from "lucide-react";
 import { Mulish } from "next/font/google";
 import { ToastLib } from "@/lib/toast";
-import { semesterConfigs } from "@/lib/commonFunctions";
+import { semesterConfigs } from "@/types/commonTypes";
 
 const mulish = Mulish({ subsets: ["latin"], weight: ["400", "700"] });
 
-type SearchType = "class" | "title" | "professor" | "crn";
+type SearchType =
+  | "class"
+  | "title"
+  | "professor"
+  | "crn"
+  | "reviewByClass"
+  | "reviewByProfessor";
 
 interface SearchConfig {
   apiUrl: string;
@@ -22,19 +35,19 @@ interface SearchConfig {
 
 export default function SearchPage() {
   const [search, setSearch] = useState("");
-  const [searchType, setSearchType] = useState<SearchType>("class");
+  const [searchType, setSearchType] = useState<string>("class");
   const router = useRouter();
 
   useEffect(() => {
     ToastLib.notifyAnnouncement(
       "Announcement: 2025 classes are live! 🎉 If you want to see a past course offering, click/tap on the calendar icon on a class page, and pick the term you wish to view"
     );
-  }, []); // Empty array means this runs once on mount and once on unmount.
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;
 
-    if (searchType === "class") {
+    if (searchType === "class" || searchType === "reviewByClass") {
       value = value.toUpperCase();
       const match = value.match(/^([A-Z]+)(\d{0,3})$/);
       if (match) {
@@ -50,25 +63,27 @@ export default function SearchPage() {
       ToastLib.notifyError("Please enter a search term");
       return;
     }
-
-    // Function to perform a class search for a specific semester
+  
+    console.log("Search Type:", searchType);
+  
     const performClassSearch = async (semester: string, year: string) => {
       const term = `${semester.toLowerCase()}+${year}`;
-      const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(search)}+${term}`;
-      let redirectUrl = `/class?class=${search}&term=${encodeURIComponent(
-        `${semester} ${year}`
-      )}`;
-
+      const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
+        search
+      )}+${term}`;
+      let redirectUrl = `/${year}/${semester}/${encodeURIComponent(search)}`;
+  
       const threeNumbersCheck = /\d{3}/;
-
-      if (!threeNumbersCheck.test(search)) {
-        redirectUrl = `/subject?subject=${search}&term=${encodeURIComponent(
-          `${semester} ${year}`
-        )}`;
+  
+      if (threeNumbersCheck.test(search)) {
+        const [subject, courseNumber] = search.split(" ");
+        redirectUrl = `/${year}/${semester}/${encodeURIComponent(
+          subject
+        )}/${encodeURIComponent(courseNumber)}`;
       }
-
+  
       try {
-        console.log("API URL", apiUrl);
+        console.log("API URL for Class Search:", apiUrl);
         const response = await fetch(apiUrl);
         const data = await response.json();
         if (data && data.length > 0) {
@@ -76,11 +91,60 @@ export default function SearchPage() {
           return true;
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching class data:", error);
       }
       return false;
     };
-
+  
+    // Function to perform review search by class
+    const performReviewSearchByClass = async () => {
+      const apiUrl = `/api/reviews/${encodeURIComponent(search)}`;
+      try {
+        console.log("API URL for Review by Class:", apiUrl);
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        if (data.success && data.reviews.length > 0) {
+          router.push(`/reviews/${encodeURIComponent(search)}`);
+          return true;
+        } else {
+          ToastLib.notifyError("No reviews found for this class");
+        }
+      } catch (error) {
+        console.error("Error fetching class reviews:", error);
+        ToastLib.notifyError("Error fetching reviews");
+      }
+      return false;
+    };
+  
+    // Function to perform review search by professor
+    const performReviewSearchByProfessor = async () => {
+      const apiUrl = `/api/reviews/${encodeURIComponent(search)}`;
+      try {
+        console.log("API URL for Review by Professor:", apiUrl);
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        if (data.success && data.reviews.length > 0) {
+          router.push(`/reviews/${encodeURIComponent(search)}`);
+          return true;
+        } else {
+          ToastLib.notifyError("No reviews found for this professor");
+        }
+      } catch (error) {
+        console.error("Error fetching professor reviews:", error);
+        ToastLib.notifyError("Error fetching reviews");
+      }
+      return false;
+    };
+  
+    // Main search handling logic
+    if (searchType === "reviewByClass") {
+      const reviewFound = await performReviewSearchByClass();
+      if (reviewFound) return;
+    } else if (searchType === "reviewByProfessor") {
+      const reviewFound = await performReviewSearchByProfessor();
+      if (reviewFound) return;
+    }
+  
     // Function to perform other types of searches for a specific semester
     const performOtherSearch = async (semester: string, year: string) => {
       const term = `${semester.toLowerCase()}+${year}`;
@@ -89,32 +153,33 @@ export default function SearchPage() {
           case "title":
             return {
               apiUrl: `https://uiuc-course-api-production.up.railway.app/description?query=${search}&term=${term}`,
-              redirectUrl: `/titleSearch?searchQuery=${search}&term=${encodeURIComponent(
-                `${semester} ${year}`
-              )}`,
+              redirectUrl: `/titleSearch?searchQuery=${encodeURIComponent(
+                search
+              )}&term=${encodeURIComponent(`${semester} ${year}`)}`,
             };
           case "professor":
             return {
               apiUrl: `https://uiuc-course-api-production.up.railway.app/prof-search?query=${search}+${term}`,
-              redirectUrl: `/professorSearch?searchQuery=${search}&term=${encodeURIComponent(
-                `${semester} ${year}`
-              )}`,
+              redirectUrl: `/professorSearch?searchQuery=${encodeURIComponent(
+                search
+              )}&term=${encodeURIComponent(`${semester} ${year}`)}`,
             };
           case "crn":
             return {
-              apiUrl: `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${search}`,
+              apiUrl: `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${search}+${term}`,
               redirectUrl: "", // CRN redirect logic remains unchanged
             };
           default:
-            return undefined; // Explicitly return undefined if no case matches
+            return undefined;
         }
       };
-      
-
+  
       const searchConfig = getSearchConfig();
+  
       if (searchConfig) {
         const { apiUrl, redirectUrl } = searchConfig;
         try {
+          console.log("API URL for Other Search:", apiUrl);
           const response = await fetch(apiUrl);
           const data = await response.json();
           if (data && data.length > 0) {
@@ -122,9 +187,9 @@ export default function SearchPage() {
               const subject = data[2];
               const courseNumber = data[3];
               router.push(
-                `/class?class=${subject}+${courseNumber}&term=${encodeURIComponent(
-                  `${semester} ${year}`
-                )}`
+                `/${year}/${semester}/${encodeURIComponent(
+                  subject
+                )}/${encodeURIComponent(courseNumber)}`
               );
             } else {
               router.push(redirectUrl);
@@ -132,36 +197,32 @@ export default function SearchPage() {
             return true;
           }
         } catch (error) {
-          console.error("Error fetching data:", error);
+          console.error("Error fetching other search data:", error);
         }
       }
-
+  
       return false;
     };
-
-    if (searchType === "class") {
-      // Iterate over the semester configurations until we find results
-      for (const { semester, year } of semesterConfigs) {
-        const found = await performClassSearch(semester, year);
-        if (found) {
-          return; // Stop if we found a result
-        }
+  
+    // Handle other search types: class, title, professor, crn
+    for (const { semester, year } of semesterConfigs) {
+      const found = await performClassSearch(semester, year);
+      if (found) {
+        return; // Stop if a result is found
       }
-
-      // If no results are found after checking all semesters
-      ToastLib.notifyError("No results found in any semester");
-    } else {
-      // Iterate over the semester configurations for other search types
-      for (const { semester, year } of semesterConfigs) {
-        const found = await performOtherSearch(semester, year);
-        if (found) {
-          return; // Stop if we found a result
-        }
-      }
-
-      ToastLib.notifyError("No results found in any semester");
     }
+  
+    // Handle title, professor, crn searches
+    for (const { semester, year } of semesterConfigs) {
+      const found = await performOtherSearch(semester, year);
+      if (found) return; // Stop if a result is found
+    }
+  
+    // If no results are found after checking all semesters
+    ToastLib.notifyError("No results found in any semester");
   }, [search, searchType, router]);
+  
+  
 
   return (
     <div
@@ -182,10 +243,11 @@ export default function SearchPage() {
           onValueChange={(value: string) => setSearchType(value as SearchType)}
           className="w-full mb-4"
         >
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger
               value="class"
               className="data-[state=active]:bg-white data-[state=active]:text-purple-700"
+              onClick={() => setSearchType("class")}
             >
               <Book className="w-4 h-4 mr-2" />
               Class
@@ -193,6 +255,7 @@ export default function SearchPage() {
             <TabsTrigger
               value="title"
               className="data-[state=active]:bg-white data-[state=active]:text-purple-700"
+              onClick={() => setSearchType("title")}
             >
               <ALargeSmall className="w-4 h-4 mr-2" />
               Title
@@ -210,6 +273,13 @@ export default function SearchPage() {
             >
               <Hash className="w-4 h-4 mr-2" />
               CRN
+            </TabsTrigger>
+            <TabsTrigger
+              value="reviews"
+              className="data-[state=active]:bg-white data-[state=active]:text-purple-700"
+            >
+              <Star className="w-4 h-4 mr-2" />
+              Reviews
             </TabsTrigger>
           </TabsList>
 
@@ -231,6 +301,31 @@ export default function SearchPage() {
           <TabsContent value="crn">
             <p className="text-white text-sm mb-2">
               Search for a course by its unique CRN
+            </p>
+          </TabsContent>
+          <TabsContent value="reviews">
+            <Tabs defaultValue="reviewByClass" className="w-full mb-2">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger
+                  value="reviewByClass"
+                  className="data-[state=active]:bg-white data-[state=active]:text-purple-700"
+                  onClick={() => setSearchType("reviewByClass")}
+                >
+                  By Class
+                </TabsTrigger>
+                <TabsTrigger
+                  value="reviewByProfessor"
+                  className="data-[state=active]:bg-white data-[state=active]:text-purple-700"
+                  onClick={() => setSearchType("reviewByProfessor")}
+                >
+                  By Professor
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
+            <p className="text-white text-sm mb-2">
+              {searchType === "reviewByClass"
+                ? "Search for reviews by class (e.g., CS 225)"
+                : "Search for reviews by professor's last name"}
             </p>
           </TabsContent>
         </Tabs>

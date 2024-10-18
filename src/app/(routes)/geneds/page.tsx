@@ -26,9 +26,9 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { ArrowBack, Info, Search } from "@mui/icons-material";
-import { genEdMap } from "@/lib/commonFunctions";
+import { genEdMap } from "@/types/commonTypes";
 import { ToastLib } from "@/lib/toast";
-import { semesterConfigs } from "@/lib/commonFunctions";
+import { semesterConfigs } from "@/types/commonTypes";
 
 interface Course {
   subject: string;

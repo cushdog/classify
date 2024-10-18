@@ -22,13 +22,13 @@ const TutorialPage: React.FC = () => {
 
   const handleSkipBack = () => {
     if (videoRef.current) {
-      videoRef.current.currentTime -= 10; // Skip back 10 seconds
+      videoRef.current.currentTime -= 10;
     }
   };
 
   const handleSkipForward = () => {
     if (videoRef.current) {
-      videoRef.current.currentTime += 10; // Skip forward 10 seconds
+      videoRef.current.currentTime += 10;
     }
   };
 

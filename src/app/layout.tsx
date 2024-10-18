@@ -9,6 +9,7 @@ import RealNavbar from "@/Custom Components/ui/Nav/navbar";
 import Head from "next/head";
 import "./globals.css";
 import ClientOnlyToastContainer from "@/lib/clientToast";
+import AuthProvider from "@/Custom Components/Misc/Auth Provider/page";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -31,17 +32,19 @@ export default function RootLayout({
     <html lang="en" className={mulish.variable}>
       <Head>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
+        
       </Head>
       <body>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <RealNavbar />
-          {children}
-          {/* Add ToastContainer here for react-toastify */}
-          <ClientOnlyToastContainer />
-        </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
+        <AuthProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <RealNavbar />
+            {children}
+            <ClientOnlyToastContainer />
+          </ThemeProvider>
+          <Analytics />
+          <SpeedInsights />
+        </AuthProvider>
       </body>
     </html>
   );

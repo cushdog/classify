@@ -2,8 +2,11 @@
 import React from "react";
 import Link from "next/link";
 import styles from "./Navbar.module.css";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export default function DesktopNavbar() {
+  const { data: session, status } = useSession();
+
   return (
     <header className={`${styles.navbarContainer} sticky top-0 z-50`}>
       <div className={styles.logoContainer}>
@@ -27,6 +30,18 @@ export default function DesktopNavbar() {
           </li>
           <li>
             <Link href="/masterSubjList">Full Catalog</Link>
+          </li>
+          <li>
+            {status === "loading" ? (
+              <span>Loading...</span>
+            ) : session ? (
+              <div>
+                <span>{session.user.name}</span>
+                <button onClick={() => signOut()}>Sign Out</button>
+              </div>
+            ) : (
+              <button onClick={() => signIn("google")}>Sign In with Google</button>
+            )}
           </li>
         </ul>
       </nav>

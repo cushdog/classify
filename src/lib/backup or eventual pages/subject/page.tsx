@@ -1,63 +1,61 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import React, { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import {
   fetchData,
-  Course,
-  semesterConfigs,
   fetchSubjectFullName,
-} from "@/lib/commonFunctions";
-import { Search, ArrowLeft, Info } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Suspense } from "react";
+} from '@/lib/commonFunctions';
+import { Search, ArrowLeft, Info } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Suspense } from 'react';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
+import { Course } from '@/types/commonTypes';
+import { semesterConfigs } from '@/types/commonTypes';
 
 const SubjectDetails = () => {
   const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [subjectFullName, setSubjectFullName] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [subjectFullName, setSubjectFullName] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const term = searchParams.get("term");
+  const params = useParams();
+
+  // Extract dynamic parameters from the URL
+  const { year, semester, subject_name } = params;
 
   useEffect(() => {
-    const fetchSubjectData = async () => {
-      const subjectParam = searchParams.get("subject")?.split(" ");
-      const termParam = searchParams.get("term")?.split(" ");
-      const subj = subjectParam ? subjectParam[0] : "";
-      const term = termParam ? termParam[0] : "";
-      const year = termParam ? termParam[1] : "";
-      const modified_search = `${subj} ${term.toLowerCase()} ${year}`;
-      const url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
-        modified_search
-      )}`;
-      const data = await fetchData(url);
-      const uniqueData = data.filter(
-        (item: Course[], index: number, self: Course[][]) =>
-          index === self.findIndex((t) => t[2] === item[2] && t[3] === item[3])
-      );
-      fetchSubjectFullName(subj.toUpperCase()).then((res) =>
-        setSubjectFullName(res)
-      );
-      setSubjectData(uniqueData);
-    };
+    if (subject_name && year && semester) {
+      const fetchSubjectData = async () => {
+        const modifiedSearch = `${typeof subject_name === 'string' ? subject_name.toUpperCase() : subject_name} ${typeof semester === 'string' ? semester.toLowerCase() : semester} ${year}`;
+        const url = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
+          modifiedSearch
+        )}`;
+        const data = await fetchData(url);
+        const uniqueData = data.filter(
+          (item: Course[], index: number, self: Course[][]) =>
+            index === self.findIndex(
+              (t) => t[2] === item[2] && t[3] === item[3]
+            )
+        );
+        fetchSubjectFullName(typeof subject_name === 'string' ? subject_name.toUpperCase() : '').then((res) =>
+          setSubjectFullName(res)
+        );
+        setSubjectData(uniqueData);
+      };
 
-    fetchSubjectData();
-  }, [searchParams]);
+      fetchSubjectData();
+    }
+  }, [subject_name, year, semester]);
 
   const handleClassClick = (classNumber: string) => {
-    const mostRecentTerm = `${semesterConfigs[0].semester} ${semesterConfigs[0].year}`;
-    router.push(
-      `/class?class=${classNumber}&term=${encodeURIComponent(mostRecentTerm)}`
-    );
+    router.push(`/${year}/${semester}/${subject_name}/${classNumber}`);
   };
 
   const filteredData = subjectData?.filter((course) =>
@@ -71,39 +69,36 @@ const SubjectDetails = () => {
       <header
         className="bg-blue-600 text-white sticky top-0 z-10"
         style={{
-          width: "100%",
-          minHeight: "200px",
-          padding: "20px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
+          width: '100%',
+          minHeight: '200px',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
         }}
       >
-        {/* Back Button at the Top Left */}
         <Button
           onClick={() => router.back()}
           variant="ghost"
           className="text-white hover:bg-blue-700 hidden md:inline-flex"
           style={{
-            alignSelf: "flex-start",
+            alignSelf: 'flex-start',
           }}
         >
           <ArrowLeft className="mr-2 h-4 w-4" /> Back
         </Button>
 
-        {/* Spacer to push the main title to the bottom */}
         <div style={{ flexGrow: 1 }}></div>
 
-        {/* Main Title */}
         <h1
           style={{
-            color: "#fff",
-            fontWeight: "bold",
-            marginTop: "4px",
-            fontSize: "2rem",
+            color: '#fff',
+            fontWeight: 'bold',
+            marginTop: '4px',
+            fontSize: '2rem',
           }}
         >
-          {subjectFullName && subjectFullName} Offerings in {term}
+          {subjectFullName && subjectFullName} Offerings in {semester} {year}
         </h1>
       </header>
 
@@ -119,7 +114,6 @@ const SubjectDetails = () => {
           />
         </div>
 
-        {/* Desktop View */}
         <div className="hidden md:block">
           <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
             <thead className="bg-gray-100">
@@ -150,7 +144,7 @@ const SubjectDetails = () => {
                   <td className="px-6 py-4">
                     {course[22] && Number(course[22]) > 0
                       ? Number(course[22]).toFixed(2)
-                      : "N/A"}
+                      : 'N/A'}
                   </td>
                   <td className="px-6 py-4">
                     <Button
@@ -168,7 +162,6 @@ const SubjectDetails = () => {
           </table>
         </div>
 
-        {/* Mobile View */}
         <div className="md:hidden space-y-4">
           {filteredData?.map((course, index) => (
             <div key={index} className="bg-white rounded-lg shadow-md p-4">
@@ -177,10 +170,10 @@ const SubjectDetails = () => {
               <div className="flex justify-between items-center text-sm text-gray-500 mb-3">
                 <span>Credits: {String(course[6])}</span>
                 <span>
-                  Avg GPA:{" "}
+                  Avg GPA:{' '}
                   {course[22] && Number(course[22]) > 0
                     ? Number(course[22]).toFixed(2)
-                    : "N/A"}
+                    : 'N/A'}
                 </span>
               </div>
               <div className="flex justify-between items-center">
@@ -201,7 +194,9 @@ const SubjectDetails = () => {
                   </DialogContent>
                 </Dialog>
                 <Button
-                  onClick={() => handleClassClick(`${course[2]} ${course[3]}`)}
+                  onClick={() =>
+                    handleClassClick(`${course[2]} ${course[3]}`)
+                  }
                   className="bg-blue-600 text-white hover:bg-blue-700"
                   size="sm"
                 >
