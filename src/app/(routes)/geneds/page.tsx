@@ -129,9 +129,10 @@ const GenEdRecommender = () => {
         const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
           searchTerm
         )}+${term}`;
-        const redirectUrl = `/class?class=${searchTerm}&term=${encodeURIComponent(
-          `${semester} ${year}`
-        )}`;
+
+        const [subject, courseNumber] = searchTerm.split(' '); // Split the searchTerm by space into subject and courseNumber
+        
+        const redirectUrl = `/${year}/${semester}/${subject}/${courseNumber}`;
 
         try {
           console.log("API URL", apiUrl);
