@@ -57,12 +57,10 @@ const termOptions = [
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
 
   const [subjectFullName, setSubjectFullName] = useState<string>("");
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -72,7 +70,6 @@ const CourseDetails: React.FC = () => {
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
   const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
 
   const router = useRouter();
@@ -160,12 +157,12 @@ const CourseDetails: React.FC = () => {
   }, [subject_name, courseNum, semester, year, selectedTerm]);
 
   useEffect(() => {
-    document.body.style.backgroundColor = "white";
+    document.body.style.backgroundColor = "#121212";
   }, []);
 
   return (
     <div className="classPage">
-      <Box sx={{ minHeight: "100vh", backgroundColor: "white" }}>
+      <Box sx={{ minHeight: "100vh", backgroundColor: "#121212" }}>
         <Box
           sx={{
             width: "100%",
@@ -210,10 +207,10 @@ const CourseDetails: React.FC = () => {
               {classData ? `${classData[2]} ${classData[3]}` : "Loading..."}
             </Typography>
             <Chip
-              icon={<CalendarTodayIcon />}
+              icon={<CalendarTodayIcon style={{color: 'white'}} />}
               label={selectedTerm ?? `${semester} ${year}`}
               sx={{
-                backgroundColor: "rgba(255, 255, 255, 0.6)",
+                backgroundColor: "rgba(255, 255, 255, 0.2)",
                 color: "#fff",
                 fontWeight: "bold",
                 padding: "4px 8px",
@@ -245,7 +242,7 @@ const CourseDetails: React.FC = () => {
           </Typography>
         </Box>
 
-        <Box sx={{ padding: "20px" }}>
+        <Box sx={{ padding: "20px", color: "#fff" }}>
           {classData ? (
             <>
               <Typography variant="subtitle1" gutterBottom>
@@ -257,7 +254,7 @@ const CourseDetails: React.FC = () => {
                 />
               </Typography>
 
-              <Divider sx={{ marginY: 2 }} />
+              <Divider sx={{ marginY: 2, backgroundColor: "#424242" }} />
 
               <Box
                 sx={{
@@ -277,7 +274,7 @@ const CourseDetails: React.FC = () => {
                 )}
               </Box>
 
-              <Divider sx={{ marginY: 2 }} />
+              <Divider sx={{ marginY: 2, backgroundColor: "#424242" }} />
 
               {Object.keys(sectionsByType).map((type) => (
                 <Accordion
@@ -313,9 +310,8 @@ const CourseDetails: React.FC = () => {
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails
-                    sx={{ maxHeight: "400px", overflowY: "auto" }}
+                    sx={{ maxHeight: "400px", overflowY: "auto", color: "#fff" }}
                   >
-                    {/* eslint-disable @typescript-eslint/no-explicit-any */}
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}
@@ -335,7 +331,7 @@ const CourseDetails: React.FC = () => {
                 minHeight: "50vh",
               }}
             >
-              <CircularProgress />
+              <CircularProgress sx={{ color: "#fff" }} />
             </Box>
           )}
         </Box>

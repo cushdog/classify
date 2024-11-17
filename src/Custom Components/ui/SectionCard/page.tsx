@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography, Link } from "@mui/material";
-import { useState } from "react";
 import { fetchData } from "@/lib/commonFunctions";
 import {
   Dialog,
@@ -30,17 +29,17 @@ const SectionDetails = ({ section }: { section: any[] }) => {
     if (instructorData.length === 0) {
       setInstructors(["Not available"]);
     } else {
-      const instructors = [];
+      const instructorsList = [];
       for (let i = 0; i < instructorData.length; i += 2) {
         const lastName = instructorData[i];
         const firstInitial = instructorData[i + 1] || "";
         if (lastName.trim().length > 0 && firstInitial.trim().length > 0) {
-          instructors.push(`${lastName}, ${firstInitial}`);
+          instructorsList.push(`${lastName}, ${firstInitial}`);
         } else {
-          instructors.push("Not available");
+          instructorsList.push("Not available");
         }
       }
-      setInstructors(instructors);
+      setInstructors(instructorsList);
     }
   }, [section]);
 
@@ -68,91 +67,108 @@ const SectionDetails = ({ section }: { section: any[] }) => {
     <div>
       <Box
         sx={{
-          border: "1px solid #E0E0E0",
+          border: "1px solid #424242",
           borderRadius: "8px",
           padding: "16px",
           marginBottom: "16px",
-          backgroundColor: "#F9F9F9",
+          backgroundColor: "#303030",
+          color: "#FFFFFF",
         }}
       >
         {/* Section Identifier */}
         <Typography
           variant="body1"
-          sx={{ fontWeight: "bold", marginBottom: "8px" }}
+          sx={{ fontWeight: "bold", marginBottom: "8px", color: "#FFFFFF" }}
         >
           Section {section[7]}{" "}
           {/* section[7] contains the section identifier (e.g., ADB) */}
         </Typography>
 
         {section[25] !== "None" && section[25] ? (
-          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-            <strong>Title:</strong> {section[25]}{" "}
-            {/* section[8] contains the status (e.g., A) */}
+          <Typography
+            variant="body2"
+            sx={{ marginBottom: "4px", color: "#FFFFFF" }}
+          >
+            <strong>Title:</strong> {section[25]}
           </Typography>
         ) : null}
 
         {section[8] ? (
-          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-            <strong>Status:</strong> {section[8]}{" "}
-            {/* section[8] contains the status (e.g., A) */}
+          <Typography
+            variant="body2"
+            sx={{ marginBottom: "4px", color: "#FFFFFF" }}
+          >
+            <strong>Status:</strong> {section[8]}
           </Typography>
         ) : null}
 
         {section[26] ? (
-          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-            <strong>CRN:</strong> {section[26]}{" "}
-            {/* section[8] contains the status (e.g., A) */}
+          <Typography
+            variant="body2"
+            sx={{ marginBottom: "4px", color: "#FFFFFF" }}
+          >
+            <strong>CRN:</strong> {section[26]}
           </Typography>
         ) : null}
 
         {section[15] ? (
-          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-            <strong>Type:</strong> {section[15]}{" "}
-            {/* section[15] contains the type (e.g., Discussion/Recitation) */}
+          <Typography
+            variant="body2"
+            sx={{ marginBottom: "4px", color: "#FFFFFF" }}
+          >
+            <strong>Type:</strong> {section[15]}
           </Typography>
         ) : null}
 
         {section[18] ? (
-          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-            <strong>Days:</strong> {section[18]}{" "}
-            {/* section[18] contains the days (e.g., WF) */}
+          <Typography
+            variant="body2"
+            sx={{ marginBottom: "4px", color: "#FFFFFF" }}
+          >
+            <strong>Days:</strong> {section[18]}
           </Typography>
         ) : null}
 
         {section[16] && section[17] ? (
-          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
-            <strong>Time:</strong> {section[16]} - {section[17]}{" "}
-            {/* section[16] is start time, section[17] is end time */}
+          <Typography
+            variant="body2"
+            sx={{ marginBottom: "4px", color: "#FFFFFF" }}
+          >
+            <strong>Time:</strong> {section[16]} - {section[17]}
           </Typography>
         ) : null}
 
         {section[19] && section[20] ? (
-          <Typography variant="body2" sx={{ marginBottom: "4px" }}>
+          <Typography
+            variant="body2"
+            sx={{ marginBottom: "4px", color: "#FFFFFF" }}
+          >
             <strong>Location:</strong> {section[19]}{" "}
             <Link
               onClick={() => handleLocationClick(section[20])}
-              sx={{ textDecoration: "underline", cursor: "pointer" }}
+              sx={{
+                textDecoration: "underline",
+                cursor: "pointer",
+                color: "#90caf9",
+              }}
             >
-              {section[20]}{" "}
-              {/* section[19] is the room number, section[20] is the building */}
+              {section[20]}
             </Link>
           </Typography>
         ) : null}
 
-        
-
         {/* Instructor */}
-        <Typography variant="body2">
+        <Typography variant="body2" sx={{ color: "#FFFFFF" }}>
           <strong>
             {instructors.length > 1 ? "Instructors:" : "Instructor:"}
           </strong>{" "}
           {instructors.map((instructor: string, index: number) => (
             <React.Fragment key={index}>
               {instructor === "Not available" ? (
-                <strong>{instructor}</strong> // Plain text for "Not available"
+                <strong>{instructor}</strong>
               ) : (
                 <Link
-                  sx={{ cursor: "pointer" }}
+                  sx={{ cursor: "pointer", color: "#90caf9" }}
                   onClick={() => handleProfessorClick(instructor)}
                 >
                   {instructor}
@@ -169,14 +185,14 @@ const SectionDetails = ({ section }: { section: any[] }) => {
           onOpenChange={() => setSelectedProfessor(null)}
         >
           {professorInfo.personal_info ? (
-            <DialogContent>
-              <DialogTitle>
+            <DialogContent style={{ backgroundColor: '#303030', color: 'white' }}>
+              <DialogTitle className="text-white">
                 Professor{" "}
                 {professorInfo.personal_info.first_name +
                   " " +
                   professorInfo.personal_info.last_name}
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="text-white">
                 <p>
                   <strong>Department:</strong>{" "}
                   {professorInfo.personal_info.department}
@@ -214,11 +230,11 @@ const SectionDetails = ({ section }: { section: any[] }) => {
               </DialogDescription>
             </DialogContent>
           ) : (
-            <DialogContent>
-              <DialogTitle>
+            <DialogContent className="bg-[#303030] text-white">
+              <DialogTitle className="text-white">
                 Professor {selectedProfessor} Information
               </DialogTitle>
-              <DialogDescription>
+              <DialogDescription className="text-white">
                 <p>Not available</p>
               </DialogDescription>
             </DialogContent>

@@ -4,6 +4,7 @@ export const reviews = pgTable('reviews', {
   id: serial('id').primaryKey(),
   isClassReview: boolean('is_class_review').notNull(),
   name: text('name').notNull(),
+  email: text('email').notNull(),  // Added email field
   overallRating: integer('overall_rating').notNull(),
   comment: text('comment').notNull(),
   tags: text('tags').array(),

@@ -7,7 +7,7 @@ import DesktopComponent from "../Nav/Desktop Nav/navbarDesktop";
 
 export default function RealNavbar() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme?.breakpoints?.down('sm') || '(max-width:600px)');
+  const isMobile = useMediaQuery('(max-width:1250px)');
 
   return (
     <>

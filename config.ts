@@ -1,6 +1,6 @@
 const DATABASE_URL =
   process.env.DATABASE_URL ||
-  'postgresql://root:root@localhost:5432/CourseExplorer';
+  'postgresql://postgres:cBqMpjvWeoGlrLRAEFgTllCWxmmwprBZ@autorack.proxy.rlwy.net:25685/railway';
 
 export const Config = {
   DATABASE_URL

@@ -18,8 +18,8 @@ export default function MobileNavbar() {
           <img src="/favicon.ico" alt="Logo" className={styles.logo} />
         </Link>
       </div>
-      <button className={styles.menuToggle} onClick={toggleMenu}>
-        {isMenuOpen ? <AiOutlineClose /> : <AiOutlineMenu />}
+      <button className={styles.menuToggle} style={{backgroundColor: "#5A6F8E"}} onClick={toggleMenu}>
+        {isMenuOpen ? <AiOutlineClose style={{color: "white"}} /> : <AiOutlineMenu style={{color: "white"}} />}
       </button>
       <nav className={`${styles.mobileNav} ${isMenuOpen ? styles.open : ""}`}>
         <ul className={styles.mobileNavList}>

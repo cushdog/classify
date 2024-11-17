@@ -14,6 +14,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Box, IconButton, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const ProfessorDescriptionDetails = () => {
   const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
@@ -32,7 +34,9 @@ const ProfessorDescriptionDetails = () => {
 
       const search_term = `${semester.toLowerCase()} ${year}`;
 
-      const url = `https://uiuc-course-api-production.up.railway.app/prof-search?query=${encodeURIComponent(searchQuery)}+${search_term}`;
+      const url = `https://uiuc-course-api-production.up.railway.app/prof-search?query=${encodeURIComponent(
+        searchQuery
+      )}+${search_term}`;
       const data = await fetchData(url);
       const uniqueData = data.filter(
         (item: Course[], index: number, self: Course[][]) =>
@@ -59,44 +63,54 @@ const ProfessorDescriptionDetails = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <header
-        className="bg-blue-600 text-white sticky top-0 z-10"
-        style={{
+      <Box
+        sx={{
           width: "100%",
           minHeight: "200px",
+          backgroundColor: "blue", // Adjust to match 'bg-blue-600' from Tailwind CSS
           padding: "20px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
+          position: "relative",
+          overflow: "hidden",
+          color: "#fff", // Set text color to white
         }}
       >
         {/* Back Button at the Top Left */}
-        <Button
+        <IconButton
           onClick={() => router.back()}
-          variant="ghost"
-          className="text-white hover:bg-blue-700 hidden md:inline-flex"
-          style={{
+          aria-label="Go back"
+          sx={{
+            color: "#fff",
             alignSelf: "flex-start",
+            position: "absolute",
+            top: 20,
+            left: 20,
+            display: { xs: "none", md: "inline-flex" }, // Hide on small screens
           }}
         >
-          <ArrowLeft className="mr-2 h-4 w-4" /> Back
-        </Button>
+          <ArrowBackIcon sx={{ marginRight: "8px" }} />
+          <Typography variant="button" sx={{ textTransform: "none" }}>
+            Back
+          </Typography>
+        </IconButton>
 
         {/* Spacer to push the main title to the bottom */}
-        <div style={{ flexGrow: 1 }}></div>
+        <Box sx={{ flexGrow: 1 }} />
 
         {/* Main Title */}
-        <h1
-          style={{
-            color: "#fff",
+        <Typography
+          variant="h4"
+          sx={{
             fontWeight: "bold",
             marginTop: "4px",
-            fontSize: "2rem",
+            fontSize: { xs: "1.5rem", md: "2rem" }, // Responsive font size
           }}
         >
           Matching Courses from {term}
-        </h1>
-      </header>
+        </Typography>
+      </Box>
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-6 flex items-center">
