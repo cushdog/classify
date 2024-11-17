@@ -41,6 +41,10 @@
     font-size: 17px;
   }
   
-  .navList li a:hover {
+  /* .navList li a:hover {
     color: #0070f3;
-  }
+  } */
+
+  .navList li a:active {
+    color: #0070f3;
+}
