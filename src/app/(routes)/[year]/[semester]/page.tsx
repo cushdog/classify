@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { fetchData } from "@/lib/commonFunctions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,11 +11,13 @@ import { Box, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const SubjectsList = () => {
-  const [subjects, setSubjects] = useState<{ code: string; name: string }[]>(
-    []
-  );
+  const [subjects, setSubjects] = useState<{ code: string; name: string }[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
+  const pathname = usePathname(); // Get the current path
+
+  // Extract year and semester from the pathname
+  const [year, semester] = pathname.split("/").slice(1);
 
   useEffect(() => {
     const fetchSubjects = async () => {
@@ -27,8 +29,15 @@ const SubjectsList = () => {
     fetchSubjects();
   }, []);
 
+  useEffect(() => {
+    // Set the document title dynamically
+    if (year && semester) {
+      document.title = `Browse ${semester} ${year} Offerings`;
+    }
+  }, [year, semester]);
+
   const handleSubjectClick = (subjectCode: string) => {
-    router.push(`/2025/Spring/${subjectCode}`);
+    router.push(`/${year}/${semester}/${subjectCode}`);
   };
 
   const filteredSubjects = subjects.filter((subject) =>
@@ -84,7 +93,7 @@ const SubjectsList = () => {
             fontSize: { xs: "1.5rem", md: "2rem" }, // Responsive font size
           }}
         >
-          Browse Spring 2025 Offerings
+          Browse {semester} {year} Offerings
         </Typography>
       </Box>
 

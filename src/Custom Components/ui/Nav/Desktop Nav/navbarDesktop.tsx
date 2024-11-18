@@ -26,7 +26,7 @@ export default function DesktopNavbar() {
             <Link href="/tutorial">Tutorial</Link>
           </li>
           <li>
-            <Link href="/masterSubjList">Full Catalog</Link>
+            <Link href="/2025/Spring">Full Catalog</Link>
           </li>
         </ul>
       </nav>

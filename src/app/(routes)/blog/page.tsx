@@ -1,14 +1,39 @@
+// app/blog/page.tsx
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from 'next/navigation';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { BookOpen, Clock, Heart, MessageCircle, Share2 } from 'lucide-react';
-import { getAllBlogPosts } from '@/db/Blog/operations';
-import { IBlogPost } from '@/db/Blog/schema';
+
+interface IBlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  content: string;
+  authorId: string;
+  authorName: string;
+  authorRole?: string;
+  authorAvatar?: string;
+  readTime: number;
+  tags: string[];
+  likes: number;
+  comments: number;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
+}
 
 const BlogLayout = () => {
   const [posts, setPosts] = useState<IBlogPost[]>([]);
@@ -18,8 +43,13 @@ const BlogLayout = () => {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const { posts } = await getAllBlogPosts(10, 0);
-        setPosts(posts);
+        const res = await fetch('/api/blog');
+        if (res.ok) {
+          const data = await res.json();
+          setPosts(data.posts);
+        } else {
+          console.error('Failed to fetch posts:', res.statusText);
+        }
       } catch (error) {
         console.error('Failed to fetch posts:', error);
       } finally {
@@ -49,7 +79,7 @@ const BlogLayout = () => {
           <BookOpen className="w-16 h-16 text-slate-400 mx-auto" />
           <h2 className="text-2xl font-bold text-slate-700">No Posts Yet</h2>
           <p className="text-slate-500">Be the first one to share your thoughts!</p>
-          <Button 
+          <Button
             onClick={() => router.push('/blog/new')}
             className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
           >
@@ -70,7 +100,7 @@ const BlogLayout = () => {
           <p className="text-slate-600 text-lg">
             Exploring the frontiers of technology and development
           </p>
-          <Button 
+          <Button
             onClick={() => router.push('/blog/new')}
             className="mt-6 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
           >
@@ -80,8 +110,8 @@ const BlogLayout = () => {
 
         <div className="grid gap-6">
           {posts.map((post) => (
-            <Card 
-              key={post.id} 
+            <Card
+              key={post.id}
               className="group hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
               onClick={() => router.push(`/blog/${post.slug}`)}
             >
@@ -112,7 +142,11 @@ const BlogLayout = () => {
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {post.tags?.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="hover:bg-slate-200 transition-colors">
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="hover:bg-slate-200 transition-colors"
+                    >
                       {tag}
                     </Badge>
                   ))}

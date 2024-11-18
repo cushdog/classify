@@ -1,17 +1,22 @@
+// app/blog/new/page.tsx
+
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { useRouter } from 'next/navigation';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 import { PlusCircle, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const BlogSubmissionForm = () => {
   const [tags, setTags] = useState<string[]>([]);
   const [currentTag, setCurrentTag] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
 
   const handleAddTag = () => {
     if (currentTag && !tags.includes(currentTag)) {
@@ -21,26 +26,59 @@ const BlogSubmissionForm = () => {
   };
 
   const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const formData = new FormData(e.target as HTMLFormElement);
+    const title = formData.get('title')?.toString() || '';
+    const excerpt = formData.get('excerpt')?.toString() || '';
+    const content = formData.get('content')?.toString() || '';
+    const authorName = formData.get('authorName')?.toString() || '';
+    const authorRole = formData.get('authorRole')?.toString() || '';
+    const readTime = formData.get('readTime')?.toString() || '0';
+
+    // Generate a slug from the title
+    const slug = title
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '');
+
     const data = {
-      title: formData.get('title'),
-      excerpt: formData.get('excerpt'),
-      content: formData.get('content'),
-      authorName: formData.get('authorName'),
-      authorRole: formData.get('authorRole'),
-      readTime: formData.get('readTime'),
-      tags: tags,
-      // Generate a slug from the title
-      slug: formData.get('title')?.toString().toLowerCase().replace(/\s+/g, '-').replace(/[^\w\-]+/g, ''),
+      title,
+      excerpt,
+      content,
+      authorId: 'Me', // Replace with actual user ID
+      authorName,
+      authorRole,
+      readTime,
+      tags,
+      slug,
     };
-    
-    // Handle submission logic here
-    console.log(data);
+
+    try {
+      const res = await fetch('/api/blog', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        const newPost = await res.json();
+        // Redirect to the new post page
+        router.push(`/blog/${newPost.slug}`);
+      } else {
+        console.error('Failed to create post:', res.statusText);
+      }
+    } catch (error) {
+      console.error('Failed to create post:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -124,13 +162,14 @@ const BlogSubmissionForm = () => {
                   value={currentTag}
                   onChange={(e) => setCurrentTag(e.target.value)}
                   placeholder="Add a tag"
-                  onKeyPress={(e) => e.key === 'Enter' && handleAddTag()}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      handleAddTag();
+                    }
+                  }}
                 />
-                <Button
-                  type="button"
-                  onClick={handleAddTag}
-                  variant="outline"
-                >
+                <Button type="button" onClick={handleAddTag} variant="outline">
                   <PlusCircle className="w-4 h-4" />
                 </Button>
               </div>
@@ -153,9 +192,10 @@ const BlogSubmissionForm = () => {
 
             <Button
               type="submit"
+              disabled={isSubmitting}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white"
             >
-              Publish Post
+              {isSubmitting ? 'Publishing...' : 'Publish Post'}
             </Button>
           </form>
         </CardContent>

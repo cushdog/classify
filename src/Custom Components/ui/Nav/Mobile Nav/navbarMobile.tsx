@@ -44,7 +44,7 @@ export default function MobileNavbar() {
             </Link>
           </li>
           <li>
-            <Link href="/masterSubjList">Full Catalog</Link>
+            <Link href="/2025/Spring" onClick={toggleMenu}>Full Catalog</Link>
           </li>
         </ul>
       </nav>

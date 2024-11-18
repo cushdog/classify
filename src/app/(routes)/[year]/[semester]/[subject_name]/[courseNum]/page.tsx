@@ -31,6 +31,7 @@ import {
   linkifyClasses,
   lightenColor,
   getRandomBackgroundColor,
+  calculateGPA,
 } from "@/lib/commonFunctions";
 import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -39,7 +40,7 @@ import MenuBookIcon from "@mui/icons-material/MenuBook";
 import { Mulish } from "next/font/google";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
 import GPABreakdownDialog from "@/Custom Components/ui/Visual GPA Breakdown/page";
-import { calculateGPA } from "@/lib/commonFunctions";
+import { PdfPreviewer } from "@/Custom Components/Misc/PDF Preview/page";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -56,11 +57,8 @@ const termOptions = [
 
 const CourseDetails: React.FC = () => {
   const [expanded, setExpanded] = useState<string | false>(false);
-
   const [classData, setClassData] = useState<any | null>(null);
-
   const [subjectFullName, setSubjectFullName] = useState<string>("");
-
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -69,7 +67,8 @@ const CourseDetails: React.FC = () => {
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
-
+  const [openSyllabus, setOpenSyllabus] = useState<boolean>(false);
+  const [openMoreInfoDialog, setOpenMoreInfoDialog] = useState<boolean>(false);
   const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
 
   const router = useRouter();
@@ -120,6 +119,16 @@ const CourseDetails: React.FC = () => {
     setOpenGpaDialog(true);
   };
 
+  const handleViewSyllabusClick = () => {
+    setMenuAnchor(null);
+    setOpenSyllabus(true);
+  };
+
+  const handleViewMoreInfoClick = () => {
+    setMenuAnchor(null);
+    setOpenMoreInfoDialog(true);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       if (subject_name && courseNum) {
@@ -145,14 +154,6 @@ const CourseDetails: React.FC = () => {
       }
     };
 
-    console.log(
-      "FETCHING DATA: ",
-      subject_name,
-      courseNum,
-      semester,
-      year,
-      selectedTerm
-    );
     fetchData();
   }, [subject_name, courseNum, semester, year, selectedTerm]);
 
@@ -207,7 +208,7 @@ const CourseDetails: React.FC = () => {
               {classData ? `${classData[2]} ${classData[3]}` : "Loading..."}
             </Typography>
             <Chip
-              icon={<CalendarTodayIcon style={{color: 'white'}} />}
+              icon={<CalendarTodayIcon style={{ color: "white" }} />}
               label={selectedTerm ?? `${semester} ${year}`}
               sx={{
                 backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -310,7 +311,11 @@ const CourseDetails: React.FC = () => {
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails
-                    sx={{ maxHeight: "400px", overflowY: "auto", color: "#fff" }}
+                    sx={{
+                      maxHeight: "400px",
+                      overflowY: "auto",
+                      color: "#fff",
+                    }}
                   >
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
@@ -336,6 +341,7 @@ const CourseDetails: React.FC = () => {
           )}
         </Box>
 
+        {/* Floating Action Button (Menu) */}
         <Fab
           color="primary"
           aria-label="menu"
@@ -352,14 +358,42 @@ const CourseDetails: React.FC = () => {
           <MenuItem onClick={handleGpaBreakdownClick}>
             View Detailed GPA Breakdown
           </MenuItem>
+          <MenuItem onClick={handleViewSyllabusClick}>View Syllabus</MenuItem>
+          <MenuItem onClick={handleViewMoreInfoClick}>View More Info</MenuItem>
         </Menu>
 
+        {/* GPA Breakdown Dialog */}
         <GPABreakdownDialog
           open={openGpaDialog}
           onClose={() => setOpenGpaDialog(false)}
           professorGpaData={professorGpaData}
         />
 
+        {/* Syllabus PDF Previewer */}
+        {openSyllabus && (
+          <PdfPreviewer
+            pdfUrl="/path/to/your/syllabus.pdf"
+            onClose={() => setOpenSyllabus(false)}
+          />
+        )}
+
+        {/* More Info Dialog */}
+        <Dialog
+          open={openMoreInfoDialog}
+          onClose={() => setOpenMoreInfoDialog(false)}
+          fullWidth
+          maxWidth="md"
+        >
+          <DialogTitle>More Information</DialogTitle>
+          <DialogContent>
+            {/* Replace this with the actual content you want to display */}
+            <Typography variant="body1">
+              Here is more information about the course...
+            </Typography>
+          </DialogContent>
+        </Dialog>
+
+        {/* Term Selection Dialog */}
         <Dialog open={openTermDialog} onClose={() => setOpenTermDialog(false)}>
           <DialogTitle>Select Term</DialogTitle>
           <DialogContent dividers>
