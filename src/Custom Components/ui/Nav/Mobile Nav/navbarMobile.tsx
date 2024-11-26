@@ -1,26 +1,66 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import styles from "./MobileNav.module.css";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { ThemeContext } from "@/lib/ThemeContext"; // Import ThemeContext
+import { Sun, Moon } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function MobileNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { theme, toggleTheme } = useContext(ThemeContext); // Access theme and toggle function
+  const [isDarkMode, setIsDarkMode] = useState(theme === "dark");
+
+  // Update dark mode state whenever theme changes
+  useEffect(() => {
+    setIsDarkMode(theme === "dark");
+  }, [theme]);
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => !prev);
   };
 
   return (
-    <div className={styles.mobileNavbarContainer}>
+    <div
+      className={`${styles.mobileNavbarContainer} ${
+        isDarkMode ? styles.darkMode : styles.lightMode
+      }`}
+    >
+      {/* Logo Section */}
       <div className={styles.logoContainer}>
         <Link href="/">
           <img src="/favicon.ico" alt="Logo" className={styles.logo} />
         </Link>
       </div>
-      <button className={styles.menuToggle} style={{backgroundColor: "#5A6F8E"}} onClick={toggleMenu}>
-        {isMenuOpen ? <AiOutlineClose style={{color: "white"}} /> : <AiOutlineMenu style={{color: "white"}} />}
-      </button>
+
+      {/* Toggle Buttons Section */}
+      <div className={styles.toggleButtonsContainer}>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggleTheme}
+          className="hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+        >
+          {isDarkMode ? (
+            <Sun className="h-5 w-5 text-yellow-500" />
+          ) : (
+            <Moon className="h-5 w-5 text-indigo-600" />
+          )}
+        </Button>
+        <button
+          className={styles.menuToggle}
+          onClick={toggleMenu}
+        >
+          {isMenuOpen ? (
+            <AiOutlineClose style={{ color: "white" }} />
+          ) : (
+            <AiOutlineMenu style={{ color: "white" }} />
+          )}
+        </button>
+      </div>
+
+      {/* Mobile Navigation Menu */}
       <nav className={`${styles.mobileNav} ${isMenuOpen ? styles.open : ""}`}>
         <ul className={styles.mobileNavList}>
           <li>
@@ -44,7 +84,9 @@ export default function MobileNavbar() {
             </Link>
           </li>
           <li>
-            <Link href="/2025/Spring" onClick={toggleMenu}>Full Catalog</Link>
+            <Link href="/2025/Spring" onClick={toggleMenu}>
+              Full Catalog
+            </Link>
           </li>
         </ul>
       </nav>

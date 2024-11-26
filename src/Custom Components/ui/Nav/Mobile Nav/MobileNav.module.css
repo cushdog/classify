@@ -20,7 +20,7 @@
 }
 
 .menuToggle {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(90, 111, 142, 0.9); /* Updated to match inline style */
   border: none;
   font-size: 20px;
   cursor: pointer;
@@ -68,4 +68,30 @@
   
   /* Allow interactions when open */
   pointer-events: auto;
+}
+
+/* Light Mode Styles for Menu */
+.lightMode .mobileNav {
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.lightMode .mobileNavList li a {
+  color: black;
+}
+
+/* Dark Mode Styles for Menu */
+.darkMode .mobileNav {
+  background: rgba(30, 30, 30, 0.98); /* Dark background */
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1); /* Subtle light shadow */
+}
+
+.darkMode .mobileNavList li a {
+  color: #f0f0f0; /* Light text for dark background */
+}
+
+.toggleButtonsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* Space between the toggle button and menu button */
 }

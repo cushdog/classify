@@ -205,7 +205,6 @@ export default function SearchPage() {
               value="professor"
               className="data-[state=active]:bg-white data-[state=active]:text-purple-700"
             >
-              <UserCircle className="w-4 h-4 mr-2" />
               Professor
             </TabsTrigger>
             <TabsTrigger

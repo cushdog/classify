@@ -1,46 +1,55 @@
 .navbarContainer {
-  display: flex;
-  align-items: center;
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  padding: 10px 20px;
-  border-radius: 8px;
-  transition: top 0.3s;
+  background: linear-gradient(to right, #ffffff, #f9fafc);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-  
-  .logoContainer {
-    margin-right: 20px;
+
+.logo {
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.1);
+}
+
+.navList {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navList li {
+  list-style: none;
+}
+
+.navList li a {
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.9rem;
+  transition: color 0.2s ease-in-out;
+}
+
+.navList li a:hover {
+  color: #2563eb; /* Modern blue shade */
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+/* Dropdown Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  
-  .logo {
-    height: 47px;
-    width: auto;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .navbar {
-    display: flex;
-    background: rgba(255, 255, 255, 0.98);
-    border-radius: 50px;
-    padding: 10px 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-  
-  .navList {
-    display: flex;
-    gap: 20px;
-    list-style: none;
-  }
-  
-  .navList li a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-    font-size: 17px;
-  }
-  
-  .navList li a:hover {
-    color: #0070f3;
-  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+

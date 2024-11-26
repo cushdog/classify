@@ -1,228 +1,288 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { fetchData, Course, semesterConfigs } from "@/lib/commonFunctions";
-import { Search, Info } from "lucide-react";
+import { Search, Info, Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Suspense } from "react";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog";
-import { Box, IconButton, Typography } from '@mui/material';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Box, IconButton, Typography } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const DescriptionDetails = () => {
-  const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
-  const [searchTerm, setSearchTerm] = useState("");
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const term = searchParams.get("term") || "";
+    const [subjectData, setSubjectData] = useState<Course[][] | null>(null);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const term = searchParams.get("term") || "";
 
-  useEffect(() => {
-    const fetchDescriptionData = async () => {
-      const searchQuery = searchParams.get("searchQuery") || "";
+    // Initialize dark mode based on localStorage or system preference
+    useEffect(() => {
+        const storedTheme = localStorage.getItem("theme");
+        if (storedTheme) {
+            setIsDarkMode(storedTheme === "dark");
+            if (storedTheme === "dark") {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+        } else {
+            // If no preference is stored, use system preference
+            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            setIsDarkMode(prefersDark);
+            if (prefersDark) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+        }
+    }, []);
 
-      const semester = term.split(" ")[0];
-      const year = term.split(" ")[1];
-
-      const search_term = `${semester.toLowerCase()} ${year}`;
-
-      const url = `https://uiuc-course-api-production.up.railway.app/description?query=${encodeURIComponent(
-        searchQuery
-      )}&term=${search_term}`;
-      const data = await fetchData(url);
-      const uniqueData = data.filter(
-        (item: Course[], index: number, self: Course[][]) =>
-          index === self.findIndex((t) => t[2] === item[2] && t[3] === item[3])
-      );
-      setSubjectData(uniqueData);
+    // Toggle dark mode and update localStorage
+    const toggleDarkMode = () => {
+        if (isDarkMode) {
+            document.documentElement.classList.remove("dark");
+            localStorage.setItem("theme", "light");
+        } else {
+            document.documentElement.classList.add("dark");
+            localStorage.setItem("theme", "dark");
+        }
+        setIsDarkMode(!isDarkMode);
     };
 
-    fetchDescriptionData();
-  }, [searchParams]);
+    useEffect(() => {
+        const fetchDescriptionData = async () => {
+            const searchQuery = searchParams.get("searchQuery") || "";
 
-  const handleClassClick = (classNumber: string) => {
-    const classNumberSplit = classNumber.split(" ");
-    router.push(
-      `/${semesterConfigs[0].year}/${semesterConfigs[0].semester}/${classNumberSplit[0]}/${classNumberSplit[1]}`
+            const semester = term.split(" ")[0];
+            const year = term.split(" ")[1];
+
+            const search_term = `${semester.toLowerCase()} ${year}`;
+
+            const url = `https://uiuc-course-api-production.up.railway.app/description?query=${encodeURIComponent(
+                searchQuery
+            )}&term=${search_term}`;
+            const data = await fetchData(url);
+            const uniqueData = data.filter(
+                (item: Course[], index: number, self: Course[][]) =>
+                    index === self.findIndex((t) => t[2] === item[2] && t[3] === item[3])
+            );
+            setSubjectData(uniqueData);
+        };
+
+        fetchDescriptionData();
+    }, [searchParams, term]);
+
+    const handleClassClick = (classNumber: string) => {
+        const classNumberSplit = classNumber.split(" ");
+        router.push(
+            `/${semesterConfigs[0].year}/${semesterConfigs[0].semester}/${classNumberSplit[0]}/${classNumberSplit[1]}`
+        );
+    };
+
+    const filteredData = subjectData?.filter((course) =>
+        `${course[2]} ${course[3]} ${course[4]}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
     );
-  };
 
-  const filteredData = subjectData?.filter((course) =>
-    `${course[2]} ${course[3]} ${course[4]}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
-
-  return (
-    <div className="bg-gray-50 min-h-screen">
-      <Box
-        sx={{
-          width: "100%",
-          minHeight: "200px",
-          backgroundColor: "blue", // Adjust the background color as needed
-          padding: "20px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Back Button at the Top Left */}
-        <IconButton
-          onClick={() => router.back()}
-          aria-label="Go back"
-          sx={{
-            color: "#fff",
-            alignSelf: "flex-start",
-            position: "absolute",
-            top: 20,
-            left: 20,
-            display: { xs: "none", md: "inline-flex" }, // Hide on small screens
-          }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-
-        {/* Spacer to push the main title to the bottom */}
-        <Box sx={{ flexGrow: 1 }} />
-
-        {/* Main Title */}
-        <Typography
-          variant="h4"
-          sx={{
-            color: "#fff",
-            fontWeight: "bold",
-            marginTop: "4px",
-            fontSize: { xs: "1.5rem", md: "2rem" }, // Responsive font size
-          }}
-        >
-          Matching Courses in {term}
-        </Typography>
-      </Box>
-
-      <main className="container mx-auto px-4 py-8">
-        <div className="mb-6 flex items-center">
-          <Search className="mr-2 h-5 w-5 text-gray-400" />
-          <Input
-            type="text"
-            placeholder="Search courses..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-grow"
-          />
-        </div>
-
-        {/* Desktop View */}
-        <div className="hidden md:block">
-          <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Course
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Title
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Credit Hours
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Avg GPA
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {filteredData?.map((course, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">{`${course[2]} ${course[3]}`}</td>
-                  <td className="px-6 py-4">{String(course[4])}</td>
-                  <td className="px-6 py-4">{String(course[6])}</td>
-                  <td className="px-6 py-4">
-                    {course[22] && Number(course[22]) > 0
-                      ? Number(course[22]).toFixed(2)
-                      : "N/A"}
-                  </td>
-                  <td className="px-6 py-4">
+    return (
+        <div className="bg-gray-50 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100 transition-colors duration-300">
+            <Box
+                sx={{
+                    width: "100%",
+                    minHeight: "200px",
+                    backgroundColor: isDarkMode ? "#1E3A8A" : "#3B82F6", // Darker blue for dark mode, lighter for light mode
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    position: "relative",
+                    overflow: "hidden",
+                    color: "#fff",
+                }}
+                className="transition-colors duration-300"
+            >
+                {/* Dark Mode Toggle Button */}
+                <div className="flex justify-end">
                     <Button
-                      onClick={() =>
-                        handleClassClick(`${course[2]} ${course[3]}`)
-                      }
-                      className="bg-blue-600 text-white hover:bg-blue-700"
+                        onClick={toggleDarkMode}
+                        variant="ghost"
+                        aria-label="Toggle Dark Mode"
+                        className="text-gray-300 hover:text-gray-100"
                     >
-                      Details
+                        {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
                     </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                </div>
 
-        {/* Mobile View */}
-        <div className="md:hidden space-y-4">
-          {filteredData?.map((course, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-md p-4">
-              <h2 className="text-lg font-semibold">{`${course[2]} ${course[3]}`}</h2>
-              <p className="text-gray-600 mb-2">{String(course[4])}</p>
-              <div className="flex justify-between items-center text-sm text-gray-500 mb-3">
-                <span>Credits: {String(course[6])}</span>
-                <span>
-                  Avg GPA:{" "}
-                  {course[22] && Number(course[22]) > 0
-                    ? Number(course[22]).toFixed(2)
-                    : "N/A"}
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button variant="outline" size="sm">
-                      <Info className="h-4 w-4 mr-2" />
-                      Description
-                    </Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{`${course[2]} ${course[3]}: ${String(
-                        course[4]
-                      )}`}</DialogTitle>
-                    </DialogHeader>
-                    <p className="mt-2">{String(course[5])}</p>
-                  </DialogContent>
-                </Dialog>
-                <Button
-                  onClick={() => handleClassClick(`${course[2]} ${course[3]}`)}
-                  className="bg-blue-600 text-white hover:bg-blue-700"
-                  size="sm"
+                {/* Back Button at the Top Left */}
+                <IconButton
+                    onClick={() => router.back()}
+                    aria-label="Go back"
+                    sx={{
+                        color: "#fff",
+                        alignSelf: "flex-start",
+                        position: "absolute",
+                        top: 20,
+                        left: 20,
+                        display: { xs: "none", md: "inline-flex" },
+                    }}
                 >
-                  Details
-                </Button>
-              </div>
-            </div>
-          ))}
+                    <ArrowBackIcon />
+                </IconButton>
+
+                {/* Spacer to push the main title to the bottom */}
+                <Box sx={{ flexGrow: 1 }} />
+
+                {/* Main Title */}
+                <Typography
+                    variant="h4"
+                    sx={{
+                        fontWeight: "bold",
+                        marginTop: "4px",
+                        fontSize: { xs: "1.5rem", md: "2rem" },
+                    }}
+                >
+                    Matching Courses in {term}
+                </Typography>
+            </Box>
+
+            <main className="container mx-auto px-4 py-8">
+                {/* Search Bar */}
+                <div className="mb-6 flex items-center">
+                    <Search className="mr-2 h-5 w-5 text-gray-400 dark:text-gray-300" />
+                    <Input
+                        type="text"
+                        placeholder="Search courses..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="flex-grow bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
+                    />
+                </div>
+
+                {/* Desktop View */}
+                <div className="hidden md:block">
+                    <table className="w-full bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden transition-colors duration-300">
+                        <thead className="bg-gray-100 dark:bg-gray-700">
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                Course
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                Title
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                Credit Hours
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                Avg GPA
+                            </th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                Actions
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                        {filteredData?.map((course, index) => (
+                            <tr
+                                key={index}
+                                className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300"
+                            >
+                                <td className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
+                                    {`${course[2]} ${course[3]}`}
+                                </td>
+                                <td className="px-6 py-4 text-gray-900 dark:text-gray-100">{String(course[4])}</td>
+                                <td className="px-6 py-4 text-gray-900 dark:text-gray-100">{String(course[6])}</td>
+                                <td className="px-6 py-4 text-gray-900 dark:text-gray-100">
+                                    {course[22] && Number(course[22]) > 0 ? Number(course[22]).toFixed(2) : "N/A"}
+                                </td>
+                                <td className="px-6 py-4">
+                                    <Button
+                                        onClick={() => handleClassClick(`${course[2]} ${course[3]}`)}
+                                        className="bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-300"
+                                    >
+                                        Details
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Mobile View */}
+                <div className="md:hidden space-y-4">
+                    {filteredData?.map((course, index) => (
+                        <div
+                            key={index}
+                            className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 transition-colors duration-300"
+                        >
+                            <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                {`${course[2]} ${course[3]}`}
+                            </h2>
+                            <p className="text-gray-600 dark:text-gray-300 mb-2">{String(course[4])}</p>
+                            <div className="flex justify-between items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                <span>Credits: {String(course[6])}</span>
+                                <span>
+                  Avg GPA:{" "}
+                                    {course[22] && Number(course[22]) > 0 ? Number(course[22]).toFixed(2) : "N/A"}
+                </span>
+                            </div>
+                            <div className="flex justify-between items-center">
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="border-gray-500 dark:border-gray-600 text-gray-300 dark:text-gray-400"
+                                        >
+                                            <Info className="h-4 w-4 mr-2" />
+                                            Description
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle className="text-gray-900 dark:text-gray-100">
+                                                {`${course[2]} ${course[3]}: ${String(course[4])}`}
+                                            </DialogTitle>
+                                        </DialogHeader>
+                                        <p className="mt-2 text-gray-700 dark:text-gray-300">{String(course[5])}</p>
+                                    </DialogContent>
+                                </Dialog>
+                                <Button
+                                    onClick={() => handleClassClick(`${course[2]} ${course[3]}`)}
+                                    className="bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors duration-300"
+                                    size="sm"
+                                >
+                                    Details
+                                </Button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </main>
         </div>
-      </main>
-    </div>
-  );
+    );
 };
 
 const DescriptionPage = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <DescriptionDetails />
-    </Suspense>
-  );
+    return (
+        <Suspense
+            fallback={
+                <div className="text-center text-gray-500 dark:text-gray-400">Loading...</div>
+            }
+        >
+            <DescriptionDetails />
+        </Suspense>
+    );
 };
 
 export default DescriptionPage;

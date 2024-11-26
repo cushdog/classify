@@ -10,6 +10,7 @@ import Script from "next/script";
 import "./globals.css";
 import ClientOnlyToastContainer from "@/lib/clientToast";
 import { CSPostHogProvider } from "@/app/providers";
+import { DarkModeProvider } from "@/lib/ThemeContext";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -32,15 +33,20 @@ export default function RootLayout({
     <html lang="en" className={mulish.variable}>
       <head>
         <meta name="viewport" content="width=device-width, user-scalable=no" />
-        <Script defer src="https://cloud.umami.is/script.js" data-website-id="40840f54-8943-4182-b05a-655053624927"></Script>
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="40840f54-8943-4182-b05a-655053624927"
+        ></Script>
       </head>
       <CSPostHogProvider>
+        <DarkModeProvider>
           <Script
-              async
-              src="https://www.googletagmanager.com/gtag/js?id=G-CJX91GC6JV"
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-CJX91GC6JV"
           ></Script>
           <Script id="google-analytics">
-              {`
+            {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
@@ -49,16 +55,17 @@ export default function RootLayout({
           `}
           </Script>
           <body>
-          <ThemeProvider theme={theme}>
+            <ThemeProvider theme={theme}>
               <CssBaseline />
               <RealNavbar />
               {children}
               {/* Add ToastContainer here for react-toastify */}
               <ClientOnlyToastContainer />
-          </ThemeProvider>
-          <Analytics />
-          <SpeedInsights />
+            </ThemeProvider>
+            <Analytics />
+            <SpeedInsights />
           </body>
+        </DarkModeProvider>
       </CSPostHogProvider>
     </html>
   );

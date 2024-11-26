@@ -1,340 +1,357 @@
+// components/GenEdRecommender.tsx
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter } from "next/navigation";
-import {
-  Container,
-  Paper,
-  Grid,
-  Checkbox,
-  FormControlLabel,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Button,
-  IconButton,
-  Tooltip,
-  TextField,
-  InputAdornment,
-  CircularProgress,
-  Alert,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import { styled } from "@mui/system";
-import { ArrowBack, Info, Search } from "@mui/icons-material";
-import { genEdMap } from "@/lib/commonFunctions";
-import { ToastLib } from "@/lib/toast";
-import { semesterConfigs } from "@/lib/commonFunctions";
+import { fetchData, genEdMap, semesterConfigs } from "@/lib/commonFunctions";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-interface Course {
-  subject: string;
-  number: string;
-  title: string;
-  description: string;
-  creditHours: string;
-  gpa: number;
-}
+const GenEdRecommenderList = () => {
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [courses, setCourses] = useState<Course[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const router = useRouter();
+    const theme = useTheme();
 
-const StyledPaper = styled(Paper)(({ theme }) => ({
-  padding: theme.spacing(3),
-  marginTop: theme.spacing(3),
-  marginBottom: theme.spacing(3),
-}));
+    interface Course {
+        subject: string;
+        number: string;
+        title: string;
+        description: string;
+        creditHours: string;
+        gpa: number;
+    }
 
-const GenEdRecommender = () => {
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
-  const router = useRouter();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const categoryOptions = Array.from(
-    new Set(
-      Object.values(genEdMap).flatMap((value) =>
-        value.split(", and ").flatMap((part) =>
-          part
-            .split(" - ")
-            .slice(1)
-            .map((category) => category.replace(" course", "").trim())
+    const categoryOptions = Array.from(
+        new Set(
+            Object.values(genEdMap).flatMap((value) =>
+                value.split(", and ").flatMap((part) =>
+                    part
+                        .split(" - ")
+                        .slice(1)
+                        .map((category) => category.replace(" course", "").trim())
+                )
+            )
         )
-      )
-    )
-  ).sort();
+    ).sort();
 
-  useEffect(() => {
-    if (selectedCategories.length > 0) {
-      fetchCourses(selectedCategories);
-    } else {
-      setCourses([]);
-    }
-  }, [selectedCategories]);
-
-  const fetchCourses = async (categories: string[]) => {
-    setLoading(true);
-    setError(false);
-    try {
-      const matchingKeys = Object.entries(genEdMap)
-        .filter(([, value]) => categories.every((cat) => value.includes(cat)))
-        .map(([key]) => key);
-
-      const promises = matchingKeys.map((key) =>
-        fetch(
-          `https://uiuc-course-api-production.up.railway.app/requirements?query=${encodeURIComponent(
-            genEdMap[key]
-          )}`
-        ).then((response) => response.json())
-      );
-
-      const results = await Promise.all(promises);
-      const allCourses = results.flat();
-
-      const distinctCourses: Course[] = Array.from(
-        new Map(
-          /* eslint-disable @typescript-eslint/no-explicit-any */
-          allCourses.map((course: any) => [
-            `${course[2]} ${course[3]}`,
-            {
-              subject: course[2],
-              number: course[3],
-              title: course[4],
-              description: course[5],
-              creditHours: course[6],
-              gpa: course[22],
-            },
-          ])
-        ).values()
-      );
-
-      setCourses(distinctCourses.sort((a, b) => b.gpa - a.gpa));
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVisitClass = useCallback(
-    async (searchTerm: string) => {
-      // Function to perform a class search for a specific semester
-      const performClassSearch = async (semester: string, year: string) => {
-        const term = `${semester.toLowerCase()}+${year}`;
-        const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
-          searchTerm
-        )}+${term}`;
-        const redirectUrl = `/class?class=${searchTerm}&term=${encodeURIComponent(
-          `${semester} ${year}`
-        )}`;
-
-        try {
-          console.log("API URL", apiUrl);
-          const response = await fetch(apiUrl);
-          const data = await response.json();
-          if (data && data.length > 0) {
-            router.push(redirectUrl);
-            return true;
-          }
-        } catch (error) {
-          console.error("Error fetching data:", error);
+    useEffect(() => {
+        if (selectedCategories.length > 0) {
+            fetchCourses(selectedCategories);
+        } else {
+            setCourses([]);
         }
-        return false;
-      };
+    }, [selectedCategories]);
 
-      // Iterate over the semester configurations until we find results
-      for (const { semester, year } of semesterConfigs) {
-        const found = await performClassSearch(semester, year);
-        if (found) {
-          return; // Stop if we found a result
-        }
-      }
+    const fetchCourses = async (categories: string[]) => {
+        const matchingKeys = Object.entries(genEdMap)
+            .filter(([, value]) => categories.every((cat) => value.includes(cat)))
+            .map(([key]) => key);
 
-      // If no results are found after checking all semesters
-      ToastLib.notifyError("No results found for this class in any semester");
-    },
-    [router]
-  );
+        const promises = matchingKeys.map((key) =>
+            fetchData(
+                `https://uiuc-course-api-production.up.railway.app/requirements?query=${encodeURIComponent(
+                    genEdMap[key]
+                )}`
+            )
+        );
 
-  useEffect(() => {
-    document.body.classList.add("no-background-gradient");
-    return () => {
-      document.body.classList.remove("no-background-gradient");
+        const results = await Promise.all(promises);
+        const allCourses = results.flat();
+
+        const distinctCourses: Course[] = Array.from(
+            new Map(
+                allCourses.map((course: any) => [
+                    `${course[2]} ${course[3]}`,
+                    {
+                        subject: course[2],
+                        number: course[3],
+                        title: course[4],
+                        description: course[5],
+                        creditHours: course[6],
+                        gpa: course[22],
+                    },
+                ])
+            ).values()
+        );
+
+        setCourses(distinctCourses.sort((a, b) => (b.gpa || 0) - (a.gpa || 0)));
     };
-  }, []);
 
-  const handleCategoryChange = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
+    const handleVisitClass = useCallback(
+        async (searchTerm: string) => {
+            // Function to perform a class search for a specific semester
+            const performClassSearch = async (semester: string, year: string) => {
+                const term = `${semester.toLowerCase()}+${year}`;
+                const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
+                    searchTerm
+                )}+${term}`;
+                const redirectUrl = `/class?class=${searchTerm}&term=${encodeURIComponent(
+                    `${semester} ${year}`
+                )}`;
+
+                try {
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        router.push(redirectUrl);
+                        return true;
+                    }
+                } catch (error) {
+                    console.error("Error fetching data:", error);
+                }
+                return false;
+            };
+
+            // Iterate over the semester configurations until we find results
+            for (const { semester, year } of semesterConfigs) {
+                const found = await performClassSearch(semester, year);
+                if (found) {
+                    return; // Stop if we found a result
+                }
+            }
+
+            // If no results are found after checking all semesters
+            alert("No results found for this class in any semester");
+        },
+        [router]
     );
-  };
 
-  const filteredCourses = courses.filter((course) =>
-    `${course.subject} ${course.number} ${course.title}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
-  );
+    const handleCategoryChange = (category: string) => {
+        setSelectedCategories((prev) =>
+            prev.includes(category)
+                ? prev.filter((c) => c !== category)
+                : [...prev, category]
+        );
+    };
 
-  return (
-    <div style={{ backgroundColor: "white", width: "100%", height: "100%" }}>
-      <header
-        className="bg-blue-600 text-white sticky top-0 z-10"
-        style={{
-          width: "100%",
-          minHeight: "200px",
-          padding: "20px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-        }}
-      >
-        <Button
-          onClick={() => router.back()}
-          variant="text"
-          className="text-white hover:bg-blue-700 hidden md:inline-flex"
-          style={{
-            alignSelf: "flex-start",
-          }}
-        >
-          <ArrowBack className="mr-2 h-4 w-4" /> Back
-        </Button>
+    const filteredCourses = courses.filter((course) =>
+        `${course.subject} ${course.number} ${course.title}`
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())
+    );
 
-        <div style={{ flexGrow: 1 }}></div>
+    return (
+        <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
+            <Box
+                sx={{
+                    width: "100%",
+                    minHeight: "200px",
+                    backgroundColor: theme.palette.primary.main,
+                    padding: "20px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    position: "relative",
+                    overflow: "hidden",
+                    color: theme.palette.primary.contrastText,
+                }}
+            >
+                {/* Back Button at the Top Left */}
+                <IconButton
+                    onClick={() => router.back()}
+                    aria-label="Go back"
+                    sx={{
+                        color: theme.palette.primary.contrastText,
+                        alignSelf: "flex-start",
+                        position: "absolute",
+                        top: 20,
+                        left: 20,
+                        display: { xs: "none", md: "inline-flex" }, // Hide on small screens
+                    }}
+                >
+                    <ArrowBackIcon />
+                </IconButton>
 
-        <h1
-          style={{
-            color: "#fff",
-            fontWeight: "bold",
-            marginTop: "4px",
-            fontSize: "2rem",
-          }}
-        >
-          Gen-Ed Course Offerings
-        </h1>
-      </header>
+                {/* Spacer to push the main title to the bottom */}
+                <Box sx={{ flexGrow: 1 }} />
 
-      <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        <StyledPaper elevation={3}>
-          <Grid container spacing={2}>
-            {categoryOptions.map((category) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={category}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={selectedCategories.includes(category)}
-                      onChange={() => handleCategoryChange(category)}
-                      name={category}
-                    />
-                  }
-                  label={category}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </StyledPaper>
+                {/* Main Title */}
+                <Typography
+                    variant="h4"
+                    sx={{
+                        fontWeight: "bold",
+                        marginTop: "4px",
+                        fontSize: { xs: "1.5rem", md: "2rem" }, // Responsive font size
+                        color: theme.palette.primary.contrastText,
+                    }}
+                >
+                    Gen-Ed Course Offerings
+                </Typography>
+            </Box>
 
-        {loading ? (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              margin: "20px 0",
-            }}
-          >
-            <CircularProgress />
-            <p style={{ marginLeft: "10px" }}>
-              Fetching classes, please wait...
-            </p>
-          </div>
-        ) : error ? (
-          <Alert severity="error">
-            Error fetching courses. Please try again later.
-          </Alert>
-        ) : filteredCourses.length === 0 ? (
-          <Alert severity="info">
-            No courses found matching your criteria.
-          </Alert>
-        ) : (
-          <StyledPaper elevation={3}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Search courses by name or code"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
-              }}
-              sx={{ mb: 3 }}
-            />
+            <main className="container mx-auto px-4 py-8">
+                {/* Category Selection */}
+                <div
+                    className="space-y-6 p-6 mb-6 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                    <div className="space-y-2">
+                        <h2 className="text-2xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
+                            Select Categories
+                        </h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                            Choose one or more categories to view available courses
+                        </p>
+                    </div>
 
-            <TableContainer>
-              <Table aria-label="course table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Course</TableCell>
-                    <TableCell>Title</TableCell>
-                    {!isMobile && <TableCell>Credit Hours</TableCell>}
-                    <TableCell>
-                      Avg. GPA
-                      <Tooltip
-                        title="Sorted from highest to lowest"
-                        placement="top"
-                      >
-                        <IconButton size="small">
-                          <Info fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
-                    <TableCell>Actions</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredCourses.map((course) => (
-                    <TableRow key={`${course.subject}${course.number}`}>
-                      <TableCell component="th" scope="row">
-                        {`${course.subject} ${course.number}`}
-                      </TableCell>
-                      <TableCell>{course.title}</TableCell>
-                      {!isMobile && <TableCell>{course.creditHours}</TableCell>}
-                      <TableCell>
-                        {course.gpa ? course.gpa.toFixed(2) : "N/A"}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="small"
-                          onClick={() =>
-                            handleVisitClass(
-                              course.subject + " " + course.number
-                            )
-                          }
-                        >
-                          Visit
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </StyledPaper>
-        )}
-      </Container>
-    </div>
-  );
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                        {categoryOptions.map((category) => (
+                            <button
+                                key={category}
+                                onClick={() => handleCategoryChange(category)}
+                                className={`
+                    relative group px-4 py-2 rounded-xl transition-all duration-200
+                    ${selectedCategories.includes(category)
+                                    ? 'bg-blue-600 dark:bg-blue-500 text-white shadow-md hover:bg-blue-700 dark:hover:bg-blue-600'
+                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                }
+                    hover:scale-105 active:scale-95
+                    flex items-center justify-center text-sm font-medium
+                `}
+                            >
+                                <span className="truncate">{category}</span>
+                                {selectedCategories.includes(category) && (
+                                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span
+                            className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                    </span>
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Search Input */}
+                {courses.length > 0 && (
+                    <div className="mb-6 flex items-center">
+                        <Search className="mr-2 h-5 w-5 text-gray-400 dark:text-gray-300"/>
+                        <Input
+                            type="text"
+                            placeholder="Search courses by name or code"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="flex-grow bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
+                        />
+                    </div>
+                )}
+
+                {/* Courses Table */}
+                {courses.length > 0 ? (
+                    <>
+                        {/* Desktop View */}
+                        <div className="hidden md:block">
+                            <table className="w-full bg-white dark:bg-gray-800 shadow-md rounded-lg overflow-hidden">
+                                <thead className="bg-gray-100 dark:bg-gray-700">
+                                <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                        Course
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                        Title
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                        Credit Hours
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                        Avg. GPA
+                                    </th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
+                                        Actions
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                                {filteredCourses.map((course, index) => (
+                                    <tr
+                                        key={index}
+                                        className="hover:bg-gray-50 dark:hover:bg-gray-700"
+                                    >
+                                        <td className="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
+                                            {`${course.subject} ${course.number}`}
+                                        </td>
+                                        <td className="px-6 py-4 text-gray-900 dark:text-gray-100">
+                                            {course.title}
+                                        </td>
+                                        <td className="px-6 py-4 text-gray-900 dark:text-gray-100">
+                                            {course.creditHours}
+                                        </td>
+                                        <td className="px-6 py-4 text-gray-900 dark:text-gray-100">
+                                            {course.gpa ? course.gpa.toFixed(2) : "N/A"}
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            <Button
+                                                onClick={() =>
+                                                    handleVisitClass(
+                                                        `${course.subject} ${course.number}`
+                                                    )
+                                                }
+                                                className="bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600"
+                                            >
+                                                Visit
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {/* Mobile View */}
+                        <div className="md:hidden space-y-4">
+                            {filteredCourses.map((course, index) => (
+                                <div
+                                    key={index}
+                                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4"
+                                >
+                                    <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                                        {`${course.subject} ${course.number}`}
+                                    </h2>
+                                    <p className="text-gray-600 dark:text-gray-300 mb-2">
+                                        {course.title}
+                                    </p>
+                                    <p className="text-gray-600 dark:text-gray-300 mb-2">
+                                        Credit Hours: {course.creditHours}
+                                    </p>
+                                    <p className="text-gray-600 dark:text-gray-300 mb-2">
+                                        Avg. GPA: {course.gpa ? course.gpa.toFixed(2) : "N/A"}
+                                    </p>
+                                    <Button
+                                        onClick={() =>
+                                            handleVisitClass(`${course.subject} ${course.number}`)
+                                        }
+                                        className="bg-blue-600 dark:bg-blue-500 text-white hover:bg-blue-700 dark:hover:bg-blue-600"
+                                        size="sm"
+                                    >
+                                        Visit
+                                    </Button>
+                                </div>
+                            ))}
+                        </div>
+                    </>
+                ) : selectedCategories.length === 0 ? (
+                    <p className="text-gray-600 dark:text-gray-300">
+                        Please select at least one category to view courses.
+                    </p>
+                ) : (
+                    <p className="text-gray-600 dark:text-gray-300">
+                        No courses found matching your criteria.
+                    </p>
+                )}
+            </main>
+        </div>
+    );
 };
 
-export default GenEdRecommender;
+const GenEdRecommenderPage = () => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <GenEdRecommenderList/>
+        </Suspense>
+    );
+};
+
+export default GenEdRecommenderPage;

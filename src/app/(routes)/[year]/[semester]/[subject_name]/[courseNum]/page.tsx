@@ -1,7 +1,7 @@
 // app/components/CourseDetails.tsx
 "use client";
 
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useContext } from "react";
 import {
   Accordion,
   AccordionSummary,
@@ -46,9 +46,11 @@ import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
 import GPABreakdownDialog from "@/Custom Components/ui/Visual GPA Breakdown/page";
 import { PdfPreviewer } from "@/Custom Components/Misc/PDF Preview/page";
+import { ThemeContext } from "@/lib/ThemeContext";
 
 // Import Mulish font if needed
 import { Mulish } from "next/font/google";
+import {useTheme} from "@mui/material/styles";
 const mulish = Mulish({
   subsets: ["latin"],
   weight: ["400", "700"],
@@ -64,6 +66,10 @@ const termOptions = [
 ];
 
 const CourseDetails: React.FC = () => {
+
+  const theme = useTheme();
+  const alt_theme = useContext(ThemeContext);
+
   // State variables
   const [expanded, setExpanded] = useState<string | false>(false);
   /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -300,7 +306,11 @@ const CourseDetails: React.FC = () => {
 
   return (
     <div className="classPage">
-      <Box sx={{ minHeight: "100vh", backgroundColor: "#121212" }}>
+      <Box
+          className="dark:bg-gray-900 bg-white"
+          sx={{
+        minHeight: "100vh",
+        backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#fff", }}>
         {/* Header Section */}
         <Box
           sx={{
@@ -394,13 +404,14 @@ const CourseDetails: React.FC = () => {
               <Typography variant="subtitle1" gutterBottom>
                 <span
                   style={mulish.style}
+                  className="dark:text-white text-black"
                   dangerouslySetInnerHTML={{
                     __html: linkifyClasses(classData[5], `/${year}/${semester}/`),
                   }}
                 />
               </Typography>
 
-              <Divider sx={{ marginY: 2, backgroundColor: "#424242" }} />
+              <Divider className="dark:bg-gray-600 bg-gray-100" sx={{ marginY: 2 }} />
 
               {/* GPA Section */}
               <Box
@@ -411,7 +422,7 @@ const CourseDetails: React.FC = () => {
                   marginY: 2,
                 }}
               >
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" className="dark:text-white text-black" gutterBottom>
                   Average GPA
                 </Typography>
                 {classData[22] && Number(classData[22]) > 0 ? (
@@ -421,7 +432,7 @@ const CourseDetails: React.FC = () => {
                 )}
               </Box>
 
-              <Divider sx={{ marginY: 2, backgroundColor: "#424242" }} />
+              <Divider className="dark:bg-gray-600 bg-gray-100" sx={{ marginY: 2 }} />
 
               {/* Sections Accordion */}
               {Object.keys(sectionsByType).map((type) => (

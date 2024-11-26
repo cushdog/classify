@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
-import { Clock, Send } from 'lucide-react';
+import {ArrowLeft, Clock, Send} from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import camelcaseKeys from 'camelcase-keys';
 
@@ -138,33 +138,36 @@ const BlogPostPage = () => {
   }
 
   return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 p-6 md:p-8">
+      <div className="min-h-screen bg-slate-100 dark:bg-slate-700 p-6 md:p-8">
         <div className="max-w-4xl mx-auto space-y-8">
-          <Button onClick={() => router.push('/blog')} variant="ghost" className="mb-8">
-            ← Back to Blog
-          </Button>
+          <button
+              onClick={() => router.back()}
+              className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors duration-200"
+          >
+            <ArrowLeft className="h-5 w-5 text-gray-500 dark:text-gray-400"/>
+          </button>
 
-          <article className="bg-white rounded-lg shadow-lg p-8">
+          <article className="bg-white dark:bg-black rounded-lg shadow-lg p-8">
             <header className="mb-8">
-              <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
+              <h1 className="text-4xl font-bold mb-4 dark:text-white">{post.title}</h1>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center space-x-4">
                   <Avatar>
-                    <AvatarImage src={post.authorAvatar ?? '/api/placeholder/32/32'} />
+                    <AvatarImage src={post.authorAvatar ?? '/api/placeholder/32/32'}/>
                     <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">{post.authorName}</p>
-                    <p className="text-sm text-slate-500">{post.authorRole}</p>
+                    <p className="font-medium dark:text-white">{post.authorName}</p>
+                    <p className="text-sm text-slate-500 dark:text-white">{post.authorRole}</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-4 text-sm text-slate-500">
-                <span className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
+                <span className="flex items-center dark:text-white">
+                  <Clock className="w-4 h-4 mr-1 dark:text-white"/>
                   {post.readTime} min read
                 </span>
-                  <span>
-                  {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+                  <span className="dark:text-white">
+                  {formatDistanceToNow(new Date(post.createdAt), {addSuffix: true})}
                 </span>
                 </div>
               </div>
@@ -178,13 +181,13 @@ const BlogPostPage = () => {
             </header>
 
             <div
-                className="prose max-w-none mb-8"
-                dangerouslySetInnerHTML={{ __html: post.content }}
+                className="prose max-w-none mb-8 dark:text-white"
+                dangerouslySetInnerHTML={{__html: post.content}}
             />
           </article>
 
-          <section className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6">Comments</h2>
+          <section className="bg-white dark:bg-black rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-bold mb-6 dark:text-white">Comments</h2>
 
             <div className="mb-6">
               <Textarea
@@ -197,7 +200,7 @@ const BlogPostPage = () => {
                   onClick={handleSubmitComment}
                   className="bg-gradient-to-r from-purple-600 to-blue-600"
               >
-                <Send className="w-4 h-4 mr-2" />
+                <Send className="w-4 h-4 mr-2"/>
                 Post Comment
               </Button>
             </div>
@@ -207,13 +210,13 @@ const BlogPostPage = () => {
                   <Card key={comment.id}>
                     <CardHeader className="flex flex-row items-center space-x-4 pb-2">
                       <Avatar>
-                        <AvatarImage src={comment.authorAvatar ?? '/api/placeholder/32/32'} />
+                        <AvatarImage src={comment.authorAvatar ?? '/api/placeholder/32/32'}/>
                         <AvatarFallback>{comment.authorName.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div>
                         <CardTitle className="text-sm font-medium">{comment.authorName}</CardTitle>
                         <p className="text-xs text-slate-500">
-                          {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+                          {formatDistanceToNow(new Date(comment.createdAt), {addSuffix: true})}
                         </p>
                       </div>
                     </CardHeader>
