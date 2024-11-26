@@ -1,7 +1,7 @@
 // app/components/CourseDetails.tsx
 "use client";
 
-import React, { useState, useEffect, Suspense, useContext } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
   Accordion,
   AccordionSummary,
