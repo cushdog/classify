@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Textarea } from '@/components/ui/textarea';
-import { Clock, Heart, MessageCircle, Share2, Send } from 'lucide-react';
+import { Clock, Send } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 import camelcaseKeys from 'camelcase-keys';
 
