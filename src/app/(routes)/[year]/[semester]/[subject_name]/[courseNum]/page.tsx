@@ -28,7 +28,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import AddIcon from "@mui/icons-material/Add";
+// import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -66,21 +66,25 @@ const termOptions = [
 const CourseDetails: React.FC = () => {
   // State variables
   const [expanded, setExpanded] = useState<string | false>(false);
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>({});
   const [backgroundColor, setBackgroundColor] = useState<string>("#3f51b5");
   const [openTermDialog, setOpenTermDialog] = useState<boolean>(false);
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
 
   // New state variables for syllabus and more info
   const [syllabus, setSyllabus] = useState<string | null>(null);
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [moreInfo, setMoreInfo] = useState<any[]>([]);
-  const [isSyllabusEmpty, setIsSyllabusEmpty] = useState<boolean>(true);
-  const [isMoreInfoEmpty, setIsMoreInfoEmpty] = useState<boolean>(true);
+  // const [isSyllabusEmpty, setIsSyllabusEmpty] = useState<boolean>(true);
+  // const [isMoreInfoEmpty, setIsMoreInfoEmpty] = useState<boolean>(true);
 
   // State for contribution dialog
   const [contributeDialogOpen, setContributeDialogOpen] = useState<boolean>(false);
@@ -143,9 +147,9 @@ const CourseDetails: React.FC = () => {
         .then((data) => {
           if (data?.fileUrl) {
             setSyllabus(data.fileUrl);
-            setIsSyllabusEmpty(false);
+            // setIsSyllabusEmpty(false);
           } else {
-            setIsSyllabusEmpty(true);
+            // setIsSyllabusEmpty(true);
             // Do not open the dialog here
           }
         })
@@ -157,9 +161,9 @@ const CourseDetails: React.FC = () => {
         .then((data) => {
           if (data.posts && data.posts.length > 0) {
             setMoreInfo(data.posts);
-            setIsMoreInfoEmpty(false);
+            // setIsMoreInfoEmpty(false);
           } else {
-            setIsMoreInfoEmpty(true);
+            // setIsMoreInfoEmpty(true);
             // Do not open the dialog here
           }
         })
@@ -257,7 +261,7 @@ const CourseDetails: React.FC = () => {
 
         const data = await response.json();
         setSyllabus(data.fileUrl);
-        setIsSyllabusEmpty(false);
+        // setIsSyllabusEmpty(false);
         setSnackbarMessage("Syllabus uploaded successfully!");
       } else if (contributeType === "moreInfo") {
         const response = await fetch(`/api/moreInfo`, {
@@ -278,7 +282,7 @@ const CourseDetails: React.FC = () => {
 
         const data = await response.json();
         setMoreInfo((prev) => [...prev, data]);
-        setIsMoreInfoEmpty(false);
+        // setIsMoreInfoEmpty(false);
         setSnackbarMessage("Information added successfully!");
       }
 
@@ -460,6 +464,7 @@ const CourseDetails: React.FC = () => {
                       color: "#fff",
                     }}
                   >
+                    {/*eslint-disable  @typescript-eslint/no-explicit-any*/}
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}

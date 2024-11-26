@@ -13,14 +13,11 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BookOpen, Clock, Heart, MessageCircle, Share2 } from 'lucide-react';
+import { BookOpen, Clock } from 'lucide-react';
 import camelcaseKeys from 'camelcase-keys';
 
 interface IBlogPost {

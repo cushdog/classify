@@ -6,7 +6,7 @@ import snakecaseKeys from 'snakecase-keys';
 import camelcaseKeys from 'camelcase-keys';
 
 // Blog Post Operations
-
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 function mapArrayToCamelCase<T>(data: any[]): T[] {
   return data.map(item => camelcaseKeys(item));
 }

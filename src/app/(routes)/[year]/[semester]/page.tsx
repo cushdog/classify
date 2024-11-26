@@ -5,7 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { fetchData } from "@/lib/commonFunctions";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, ArrowLeft } from "lucide-react";
+import { Search } from "lucide-react";
 import { Suspense } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
