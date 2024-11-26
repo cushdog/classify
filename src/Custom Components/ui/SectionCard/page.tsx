@@ -10,21 +10,13 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { ThemeContext } from "@/lib/ThemeContext"; // Import the ThemeContext
-import { useTheme } from "@mui/system";
 
+/* eslint-disable  @typescript-eslint/no-explicit-any */
 const SectionDetails = ({ section }: { section: any[] }) => {
   const { theme } = useContext(ThemeContext); // Get the current theme from context
   const isDarkMode = theme === "dark";
-  
-  const [currentTheme, setCurrentTheme] = useState(theme);
 
-  useEffect(() => {
-      // This will update whenever the theme in context changes
-      console.log("Theme:", theme);
-      setCurrentTheme(theme);
-  }, [theme]);
-
-
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [professorInfo, setProfessorInfo] = useState<any | null>(null);
   const [selectedProfessor, setSelectedProfessor] = useState<string | null>(
       null
@@ -238,6 +230,7 @@ const SectionDetails = ({ section }: { section: any[] }) => {
                       </p>
                       <h4>Recent Ratings:</h4>
                       {professorInfo.recent_ratings.map(
+                        /* eslint-disable  @typescript-eslint/no-explicit-any */
                           (rating: any, index: number) => (
                               <div key={index} className="mb-2">
                                 <p>

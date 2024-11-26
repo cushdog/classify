@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
-import { Search, Book, UserCircle, Hash, ALargeSmall } from "lucide-react";
+import { Search, Book, Hash, ALargeSmall } from "lucide-react";
 import { Mulish } from "next/font/google";
 import { ToastLib } from "@/lib/toast";
 import { semesterConfigs } from "@/lib/commonFunctions";

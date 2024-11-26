@@ -68,7 +68,6 @@ const termOptions = [
 const CourseDetails: React.FC = () => {
 
   const theme = useTheme();
-  const alt_theme = useContext(ThemeContext);
 
   // State variables
   const [expanded, setExpanded] = useState<string | false>(false);

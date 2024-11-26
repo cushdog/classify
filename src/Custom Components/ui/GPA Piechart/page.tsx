@@ -28,7 +28,7 @@ const GPAGauge: React.FC<GPAGaugeProps> = ({ gpa }) => {
   };
 
   const gaugeColor = getColor(gpa);
-  let darkBackgroundColor = theme == "dark" ? "#333333" : "#E0E0E0";
+  const darkBackgroundColor = theme == "dark" ? "#333333" : "#E0E0E0";
 
   return (
     <div style={{ position: 'relative', width: '200px', height: '110px' }}>
