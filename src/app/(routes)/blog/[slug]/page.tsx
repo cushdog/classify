@@ -181,22 +181,6 @@ const BlogPostPage = () => {
                 className="prose max-w-none mb-8"
                 dangerouslySetInnerHTML={{ __html: post.content }}
             />
-
-            <footer className="flex items-center justify-between pt-6 border-t">
-              <div className="flex space-x-4">
-                <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                  <Heart className="w-4 h-4" />
-                  <span>{post.likes}</span>
-                </Button>
-                <Button variant="ghost" size="sm" className="flex items-center space-x-2">
-                  <MessageCircle className="w-4 h-4" />
-                  <span>{comments.length}</span>
-                </Button>
-              </div>
-              <Button variant="ghost" size="sm">
-                <Share2 className="w-4 h-4" />
-              </Button>
-            </footer>
           </article>
 
           <section className="bg-white rounded-lg shadow-lg p-8">
