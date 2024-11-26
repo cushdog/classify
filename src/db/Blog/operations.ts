@@ -1,103 +1,123 @@
 // db/operations.ts
-import { db } from "../db";
-import { eq, desc, ilike, sql } from "drizzle-orm";
-import { IBlogPost, IBlogPostInsert, blogPosts } from "./schema";
-import { IBlogComment, IBlogCommentInsert, blogComments } from "./schema";
+
+import { supabase } from '@/lib/supabaseClient';
+import { IBlogPost, IBlogPostInsert, IBlogComment, IBlogCommentInsert } from './schema';
+import snakecaseKeys from 'snakecase-keys';
+import camelcaseKeys from 'camelcase-keys';
 
 // Blog Post Operations
-export const getBlogPostById = async (id: number): Promise<IBlogPost | null> => {
-  const res = await db.select().from(blogPosts).where(eq(blogPosts.id, id));
-  return res?.[0] ?? null;
-};
 
-export const getBlogPostBySlug = async (slug: string): Promise<IBlogPost | null> => {
-  const res = await db.select().from(blogPosts).where(eq(blogPosts.slug, slug));
-  return res?.[0] ?? null;
-};
+function mapArrayToCamelCase<T>(data: any[]): T[] {
+  return data.map(item => camelcaseKeys(item));
+}
 
 export const getAllBlogPosts = async (
-  limit: number = 10,
-  offset: number = 0
+    limit: number = 10,
+    offset: number = 0
 ): Promise<{ posts: IBlogPost[]; total: number }> => {
-  const posts = await db
-    .select()
-    .from(blogPosts)
-    .orderBy(desc(blogPosts.createdAt))
-    .limit(limit)
-    .offset(offset);
+  const { data: posts, error, count } = await supabase
+      .from('blog_posts')
+      .select('*', { count: 'exact' })
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
-  const [{ count }] = await db
-    .select({ count: sql<number>`count(*)` })
-    .from(blogPosts);
+  if (error) {
+    console.error('Error fetching all blog posts:', error);
+    return { posts: [], total: 0 };
+  }
 
-  return { posts, total: count };
-};
+  const camelCasePosts = mapArrayToCamelCase<IBlogPost>(posts || []);
 
-export const searchBlogPosts = async (
-  query: string,
-  limit: number = 10
-): Promise<IBlogPost[]> => {
-  return db
-    .select()
-    .from(blogPosts)
-    .where(ilike(blogPosts.title, `%${query}%`))
-    .orderBy(desc(blogPosts.createdAt))
-    .limit(limit);
+  return { posts: camelCasePosts, total: count || 0 };
 };
 
 export const insertBlogPost = async (
-  data: IBlogPostInsert
+    data: IBlogPostInsert
 ): Promise<IBlogPost | null> => {
-  const res = await db.insert(blogPosts).values(data).returning();
-  return res?.[0] ?? null;
-};
+  // Map camelCase properties to snake_case
+  const mappedData = snakecaseKeys(data);
 
-export const updateBlogPost = async (
-  id: number,
-  data: Partial<IBlogPost>
-): Promise<IBlogPost | null> => {
-  const res = await db
-    .update(blogPosts)
-    .set({ ...data, updatedAt: new Date() })
-    .where(eq(blogPosts.id, id))
-    .returning();
-  return res?.[0] ?? null;
-};
+  const { data: insertedData, error } = await supabase
+      .from('blog_posts')
+      .insert([mappedData])
+      .select('*')
+      .single();
 
-export const deleteBlogPost = async (id: number): Promise<IBlogPost | null> => {
-  const res = await db
-    .delete(blogPosts)
-    .where(eq(blogPosts.id, id))
-    .returning();
-  return res?.[0] ?? null;
-};
+  if (error) {
+    console.error('Error inserting blog post:', error);
+    return null;
+  }
 
-// Blog Comment Operations
-export const getCommentsByPostId = async (
-  postId: number,
-  limit: number = 10,
-  offset: number = 0
-): Promise<IBlogComment[]> => {
-  return db
-    .select()
-    .from(blogComments)
-    .where(eq(blogComments.postId, postId))
-    .orderBy(desc(blogComments.createdAt))
-    .limit(limit)
-    .offset(offset);
+  // Convert returned data to camelCase
+  const camelCaseData = camelcaseKeys(insertedData);
+
+  return camelCaseData as IBlogPost;
 };
 
 export const insertComment = async (
-  data: IBlogCommentInsert
+    data: IBlogCommentInsert
 ): Promise<IBlogComment | null> => {
-  const res = await db.insert(blogComments).values(data).returning();
-  return res?.[0] ?? null;
+  // Map camelCase properties to snake_case
+  const mappedData = snakecaseKeys(data);
+
+  const { data: insertedData, error } = await supabase
+      .from('blog_comments')
+      .insert([mappedData])
+      .select('*')
+      .single();
+
+  if (error) {
+    console.error('Error inserting comment:', error);
+    return null;
+  }
+
+  // Convert returned data to camelCase
+  const camelCaseData = camelcaseKeys(insertedData);
+
+  return camelCaseData as IBlogComment;
 };
 
-export const deleteComment = async (id: number): Promise<IBlogComment | null> => {
-  const res = await db
-    .delete(blogComments)
-    .where(eq(blogComments.id, id))
-    .returning();
-  return res?.[0] ?? null;
+// Adjust other operations similarly (getBlogPostBySlug, getCommentsByPostId, etc.)
+
+// Example for getBlogPostBySlug
+
+export const getBlogPostBySlug = async (slug: string): Promise<IBlogPost | null> => {
+  const { data, error } = await supabase
+      .from('blog_posts')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+
+  if (error) {
+    console.error('Error fetching blog post by slug:', error);
+    return null;
+  }
+
+  const camelCaseData = camelcaseKeys(data);
+
+  return camelCaseData as IBlogPost;
+};
+
+// Similarly adjust getCommentsByPostId
+
+export const getCommentsByPostId = async (
+    postId: number,
+    limit: number = 10,
+    offset: number = 0
+): Promise<IBlogComment[]> => {
+  const { data, error } = await supabase
+      .from('blog_comments')
+      .select('*')
+      .eq('post_id', postId)
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
+
+  if (error) {
+    console.error('Error fetching comments by post id:', error);
+    return [];
+  }
+
+  const camelCaseData = camelcaseKeys(data);
+
+  return camelCaseData as IBlogComment[];
 };

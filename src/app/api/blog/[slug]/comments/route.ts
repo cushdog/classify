@@ -2,10 +2,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getBlogPostBySlug, insertComment } from '@/db/Blog/operations';
+import { IBlogCommentInsert } from '@/db/Blog/types';
 
 export async function POST(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
+    request: NextRequest,
+    { params }: { params: { slug: string } }
 ) {
   const { slug } = params;
   const { content, authorId, authorName, authorAvatar } = await request.json();
@@ -22,13 +23,14 @@ export async function POST(
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    const commentData = {
+    const commentData: IBlogCommentInsert = {
       postId: post.id,
       content,
       authorId,
       authorName,
       authorAvatar,
     };
+
     const comment = await insertComment(commentData);
     return NextResponse.json(comment);
   } catch (error) {

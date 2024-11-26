@@ -39,8 +39,8 @@ export default function MobileNavbar() {
             </Link>
           </li>
           <li>
-            <Link href="/tutorial" onClick={toggleMenu}>
-              Tutorial
+            <Link href="/blog" onClick={toggleMenu}>
+              Blog
             </Link>
           </li>
           <li>

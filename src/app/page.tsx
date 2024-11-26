@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,19 @@ export default function SearchPage() {
   const [search, setSearch] = useState("");
   const [searchType, setSearchType] = useState<SearchType>("class");
   const router = useRouter();
+
+
+  useEffect(() => {
+    const hasSeenAnnouncement = localStorage.getItem('hasSeenAnnouncement');
+
+    if (!hasSeenAnnouncement) {
+      // Show the announcement
+      ToastLib.notifyAnnouncement("🎉 We've been busy! Checkout the blog page and see what we've been up to!");
+
+      // Set the flag to localStorage to prevent showing it again
+      localStorage.setItem('hasSeenAnnouncement', 'true');
+    }
+  }, []);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value;

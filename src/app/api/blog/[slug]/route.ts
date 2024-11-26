@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getBlogPostBySlug, getCommentsByPostId } from '@/db/Blog/operations';
 
 export async function GET(
-  request: NextRequest,
-  { params }: { params: { slug: string } }
+    request: NextRequest,
+    { params }: { params: { slug: string } }
 ) {
   const { slug } = params;
 

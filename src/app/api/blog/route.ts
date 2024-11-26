@@ -1,7 +1,8 @@
 // app/api/blog/route.ts
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getAllBlogPosts, insertBlogPost } from '@/db/Blog/operations';
+import { insertBlogPost, getAllBlogPosts } from '@/db/Blog/operations';
+import { IBlogPostInsert } from '@/db/Blog/types';
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,35 +15,39 @@ export async function POST(request: NextRequest) {
       authorId,
       authorName,
       authorRole,
+      authorAvatar,
       readTime,
       tags,
       slug,
     } = data;
 
     if (
-      !title ||
-      !excerpt ||
-      !content ||
-      !authorId ||
-      !authorName ||
-      !readTime ||
-      !tags ||
-      !slug
+        !title ||
+        !excerpt ||
+        !content ||
+        !authorId ||
+        !authorName ||
+        !readTime ||
+        !tags ||
+        !slug
     ) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const postData = {
+    const postData: IBlogPostInsert = {
       title,
       excerpt,
       content,
       authorId,
       authorName,
       authorRole,
+      authorAvatar,
       readTime: parseInt(readTime, 10),
       tags,
       slug,
     };
+
+    console.log('postData: ', postData);
 
     const newPost = await insertBlogPost(postData);
 

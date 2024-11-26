@@ -23,7 +23,7 @@ export default function DesktopNavbar() {
             <Link href="/feedback">Feedback</Link>
           </li>
           <li>
-            <Link href="/tutorial">Tutorial</Link>
+            <Link href="/blog">Blog</Link>
           </li>
           <li>
             <Link href="/2025/Spring">Full Catalog</Link>
