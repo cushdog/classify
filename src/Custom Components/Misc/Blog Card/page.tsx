@@ -1,6 +1,6 @@
 // components/BlogCard.tsx
 import React from 'react';
-import { Card, CardContent, CardMedia, Typography, Grid } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material';
 
 type BlogEntry = {
   id: number;
