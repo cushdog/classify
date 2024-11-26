@@ -46,11 +46,12 @@ import SectionDetails from "@/Custom Components/ui/SectionCard/page";
 import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
 import GPABreakdownDialog from "@/Custom Components/ui/Visual GPA Breakdown/page";
 import { PdfPreviewer } from "@/Custom Components/Misc/PDF Preview/page";
-import { ThemeContext } from "@/lib/ThemeContext";
+// import { ThemeContext } from "@/lib/ThemeContext";
 
 // Import Mulish font if needed
 import { Mulish } from "next/font/google";
 import {useTheme} from "@mui/material/styles";
+
 const mulish = Mulish({
   subsets: ["latin"],
   weight: ["400", "700"],
