@@ -48,10 +48,7 @@ export default function MobileNavbar() {
             <Moon className="h-5 w-5 text-indigo-600" />
           )}
         </Button>
-        <button
-          className={styles.menuToggle}
-          onClick={toggleMenu}
-        >
+        <button className={styles.menuToggle} onClick={toggleMenu}>
           {isMenuOpen ? (
             <AiOutlineClose style={{ color: "white" }} />
           ) : (
@@ -86,6 +83,11 @@ export default function MobileNavbar() {
           <li>
             <Link href="/2025/Spring" onClick={toggleMenu}>
               Full Catalog
+            </Link>
+          </li>
+          <li>
+            <Link href="/review" onClick={toggleMenu}>
+              Submit Review
             </Link>
           </li>
         </ul>
