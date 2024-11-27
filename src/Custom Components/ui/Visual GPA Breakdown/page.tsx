@@ -11,11 +11,11 @@ import {
   Card, 
   CardContent, 
   Typography, 
-  IconButton,
-  useTheme
+  // IconButton,
+  // useTheme
 } from '@mui/material';
 import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
-import { Brightness4, Brightness7 } from '@mui/icons-material'; // Icons for toggle
+// import { Brightness4, Brightness7 } from '@mui/icons-material'; // Icons for toggle
 import { ThemeContext } from '@/lib/ThemeContext';
 
 interface ProfessorGpaData {
