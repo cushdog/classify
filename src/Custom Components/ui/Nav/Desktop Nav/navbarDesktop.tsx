@@ -19,12 +19,14 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ThemeContext } from "@/lib/ThemeContext";
 import styles from './Navbar.module.css'; // Import the CSS module
+import { MdRateReview } from "react-icons/md";
 
 const NAV_ITEMS = [
   { label: "Home", href: "/", icon: Home },
   { label: "Full Catalog", href: "/2025/Spring", icon: BookImage },
   { label: "Blog", href: "/blog", icon: Rss },
   { label: "Feedback", href: "/feedback", icon: MessageSquareMore },
+  { label: "Submit Review", href: "/review", icon: MdRateReview },
 ];
 
 const Navbar: React.FC = () => {

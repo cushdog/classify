@@ -50,7 +50,10 @@ import { PdfPreviewer } from "@/Custom Components/Misc/PDF Preview/page";
 
 // Import Mulish font if needed
 import { Mulish } from "next/font/google";
-import {useTheme} from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
+
+import CourseEvaluations from "@/Custom Components/Misc/Evaulations/page";
+import GPADistribution from "@/Custom Components/ui/GPA Distribution/page";
 
 const mulish = Mulish({
   subsets: ["latin"],
@@ -66,17 +69,27 @@ const termOptions = [
   "Spring 2025",
 ];
 
-const CourseDetails: React.FC = () => {
+interface EvaluationData {
+  desireToTake: number;
+  understanding: number;
+  workload: number;
+  expectations: number;
+  increasedInterest: number;
+}
 
+const CourseDetails: React.FC = () => {
   const theme = useTheme();
 
   // State variables
   const [expanded, setExpanded] = useState<string | false>(false);
+  const [gpaExpanded, setGpaExpanded] = useState<string | false>(false);
   /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
   /* eslint-disable  @typescript-eslint/no-explicit-any */
-  const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>({});
+  const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
+    {}
+  );
   const [backgroundColor, setBackgroundColor] = useState<string>("#3f51b5");
   const [openTermDialog, setOpenTermDialog] = useState<boolean>(false);
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
@@ -93,11 +106,15 @@ const CourseDetails: React.FC = () => {
   // const [isMoreInfoEmpty, setIsMoreInfoEmpty] = useState<boolean>(true);
 
   // State for contribution dialog
-  const [contributeDialogOpen, setContributeDialogOpen] = useState<boolean>(false);
-  const [contributeType, setContributeType] = useState<"syllabus" | "moreInfo" | null>(null);
+  const [contributeDialogOpen, setContributeDialogOpen] =
+    useState<boolean>(false);
+  const [contributeType, setContributeType] = useState<
+    "syllabus" | "moreInfo" | null
+  >(null);
   const [contributionTitle, setContributionTitle] = useState<string>("");
   const [contributionText, setContributionText] = useState<string>("");
   const [contributionFile, setContributionFile] = useState<File | null>(null);
+  
 
   // Dialogs for empty states
   const [openSyllabusDialog, setOpenSyllabusDialog] = useState<boolean>(false);
@@ -106,9 +123,19 @@ const CourseDetails: React.FC = () => {
   // Snackbar for feedback
   const [snackbarMessage, setSnackbarMessage] = useState<string | null>(null);
 
+  const [evaluationData, setEvaluationData] = useState<EvaluationData | null>(
+    null
+  );
+
   const router = useRouter();
   const params = useParams();
   const { year, semester, subject_name, courseNum } = params;
+
+  const getGpaColor = (gpa: any) => {
+    if (gpa >= 3.5) return '#4CAF50'; // Green
+    if (gpa < 2.5) return '#F44336';  // Red
+    return '#FFEB3B';                  // Yellow
+  };
 
   // Set random background color on mount
   useEffect(() => {
@@ -135,6 +162,13 @@ const CourseDetails: React.FC = () => {
           );
           const fullName = await fetchSubjectFullName(subject_name as string);
           setSubjectFullName(fullName);
+
+          // Fetch evaluation data
+          const evaluationResponse = await fetch(
+            `/api/reviews?subject=${subject_name}&courseNumber=${courseNum}`
+          );
+          const evaluationJson = await evaluationResponse.json();
+          setEvaluationData(evaluationJson.averages);
         } catch (error) {
           console.error("Error fetching class data or sections:", error);
         }
@@ -307,10 +341,12 @@ const CourseDetails: React.FC = () => {
   return (
     <div className="classPage">
       <Box
-          className="dark:bg-gray-900 bg-white"
-          sx={{
-        minHeight: "100vh",
-        backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#fff", }}>
+        className="dark:bg-gray-900 bg-white"
+        sx={{
+          minHeight: "100vh",
+          backgroundColor: theme.palette.mode === "dark" ? "#121212" : "#fff",
+        }}
+      >
         {/* Header Section */}
         <Box
           sx={{
@@ -406,33 +442,177 @@ const CourseDetails: React.FC = () => {
                   style={mulish.style}
                   className="dark:text-white text-black"
                   dangerouslySetInnerHTML={{
-                    __html: linkifyClasses(classData[5], `/${year}/${semester}/`),
+                    __html: linkifyClasses(
+                      classData[5],
+                      `/${year}/${semester}/`
+                    ),
                   }}
                 />
               </Typography>
 
-              <Divider className="dark:bg-gray-600 bg-gray-100" sx={{ marginY: 2 }} />
+              <Divider
+                className="dark:bg-gray-600 bg-gray-100"
+                sx={{ marginY: 2 }}
+              />
 
               {/* GPA Section */}
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  marginY: 2,
-                }}
-              >
-                <Typography variant="h6" className="dark:text-white text-black" gutterBottom>
-                  Average GPA
-                </Typography>
-                {classData[22] && Number(classData[22]) > 0 ? (
-                  <GPAGauge gpa={calculateGPA(classData[22])} />
-                ) : (
-                  <Typography variant="body1">Not available</Typography>
-                )}
-              </Box>
 
-              <Divider className="dark:bg-gray-600 bg-gray-100" sx={{ marginY: 2 }} />
+              <Box
+      sx={{
+        backgroundColor: "#2E3B55",
+        borderRadius: "12px",
+        overflow: "hidden",
+        boxShadow:
+          gpaExpanded === "gpa"
+            ? "0px 4px 20px rgba(0, 0, 0, 0.25)"
+            : "0px 2px 10px rgba(0, 0, 0, 0.15)",
+        transition: "box-shadow 0.3s ease, transform 0.3s ease",
+        transform: gpaExpanded === "gpa" ? "scale(1.02)" : "scale(1)",
+        marginBottom: 2,
+      }}
+    >
+      <Box
+        onClick={() =>
+          setGpaExpanded(gpaExpanded === "gpa" ? false : "gpa")
+        }
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "16px 24px",
+          backgroundColor:
+            gpaExpanded === "gpa" ? "#1A2338" : "#2E3B55",
+          cursor: "pointer",
+          transition: "background-color 0.3s ease",
+        }}
+      >
+        <Typography
+          variant="h6"
+          sx={{
+            color: getGpaColor(calculateGPA(classData[22])),
+            fontWeight: "bold",
+          }}
+        >
+          GPA Information (Average: {calculateGPA(classData[22]).toFixed(2)})
+        </Typography>
+        <ExpandMoreIcon
+          sx={{
+            color: "#FFFFFF",
+            transform:
+              gpaExpanded === "gpa"
+                ? "rotate(180deg)"
+                : "rotate(0deg)",
+            transition: "transform 0.3s ease",
+          }}
+        />
+      </Box>
+      {gpaExpanded === "gpa" && (
+        <Box
+          sx={{
+            padding: "16px 24px",
+            backgroundColor: "#1A2338",
+            color: "#FFFFFF",
+            // Removed maxHeight and overflowY to display the full component
+            // maxHeight: "400px",
+            // overflowY: "auto",
+          }}
+        >
+          <GPADistribution
+            averageGPA={calculateGPA(classData[22])}
+            apiUrl={`https://uiuc-course-api-production.up.railway.app/gpa-distribution?class=${encodeURIComponent(subject_name + ' ' + courseNum)}`}
+          />
+        </Box>
+      )}
+    </Box>
+
+              <Divider
+                className="dark:bg-gray-600 bg-gray-100"
+                sx={{ marginY: 2 }}
+              />
+
+              {evaluationData ? (
+                <Box
+                  sx={{
+                    backgroundColor: "#2E3B55",
+                    borderRadius: "12px",
+                    overflow: "hidden",
+                    boxShadow:
+                      expanded === "evaluations"
+                        ? "0px 4px 20px rgba(0, 0, 0, 0.25)"
+                        : "0px 2px 10px rgba(0, 0, 0, 0.15)",
+                    transition: "box-shadow 0.3s ease, transform 0.3s ease",
+                    transform:
+                      expanded === "evaluations" ? "scale(1.02)" : "scale(1)",
+                    marginBottom: 2,
+                  }}
+                >
+                  <Box
+                    onClick={() =>
+                      setExpanded(
+                        expanded === "evaluations" ? false : "evaluations"
+                      )
+                    }
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      padding: "16px 24px",
+                      backgroundColor:
+                        expanded === "evaluations" ? "#1A2338" : "#2E3B55",
+                      cursor: "pointer",
+                      transition: "background-color 0.3s ease",
+                    }}
+                  >
+                    <Typography
+                      variant="h6"
+                      sx={{
+                        color: "#FFFFFF",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      Course Evaluations
+                    </Typography>
+                    <ExpandMoreIcon
+                      sx={{
+                        color: "#FFFFFF",
+                        transform:
+                          expanded === "evaluations"
+                            ? "rotate(180deg)"
+                            : "rotate(0deg)",
+                        transition: "transform 0.3s ease",
+                      }}
+                    />
+                  </Box>
+                  {expanded === "evaluations" && (
+                    <Box
+                      sx={{
+                        padding: "16px 24px",
+                        backgroundColor: "#1A2338",
+                        color: "#FFFFFF",
+                        maxHeight: "400px",
+                        overflowY: "auto",
+                      }}
+                    >
+                      <CourseEvaluations evaluationData={evaluationData} />
+                    </Box>
+                  )}
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    minHeight: "100px",
+                  }}
+                >
+                  <CircularProgress />
+                </Box>
+              )}
+
+              <Divider
+                className="dark:bg-gray-600 bg-gray-100"
+                sx={{ marginY: 2 }}
+              />
 
               {/* Sections Accordion */}
               {Object.keys(sectionsByType).map((type) => (
@@ -660,17 +840,25 @@ const CourseDetails: React.FC = () => {
                     <Typography variant="h6" sx={{ color: "#fff" }}>
                       {info.title}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: "rgba(255, 255, 255, 0.6)" }}>
+                    <Typography
+                      variant="caption"
+                      sx={{ color: "rgba(255, 255, 255, 0.6)" }}
+                    >
                       Posted on {new Date(info.datePosted).toLocaleDateString()}
                     </Typography>
-                    <Typography variant="body1" sx={{ color: "#fff", marginTop: 1 }}>
+                    <Typography
+                      variant="body1"
+                      sx={{ color: "#fff", marginTop: 1 }}
+                    >
                       {info.content}
                     </Typography>
                   </ListItem>
                 ))}
               </List>
             ) : (
-              <Typography variant="body1">No additional information available.</Typography>
+              <Typography variant="body1">
+                No additional information available.
+              </Typography>
             )}
           </DialogContent>
         </Dialog>
@@ -697,7 +885,9 @@ const CourseDetails: React.FC = () => {
           onClose={() => setContributeDialogOpen(false)}
         >
           <DialogTitle>
-            {contributeType === "syllabus" ? "Contribute Syllabus" : "Contribute Information"}
+            {contributeType === "syllabus"
+              ? "Contribute Syllabus"
+              : "Contribute Information"}
           </DialogTitle>
           <DialogContent>
             {contributeType === "syllabus" ? (
@@ -711,7 +901,9 @@ const CourseDetails: React.FC = () => {
                     type="file"
                     hidden
                     accept="application/pdf"
-                    onChange={(e) => setContributionFile(e.target.files?.[0] ?? null)}
+                    onChange={(e) =>
+                      setContributionFile(e.target.files?.[0] ?? null)
+                    }
                   />
                 </Button>
                 {contributionFile && (
@@ -746,13 +938,16 @@ const CourseDetails: React.FC = () => {
             )}
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setContributeDialogOpen(false)}>Cancel</Button>
+            <Button onClick={() => setContributeDialogOpen(false)}>
+              Cancel
+            </Button>
             <Button
               variant="contained"
               onClick={handleContribute}
               disabled={
                 (contributeType === "syllabus" && !contributionFile) ||
-                (contributeType === "moreInfo" && (!contributionText.trim() || !contributionTitle.trim()))
+                (contributeType === "moreInfo" &&
+                  (!contributionText.trim() || !contributionTitle.trim()))
               }
             >
               Submit
