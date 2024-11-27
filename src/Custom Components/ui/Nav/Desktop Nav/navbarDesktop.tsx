@@ -1,6 +1,13 @@
 import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
-import { Home, BookImage, Moon, Sun, Rss, MessageSquareMore } from "lucide-react";
+import {
+  Home,
+  BookImage,
+  Moon,
+  Sun,
+  Rss,
+  MessageSquareMore,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
@@ -11,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ThemeContext } from "@/lib/ThemeContext";
+import styles from './Navbar.module.css'; // Import the CSS module
 
 const NAV_ITEMS = [
   { label: "Home", href: "/", icon: Home },
@@ -56,25 +64,19 @@ const Navbar: React.FC = () => {
             {NAV_ITEMS.map((item) => (
               <NavigationMenuItem key={item.label}>
                 <Link href={item.href} passHref legacyBehavior>
-                  <NavigationMenuLink 
-                    className={cn(
-                      "group inline-flex h-10 w-max items-center justify-center",
-                      "rounded-md px-4 py-2 text-sm font-medium",
-                      // Base text colors
-                      "text-white dark:text-gray-100", 
-                      // Hover background
-                      "hover:bg-gray-200 dark:hover:bg-gray-700", 
-                      // Hover text colors
-                      "hover:text-blue-700 dark:hover:text-blue-300", 
-                      "transition-all duration-200 ease-out",
-                      "hover:scale-105"
-                    )}
+                  <NavigationMenuLink
+                    className={`
+                      ${styles.navLink} 
+                      ${isDarkMode ? styles.navLinkDark : ''}
+                      group
+                    `}
                   >
-                    <item.icon className={cn(
-                      "mr-2 h-5 w-5", 
-                      "text-blue-600 dark:text-blue-400",
-                      "group-hover:text-blue-700 dark:group-hover:text-blue-300"
-                    )} />
+                    <item.icon
+                      className={`
+                        ${styles.navLinkIcon} 
+                        ${isDarkMode ? styles.navLinkIconDark : ''}
+                      `}
+                    />
                     {item.label}
                   </NavigationMenuLink>
                 </Link>
