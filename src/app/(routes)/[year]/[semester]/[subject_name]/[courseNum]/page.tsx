@@ -518,7 +518,6 @@ const CourseDetails: React.FC = () => {
           }}
         >
           <GPADistribution
-            averageGPA={calculateGPA(classData[22])}
             apiUrl={`https://uiuc-course-api-production.up.railway.app/gpa-distribution?class=${encodeURIComponent(subject_name + ' ' + courseNum)}`}
           />
         </Box>
