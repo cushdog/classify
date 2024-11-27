@@ -1,48 +1,62 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation'; // Import useRouter from Next.js
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { insertClassReview } from '@/db/Supabase Reviews/operations';
+import { insertProfessor } from '@/db/Supabase Professor Reviews/operations';
 import { IClassReviewInsert } from '@/db/Supabase Reviews/types';
-import { Loader2, Info } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { IProfessorInsert } from '@/db/Supabase Professor Reviews/types';
+// import { Loader2, Info } from 'lucide-react';
+// import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ToastLib } from '@/lib/toast';
 
-// Import your custom toast library
-import { ToastLib } from '@/lib/toast'; // Adjust the import path accordingly
+const { notifySuccess, notifyError } = ToastLib;
 
-const { notifySuccess, notifyError } = ToastLib; // Destructure the necessary functions
-
-const FullPageClassReviewForm: React.FC = () => {
-  const router = useRouter(); // Initialize the router
+const FullPageReviewForm: React.FC = () => {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formData, setFormData] = useState<IClassReviewInsert>({
+  const [formType, setFormType] = useState<'course' | 'professor'>('course');
+  
+  const [courseFormData, setCourseFormData] = useState<IClassReviewInsert>({
     subject: '',
     courseNumber: '',
     desireToTakePercentage: 50,
     understandingPercentage: 50,
     workloadPercentage: 50,
     expectationsPercentage: 50,
-    increasedInterestPercentage: 50
+    increasedInterestPercentage: 50,
   });
 
-  const handleSliderChange = (field: keyof IClassReviewInsert) => (value: number[]) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value[0]
-    }));
-  };
+  const [professorFormData, setProfessorFormData] = useState<IProfessorInsert>({
+    firstName: '',
+    lastName: '',
+    department: '',
+    preparednessPercentage: 50,
+    clarityPercentage: 50,
+    respectPercentage: 50,
+  });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSliderChange =
+    (field: keyof IClassReviewInsert | keyof IProfessorInsert, isCourse: boolean) => (value: number[]) => {
+      if (isCourse) {
+        setCourseFormData((prev) => ({ ...prev, [field]: value[0] }));
+      } else {
+        setProfessorFormData((prev) => ({ ...prev, [field]: value[0] }));
+      }
+    };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, isCourse: boolean) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    if (isCourse) {
+      setCourseFormData((prev) => ({ ...prev, [name]: value }));
+    } else {
+      setProfessorFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,33 +64,53 @@ const FullPageClassReviewForm: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Validate inputs
-      if (!formData.subject || !formData.courseNumber) {
-        notifyError('Please fill in subject and course number');
-        setIsSubmitting(false);
-        return;
-      }
+      if (formType === 'course') {
+        if (!courseFormData.subject || !courseFormData.courseNumber) {
+          notifyError('Please fill in subject and course number');
+          setIsSubmitting(false);
+          return;
+        }
 
-      const result = await insertClassReview(formData);
+        const result = await insertClassReview(courseFormData);
 
-      if (result) {
-        notifySuccess('Review submitted successfully! Redirecting to home page...');
-        // Reset form
-        setFormData({
-          subject: '',
-          courseNumber: '',
-          desireToTakePercentage: 50,
-          understandingPercentage: 50,
-          workloadPercentage: 50,
-          expectationsPercentage: 50,
-          increasedInterestPercentage: 50
-        });
-        // Redirect after a short delay to allow the toast to be visible
-        setTimeout(() => {
+        if (result) {
+          notifySuccess('Course review submitted successfully!');
+          setCourseFormData({
+            subject: '',
+            courseNumber: '',
+            desireToTakePercentage: 50,
+            understandingPercentage: 50,
+            workloadPercentage: 50,
+            expectationsPercentage: 50,
+            increasedInterestPercentage: 50,
+          });
           router.push('/');
-        }, 2000); // 2-second delay
+        } else {
+          notifyError('Failed to submit course review');
+        }
       } else {
-        notifyError('Failed to submit review');
+        if (!professorFormData.firstName || !professorFormData.lastName) {
+          notifyError('Please fill in the professor’s first and last name');
+          setIsSubmitting(false);
+          return;
+        }
+
+        const result = await insertProfessor(professorFormData);
+
+        if (result) {
+          notifySuccess('Professor review submitted successfully!');
+          setProfessorFormData({
+            firstName: '',
+            lastName: '',
+            department: '',
+            preparednessPercentage: 50,
+            clarityPercentage: 50,
+            respectPercentage: 50,
+          });
+          router.push('/');
+        } else {
+          notifyError('Failed to submit professor review');
+        }
       }
     } catch (error) {
       notifyError('An error occurred while submitting the review');
@@ -91,113 +125,121 @@ const FullPageClassReviewForm: React.FC = () => {
       <Card className="w-full max-w-2xl bg-white dark:bg-gray-800 shadow-lg border-none">
         <CardHeader className="text-center bg-blue-600 dark:bg-blue-700 text-white py-8 rounded-t-lg">
           <CardTitle className="text-3xl font-extrabold mb-2">
-            Course Review Submission
+            {formType === 'course' ? 'Course Review Submission' : 'Professor Review Submission'}
           </CardTitle>
           <CardDescription className="text-blue-100">
-            Share your insights to help fellow students make informed decisions
+            Share your insights to help others make informed decisions
           </CardDescription>
         </CardHeader>
         <CardContent className="p-8 space-y-8">
+          <div className="flex justify-center space-x-4 mb-6">
+            <Button onClick={() => setFormType('course')} variant={formType === 'course' ? 'default' : 'ghost'}>
+              Course Review
+            </Button>
+            <Button onClick={() => setFormType('professor')} variant={formType === 'professor' ? 'default' : 'ghost'}>
+              Professor Review
+            </Button>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Subject Code Field */}
-              <div>
-                <Label htmlFor="subject" className="flex items-start text-gray-700 dark:text-gray-300">
-                  <span className="flex-grow">Subject Code</span>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Info 
-                          className="ml-2 h-4 w-4 text-muted-foreground cursor-pointer" 
-                          aria-label="Tooltip information about Subject Code" 
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-gray-800 text-white p-2 rounded-md">
-                        Enter the department code (e.g., CSCI for Computer Science)
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </Label>
+            {formType === 'course' ? (
+              <>
                 <Input
                   id="subject"
                   name="subject"
-                  placeholder="e.g. CSCI"
-                  value={formData.subject}
-                  onChange={handleInputChange}
-                  className="mt-2 uppercase bg-gray-50 dark:bg-gray-700 border border-transparent focus:ring-blue-500 dark:focus:ring-blue-400"
+                  placeholder="Subject Code (e.g. CSCI)"
+                  value={courseFormData.subject}
+                  onChange={(e) => handleInputChange(e, true)}
                   required
                 />
-              </div>
-
-              {/* Course Number Field */}
-              <div>
-                <Label htmlFor="courseNumber" className="flex items-start text-gray-700 dark:text-gray-300">
-                  <span className="flex-grow">Course Number</span>
-                  {/* Placeholder span to align with the Info icon */}
-                  <span className="ml-2 h-4 w-4"></span>
-                </Label>
                 <Input
                   id="courseNumber"
                   name="courseNumber"
-                  placeholder="e.g. 101"
-                  value={formData.courseNumber}
-                  onChange={handleInputChange}
-                  className="mt-2 bg-gray-50 dark:bg-gray-700 border border-transparent focus:ring-blue-500 dark:focus:ring-blue-400"
+                  placeholder="Course Number (e.g. 101)"
+                  value={courseFormData.courseNumber}
+                  onChange={(e) => handleInputChange(e, true)}
                   required
                 />
-              </div>
-            </div>
-
-            <div className="space-y-6">
-              <ReviewSlider
-                label="Desire to Take Again"
-                description="Would you recommend this course to other students?"
-                value={formData.desireToTakePercentage}
-                onChange={handleSliderChange('desireToTakePercentage')}
-              />
+                <ReviewSlider
+                  label="Desire to Take Again"
+                  description="Would you recommend this course to other students?"
+                  value={courseFormData.desireToTakePercentage}
+                  onChange={handleSliderChange('desireToTakePercentage', true)}
+                />
               <ReviewSlider
                 label="Understanding of Material"
                 description="How well did you grasp the course content?"
-                value={formData.understandingPercentage}
-                onChange={handleSliderChange('understandingPercentage')}
+                value={courseFormData.understandingPercentage}
+                onChange={handleSliderChange('understandingPercentage', true)}
               />
               <ReviewSlider
                 label="Workload"
                 description="Assess the time and effort required for this course"
-                value={formData.workloadPercentage}
-                onChange={handleSliderChange('workloadPercentage')}
+                value={courseFormData.workloadPercentage}
+                onChange={handleSliderChange('workloadPercentage', true)}
               />
               <ReviewSlider
                 label="Met Expectations"
                 description="Did the course align with what you expected?"
-                value={formData.expectationsPercentage}
-                onChange={handleSliderChange('expectationsPercentage')}
+                value={courseFormData.expectationsPercentage}
+                onChange={handleSliderChange('expectationsPercentage', true)}
               />
               <ReviewSlider
                 label="Increased Interest in Subject"
                 description="Did this course spark more curiosity about the topic?"
-                value={formData.increasedInterestPercentage}
-                onChange={handleSliderChange('increasedInterestPercentage')}
+                value={courseFormData.increasedInterestPercentage}
+                onChange={handleSliderChange('increasedInterestPercentage', true)}
               />
-            </div>
+              </>
+            ) : (
+              <>
+                <Input
+                  id="firstName"
+                  name="firstName"
+                  placeholder="Professor First Name"
+                  value={professorFormData.firstName}
+                  onChange={(e) => handleInputChange(e, false)}
+                  required
+                />
+                <Input
+                  id="lastName"
+                  name="lastName"
+                  placeholder="Professor Last Name"
+                  value={professorFormData.lastName}
+                  onChange={(e) => handleInputChange(e, false)}
+                  required
+                />
+                <Input
+                  id="department"
+                  name="department"
+                  placeholder="Department (e.g. Computer Science)"
+                  value={professorFormData.department}
+                  onChange={(e) => handleInputChange(e, false)}
+                />
+                <ReviewSlider
+                  label="Preparedness"
+                  description="How prepared was the professor for lectures?"
+                  value={professorFormData.preparednessPercentage}
+                  onChange={handleSliderChange('preparednessPercentage', false)}
+                />
+                <ReviewSlider
+                  label="Respect"
+                  description="How much respect did the professor show to students?"
+                  value={professorFormData.respectPercentage}
+                  onChange={handleSliderChange('respectPercentage', false)}
+                />
+                <ReviewSlider
+                  label="Clarity"
+                  description="How clear were the professor's explanations?"
+                  value={professorFormData.clarityPercentage}
+                  onChange={handleSliderChange('clarityPercentage', false)}
+                />
+              </>
+            )}
 
-            <div className="text-center">
-              <Button 
-                type="submit" 
-                size="lg"
-                className="w-full max-w-md mx-auto bg-blue-600 dark:bg-blue-700 text-white py-2.5 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition-all duration-200 shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Submitting Review...
-                  </>
-                ) : (
-                  'Submit Your Course Review'
-                )}
-              </Button>
-            </div>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Submit Review'}
+            </Button>
           </form>
         </CardContent>
       </Card>
@@ -249,4 +291,4 @@ const ReviewSlider: React.FC<ReviewSliderProps> = ({
   );
 };
 
-export default FullPageClassReviewForm;
+export default FullPageReviewForm;
