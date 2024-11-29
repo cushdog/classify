@@ -128,7 +128,7 @@ const ProfessorSearchResults = () => {
             fontSize: { xs: "1.5rem", md: "2rem" },
           }}
         >
-          Professors Matching "{searchQuery}"
+          Professors Matching &quot;{searchQuery}&quot;
         </Typography>
       </Box>
 

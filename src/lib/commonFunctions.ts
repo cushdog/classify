@@ -223,6 +223,7 @@ export const fetchAndGroupSections = async (
   SUBJECT: string,
   COURSE_NUM: string,
   term: string
+  /*eslint-disable  @typescript-eslint/no-explicit-any*/
 ): Promise<Record<string, any[][]>> => {
   // Extract semester and year from the term parameter
   const [semester, year] = term.split(" ");

@@ -131,6 +131,7 @@ const CourseDetails: React.FC = () => {
   const params = useParams();
   const { year, semester, subject_name, courseNum } = params;
 
+  /*eslint-disable  @typescript-eslint/no-explicit-any*/
   const getGpaColor = (gpa: any) => {
     if (gpa >= 3.5) return '#4CAF50'; // Green
     if (gpa < 2.5) return '#F44336';  // Red

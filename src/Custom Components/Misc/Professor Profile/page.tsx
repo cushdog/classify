@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { BookOpen, ArrowLeft } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { IProfessor } from "@/db/Supabase Professor Reviews/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

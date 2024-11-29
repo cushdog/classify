@@ -224,6 +224,8 @@ async function fetchClassesTaught(lastName: string): Promise<ClassTaught[]> {
       )}`;
 
       const response = await fetch(url, { cache: "no-store" });
+
+      /*eslint-disable  @typescript-eslint/no-explicit-any*/
       const data: any[] = await response.json();
 
       data.forEach((item) => {
@@ -277,6 +279,8 @@ async function fetchAverageGPA(
     )}`,
     { cache: "no-store" }
   );
+
+  /*eslint-disable  @typescript-eslint/no-explicit-any*/
   const data: any[] = await response.json();
 
   const professorData = data.find((d) =>
@@ -311,6 +315,7 @@ async function fetchClassInfo(
   )}`;
   const response = await fetch(url, { cache: "no-store" });
 
+  /*eslint-disable  @typescript-eslint/no-explicit-any*/
   const data: any[] = await response.json();
 
   let title = "No title available.";
