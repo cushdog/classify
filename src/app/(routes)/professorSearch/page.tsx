@@ -1,7 +1,7 @@
 // components/ProfessorSearchResults.tsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -207,4 +207,12 @@ const ProfessorSearchResults = () => {
   );
 };
 
-export default ProfessorSearchResults;
+const ProfPage = () => {
+  return (
+      <Suspense fallback={<div>Loading...</div>}>
+          <ProfessorSearchResults />
+      </Suspense>
+  );
+};
+
+export default ProfPage;
