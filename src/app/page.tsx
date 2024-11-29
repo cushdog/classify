@@ -285,7 +285,7 @@ export default function SearchPage() {
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
             onClick={handleSearch}
-            className="w-full bg-white text-purple-700 rounded-full py-2 font-semibold hover:bg-white/90 transition-colors duration-200"
+            className="w-full bg-white text-purple-700 dark:bg-homePageButtonDark rounded-full py-2 font-semibold hover:bg-white/90 transition-colors duration-200"
           >
             <Search className="mr-2" size={18} />
             Search
