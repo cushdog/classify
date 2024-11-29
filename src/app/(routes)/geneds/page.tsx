@@ -91,9 +91,8 @@ const GenEdRecommenderList = () => {
                 const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
                     searchTerm
                 )}+${term}`;
-                const redirectUrl = `/class?class=${searchTerm}&term=${encodeURIComponent(
-                    `${semester} ${year}`
-                )}`;
+                const [className, classNumber] = searchTerm.split(" ");
+                const redirectUrl = `/${year}/${semester}/${className}/${classNumber}`;
 
                 try {
                     const response = await fetch(apiUrl);

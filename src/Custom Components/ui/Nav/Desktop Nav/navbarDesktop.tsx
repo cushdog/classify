@@ -2,40 +2,110 @@ import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import {
   Home,
-  BookImage,
+  BookOpen,
   Moon,
   Sun,
   Rss,
-  MessageSquareMore,
+  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-} from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { ThemeContext } from "@/lib/ThemeContext";
-import styles from './Navbar.module.css'; // Import the CSS module
-import { MdRateReview } from "react-icons/md";
+import styles from './Navbar.module.css';
+
+interface DropdownProps {
+  isOpen: boolean;
+  items: { label: string; href: string }[];
+  isDarkMode: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}
+
+const Dropdown: React.FC<DropdownProps> = ({
+  isOpen,
+  items,
+  isDarkMode,
+  onMouseEnter,
+  onMouseLeave,
+}) => {
+  if (!isOpen) return null;
+
+  return (
+    <div
+      className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-56 py-3 bg-white dark:bg-gray-900 rounded-md shadow-lg z-50"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {items.map((item) => (
+        <Link
+          key={item.href}
+          href={item.href}
+          className={cn(
+            "block px-6 py-3 text-base transition-colors duration-200",
+            isDarkMode
+              ? "text-white hover:bg-gray-800"
+              : "text-gray-700 hover:bg-gray-100"
+          )}
+        >
+          {item.label}
+        </Link>
+      ))}
+    </div>
+  );
+};
 
 const NAV_ITEMS = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Full Catalog", href: "/2025/Spring", icon: BookImage },
-  { label: "Blog", href: "/blog", icon: Rss },
-  { label: "Feedback", href: "/feedback", icon: MessageSquareMore },
-  { label: "Submit Review", href: "/review", icon: MdRateReview },
+  {
+    label: "Home",
+    href: "/",
+    icon: Home,
+  },
+  {
+    label: "Courses",
+    href: "/2025/Spring",
+    icon: BookOpen,
+    children: [
+      { label: "Full Catalog", href: "/2025/Spring" },
+      { label: "Gen-Eds", href: "/geneds" },
+      { label: "Submit Review", href: "/review" },
+    ],
+  },
+  {
+    label: "Other",
+    href: "/",
+    icon: Rss,
+    children: [
+      { label: "Blog", href: "/blog" },
+      { label: "Feedback", href: "/feedback" },
+    ],
+  },
 ];
 
 const Navbar: React.FC = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [isDarkMode, setIsDarkMode] = useState(theme === "dark");
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setIsDarkMode(theme === "dark");
   }, [theme]);
+
+  const handleMouseEnter = (label: string) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+    setOpenDropdown(label);
+  };
+
+  const handleMouseLeave = () => {
+    const timeout = setTimeout(() => {
+      setOpenDropdown(null);
+    }, 300); // 300ms delay before closing
+    setTimeoutId(timeout);
+  };
 
   return (
     <nav
@@ -46,48 +116,72 @@ const Navbar: React.FC = () => {
       )}
     >
       <div className="flex justify-between items-center px-4 py-2">
-        {/* Logo Area */}
-        <Link
-          href="/"
-          className="text-2xl font-bold text-gray-800 dark:text-white hover:text-blue-600 transition-colors"
-        >
+        <Link href="/">
           <Image
             src="/favicon.ico"
-            alt="MyPortfolio Logo"
+            alt="Logo"
             width={40}
             height={40}
             className="h-10 w-10"
           />
         </Link>
 
-        {/* Navigation Menu */}
-        <NavigationMenu className="flex-grow">
-          <NavigationMenuList className="flex justify-center space-x-2">
-            {NAV_ITEMS.map((item) => (
-              <NavigationMenuItem key={item.label}>
-                <Link href={item.href} passHref legacyBehavior>
-                  <NavigationMenuLink
-                    className={`
-                      ${styles.navLink} 
-                      ${isDarkMode ? styles.navLinkDark : ''}
-                      group
-                    `}
-                  >
-                    <item.icon
-                      className={`
-                        ${styles.navLinkIcon} 
-                        ${isDarkMode ? styles.navLinkIconDark : ''}
-                      `}
-                    />
-                    {item.label}
-                  </NavigationMenuLink>
+        <div className="flex justify-center space-x-2 flex-grow">
+          {NAV_ITEMS.map((item) => (
+            <div
+              key={item.label}
+              className="relative"
+              onMouseEnter={() => handleMouseEnter(item.label)}
+              onMouseLeave={handleMouseLeave}
+            >
+              {item.children ? (
+                <button
+                  className={cn(
+                    styles.navLink,
+                    isDarkMode ? styles.navLinkDark : '',
+                    "flex items-center"
+                  )}
+                >
+                  <item.icon
+                    className={cn(
+                      styles.navLinkIcon,
+                      isDarkMode ? styles.navLinkIconDark : ''
+                    )}
+                  />
+                  {item.label}
+                  <ChevronDown className="ml-1 h-4 w-4" />
+                </button>
+              ) : (
+                <Link
+                  href={item.href}
+                  className={cn(
+                    styles.navLink,
+                    isDarkMode ? styles.navLinkDark : '',
+                    "flex items-center"
+                  )}
+                >
+                  <item.icon
+                    className={cn(
+                      styles.navLinkIcon,
+                      isDarkMode ? styles.navLinkIconDark : ''
+                    )}
+                  />
+                  {item.label}
                 </Link>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-        </NavigationMenu>
+              )}
+              {item.children && (
+                <Dropdown
+                  isOpen={openDropdown === item.label}
+                  items={item.children}
+                  isDarkMode={isDarkMode}
+                  onMouseEnter={() => handleMouseEnter(item.label)}
+                  onMouseLeave={handleMouseLeave}
+                />
+              )}
+            </div>
+          ))}
+        </div>
 
-        {/* Theme Toggle & CTA */}
         <div className="flex items-center space-x-4">
           <Button
             variant="ghost"

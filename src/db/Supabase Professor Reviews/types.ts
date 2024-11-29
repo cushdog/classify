@@ -1,3 +1,4 @@
+
 export interface IProfessor {
     id: number;
     createdAt: string;
@@ -8,9 +9,9 @@ export interface IProfessor {
     preparednessPercentage: number;
     clarityPercentage: number;
     respectPercentage: number;
-}
-
-export interface IProfessorInsert {
+  }
+  
+  export interface IProfessorInsert {
     firstName: string;
     lastName: string;
     email?: string;
@@ -18,4 +19,4 @@ export interface IProfessorInsert {
     preparednessPercentage: number;
     clarityPercentage: number;
     respectPercentage: number;
-}
+  }

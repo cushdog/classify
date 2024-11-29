@@ -1,35 +1,38 @@
 // app/api/professors/route.ts
+
 import { NextRequest, NextResponse } from 'next/server';
 import {
+  getProfessorByName,
   insertProfessor,
-  getAllProfessors,
-  getProfessorsByDepartment,
-  getProfessorStatsByDepartment,
 } from '@/db/Supabase Professor Reviews/operations';
 import { IProfessorInsert } from '@/db/Supabase Professor Reviews/types';
 
-// Handle GET requests (fetch professors or stats)
+// Handle GET requests (fetch professor by name)
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const department = searchParams.get('department');
-  const limit = parseInt(searchParams.get('limit') || '10', 10);
-  const offset = parseInt(searchParams.get('offset') || '0', 10);
+  const firstName = searchParams.get('firstName');
+  const lastName = searchParams.get('lastName');
+
+  if (!firstName || !lastName) {
+    return NextResponse.json(
+      { error: 'First name and last name are required' },
+      { status: 400 }
+    );
+  }
 
   try {
-    if (department) {
-      // If a department is specified, return stats and professors
-      const { averages, total } = await getProfessorStatsByDepartment(department);
-      const { professors } = await getProfessorsByDepartment(department, limit, offset);
+    const professor = await getProfessorByName(firstName, lastName);
 
-      return NextResponse.json({ professors, averages, total });
-    } else {
-      // Otherwise, fetch all professors with pagination
-      const { professors, total } = await getAllProfessors(limit, offset);
-
-      return NextResponse.json({ professors, total });
+    if (!professor) {
+      return NextResponse.json(
+        { error: 'Professor not found' },
+        { status: 404 }
+      );
     }
+
+    return NextResponse.json(professor);
   } catch (error) {
-    console.error('Error fetching professors:', error);
+    console.error('Error fetching professor:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

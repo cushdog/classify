@@ -493,7 +493,11 @@ const CourseDetails: React.FC = () => {
             fontWeight: "bold",
           }}
         >
-          GPA Information (Average: {calculateGPA(classData[22]).toFixed(2)})
+          {
+            classData[22] === "N/A" || calculateGPA(classData[22]) === 0.00
+              ? "GPA Data Not Available"
+              : `GPA Information (Average GPA: ${calculateGPA(classData[22]).toFixed(2)})`
+          }
         </Typography>
         <ExpandMoreIcon
           sx={{

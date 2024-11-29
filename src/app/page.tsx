@@ -25,16 +25,17 @@ export default function SearchPage() {
   const [searchType, setSearchType] = useState<SearchType>("class");
   const router = useRouter();
 
-
   useEffect(() => {
-    const hasSeenAnnouncement = localStorage.getItem('hasSeenAnnouncement');
+    const hasSeenAnnouncement = localStorage.getItem("hasSeenAnnouncement");
 
     if (!hasSeenAnnouncement) {
       // Show the announcement
-      ToastLib.notifyAnnouncement("🎉 We've been busy! Checkout the blog page and see what we've been up to!");
+      ToastLib.notifyAnnouncement(
+        "🎉 We've been busy! Checkout the blog page and see what we've been up to!"
+      );
 
       // Set the flag to localStorage to prevent showing it again
-      localStorage.setItem('hasSeenAnnouncement', 'true');
+      localStorage.setItem("hasSeenAnnouncement", "true");
     }
   }, []);
 
@@ -57,25 +58,59 @@ export default function SearchPage() {
       ToastLib.notifyError("Please enter a search term");
       return;
     }
-  
+
     console.log("Search Type:", searchType);
-  
+
+    if (searchType === "professor") {
+      // Use the new /last-search API endpoint
+      const apiUrl = `https://uiuc-course-api-production.up.railway.app/last-search?last_name=${encodeURIComponent(
+        search
+      )}`;
+
+      try {
+        console.log("API URL for Professor Search:", apiUrl);
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+
+        if (Array.isArray(data) && data.length > 0) {
+          // Redirect to the professor list page with the search query
+          router.push(
+            `/professorSearch?searchQuery=${encodeURIComponent(search)}`
+          );
+          return;
+        } else if (data.message === "No matching professors found.") {
+          ToastLib.notifyError("No professors found matching your search");
+          return;
+        } else {
+          ToastLib.notifyError("An unexpected error occurred");
+          console.error("Unexpected response:", data);
+          return;
+        }
+      } catch (error) {
+        console.error("Error fetching professor data:", error);
+        ToastLib.notifyError(
+          "An error occurred while searching for professors"
+        );
+        return;
+      }
+    }
+
     const performClassSearch = async (semester: string, year: string) => {
       const term = `${semester.toLowerCase()}+${year}`;
       const apiUrl = `https://uiuc-course-api-production.up.railway.app/search?query=${encodeURIComponent(
         search
       )}+${term}`;
       let redirectUrl = `/${year}/${semester}/${encodeURIComponent(search)}`;
-  
+
       const threeNumbersCheck = /\d{3}/;
-  
+
       if (threeNumbersCheck.test(search)) {
         const [subject, courseNumber] = search.split(" ");
         redirectUrl = `/${year}/${semester}/${encodeURIComponent(
           subject
         )}/${encodeURIComponent(courseNumber)}`;
       }
-  
+
       try {
         console.log("API URL for Class Search:", apiUrl);
         const response = await fetch(apiUrl);
@@ -89,7 +124,7 @@ export default function SearchPage() {
       }
       return false;
     };
-  
+
     // Function to perform other types of searches for a specific semester
     const performOtherSearch = async (semester: string, year: string) => {
       const term = `${semester.toLowerCase()}+${year}`;
@@ -102,25 +137,18 @@ export default function SearchPage() {
                 search
               )}&term=${encodeURIComponent(`${semester} ${year}`)}`,
             };
-          case "professor":
-            return {
-              apiUrl: `https://uiuc-course-api-production.up.railway.app/prof-search?query=${search}+${term}`,
-              redirectUrl: `/professorSearch?searchQuery=${encodeURIComponent(
-                search
-              )}&term=${encodeURIComponent(`${semester} ${year}`)}`,
-            };
           case "crn":
             return {
-              apiUrl: `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${search}+${term}`,
+              apiUrl: `https://uiuc-course-api-production.up.railway.app/crn-search?crn=${search}`,
               redirectUrl: "", // CRN redirect logic remains unchanged
             };
           default:
             return undefined;
         }
       };
-  
+
       const searchConfig = getSearchConfig();
-  
+
       if (searchConfig) {
         const { apiUrl, redirectUrl } = searchConfig;
         try {
@@ -145,10 +173,10 @@ export default function SearchPage() {
           console.error("Error fetching other search data:", error);
         }
       }
-  
+
       return false;
     };
-  
+
     // Handle other search types: class, title, professor, crn
     for (const { semester, year } of semesterConfigs) {
       const found = await performClassSearch(semester, year);
@@ -156,13 +184,13 @@ export default function SearchPage() {
         return; // Stop if a result is found
       }
     }
-  
+
     // Handle title, professor, crn searches
     for (const { semester, year } of semesterConfigs) {
       const found = await performOtherSearch(semester, year);
       if (found) return; // Stop if a result is found
     }
-  
+
     // If no results are found after checking all semesters
     ToastLib.notifyError("No results found in any semester");
   }, [search, searchType, router]);
