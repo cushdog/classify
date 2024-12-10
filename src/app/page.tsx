@@ -256,7 +256,7 @@ export default function SearchPage() {
           </TabsContent>
           <TabsContent value="professor">
             <p className="text-white text-sm mb-2">
-              Search for courses by professor&apos;s last name
+              Search for a professor by their last name
             </p>
           </TabsContent>
           <TabsContent value="crn">
@@ -285,7 +285,7 @@ export default function SearchPage() {
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Button
             onClick={handleSearch}
-            className="w-full bg-white text-purple-700 dark:bg-homePageButtonDark rounded-full py-2 font-semibold hover:bg-white/90 transition-colors duration-200"
+            className="w-full bg-white dark:text-white text-purple-700 dark:bg-homePageButtonDark rounded-full py-2 font-semibold hover:bg-white/90 transition-colors duration-200"
           >
             <Search className="mr-2" size={18} />
             Search
