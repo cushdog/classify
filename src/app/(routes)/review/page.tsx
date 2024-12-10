@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
 import { Box, Typography } from '@mui/material';
-import { Sun, Moon } from 'lucide-react';
+// import { Sun, Moon } from 'lucide-react';
 import { useMediaQuery } from '@mui/system';
 import { insertClassReview } from '@/db/Supabase Reviews/operations';
 import { insertProfessor } from '@/db/Supabase Professor Reviews/operations';
