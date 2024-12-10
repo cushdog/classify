@@ -194,7 +194,7 @@ const BlogPostPage = () => {
                   placeholder="Share your thoughts..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
-                  className="mb-2"
+                  className="mb-2 dark:text-white"
               />
               <Button
                   onClick={handleSubmitComment}
@@ -215,13 +215,13 @@ const BlogPostPage = () => {
                       </Avatar>
                       <div>
                         <CardTitle className="text-sm font-medium">{comment.authorName}</CardTitle>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-xs dark:text-white text-slate-500">
                           {formatDistanceToNow(new Date(comment.createdAt), {addSuffix: true})}
                         </p>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-slate-700">{comment.content}</p>
+                      <p className="dark:text-white text-slate-700">{comment.content}</p>
                     </CardContent>
                   </Card>
               ))}
