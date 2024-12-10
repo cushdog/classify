@@ -64,16 +64,16 @@ const FullPageReviewForm: React.FC = () => {
   }, []);
 
   // Toggle dark mode
-  const toggleDarkMode = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-    setIsDarkMode(!isDarkMode);
-  };
+  // const toggleDarkMode = () => {
+  //   if (isDarkMode) {
+  //     document.documentElement.classList.remove("dark");
+  //     localStorage.setItem("theme", "light");
+  //   } else {
+  //     document.documentElement.classList.add("dark");
+  //     localStorage.setItem("theme", "dark");
+  //   }
+  //   setIsDarkMode(!isDarkMode);
+  // };
 
   const handleSliderChange =
     (field: keyof IClassReviewInsert | keyof IProfessorInsert, isCourse: boolean) => (value: number[]) => {
