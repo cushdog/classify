@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { fetchData, Course, semesterConfigs } from "@/lib/commonFunctions";
-import { Search, Info, Sun, Moon } from "lucide-react";
+import { Search, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -45,18 +45,6 @@ const DescriptionDetails = () => {
             }
         }
     }, []);
-
-    // Toggle dark mode and update localStorage
-    const toggleDarkMode = () => {
-        if (isDarkMode) {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-        } else {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-        }
-        setIsDarkMode(!isDarkMode);
-    };
 
     useEffect(() => {
         const fetchDescriptionData = async () => {
@@ -113,14 +101,6 @@ const DescriptionDetails = () => {
             >
                 {/* Dark Mode Toggle Button */}
                 <div className="flex justify-end">
-                    <Button
-                        onClick={toggleDarkMode}
-                        variant="ghost"
-                        aria-label="Toggle Dark Mode"
-                        className="text-gray-300 hover:text-gray-100"
-                    >
-                        {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                    </Button>
                 </div>
 
                 {/* Back Button at the Top Left */}

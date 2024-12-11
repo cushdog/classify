@@ -4,7 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Sun, Moon } from "lucide-react";
+import { Search } from "lucide-react";
 import { Box, IconButton, Typography } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useMediaQuery } from "@mui/system";
@@ -52,18 +52,6 @@ const ProfessorSearchResults = () => {
       }
     }
   }, []);
-
-  // Toggle dark mode
-  const toggleDarkMode = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    }
-    setIsDarkMode(!isDarkMode);
-  };
 
   // Fetch professors matching the last name
   useEffect(() => {
@@ -120,14 +108,6 @@ const ProfessorSearchResults = () => {
       >
         {/* Dark Mode Toggle Button */}
         <div className="flex justify-end">
-          <Button
-            onClick={toggleDarkMode}
-            variant="ghost"
-            aria-label="Toggle Dark Mode"
-            className="text-gray-300 hover:text-gray-100"
-          >
-            {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
         </div>
 
         {/* Back Button */}
