@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -542,4 +542,12 @@ const ReviewPage: React.FC = () => {
   );
 };
 
-export default ReviewPage;
+const Reviews = () => {
+  return (
+    <Suspense fallback={<div className="text-center text-gray-500 dark:text-gray-400">Loading...</div>}>
+      <ReviewPage />
+    </Suspense>
+  );
+};
+
+export default Reviews;
