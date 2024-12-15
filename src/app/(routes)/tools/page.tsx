@@ -42,7 +42,7 @@ const StudentToolsPage = () => {
   ]);
 
   // GPA result is now displayed via dialog
-  const [gpaResult, setGpaResult] = useState<number | null>(null);
+  // const [gpaResult, setGpaResult] = useState<number | null>(null);
 
   // Notes
   const [notes, setNotes] = useState<string>('');
@@ -60,7 +60,7 @@ const StudentToolsPage = () => {
   const [currentGrade, setCurrentGrade] = useState<number>(87);
   const [finalWeight, setFinalWeight] = useState<number>(25);
   const [desiredFinalGrade, setDesiredFinalGrade] = useState<number>(95);
-  const [neededOnFinal, setNeededOnFinal] = useState<number | null>(null);
+  // const [neededOnFinal, setNeededOnFinal] = useState<number | null>(null);
   const [neededError, setNeededError] = useState<string>('');
 
   // Dialog state
@@ -90,7 +90,7 @@ const StudentToolsPage = () => {
     if (gpaCourses.length === 0) return;
     const points = gpaCourses.reduce((acc, c) => acc + gradeToPoint(c.grade), 0);
     const average = points / gpaCourses.length;
-    setGpaResult(average);
+    // setGpaResult(average);
     setDialogMessage(`Estimated GPA: ${average.toFixed(2)}`);
     setDialogOpen(true);
   };
@@ -165,7 +165,7 @@ const StudentToolsPage = () => {
     const fw = finalWeight / 100;
     const cw = 1 - fw;
     const needed = (desiredFinalGrade - (currentGrade * cw)) / fw;
-    setNeededOnFinal(needed);
+    // setNeededOnFinal(needed);
     setDialogMessage(`You need approximately ${needed.toFixed(2)}% on the final.`);
     setDialogOpen(true);
   };
