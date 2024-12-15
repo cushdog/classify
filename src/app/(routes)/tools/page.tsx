@@ -344,8 +344,8 @@ const StudentToolsPage = () => {
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="dark:text-white">
-              Enter your current course grade, final exam weight, and desired final course grade.
-              We'll tell you what you need on the final.
+                Enter your current course grade, final exam weight, and desired final course grade.
+                We&apos;ll tell you what you need on the final.
             </p>
             <div className="space-y-2">
               <input

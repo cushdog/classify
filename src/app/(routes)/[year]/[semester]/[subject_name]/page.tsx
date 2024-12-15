@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { fetchData, fetchSubjectFullName } from "@/lib/commonFunctions";
-import { Search, Info, Sun, Moon } from "lucide-react";
+import { Search, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -53,18 +53,6 @@ const SubjectDetails = () => {
             }
         }
     }, []);
-
-    // Toggle dark mode and update localStorage
-    const toggleDarkMode = () => {
-        if (isDarkMode) {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-        } else {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-        }
-        setIsDarkMode(!isDarkMode);
-    };
 
     useEffect(() => {
         if (subject_name && year && semester) {
