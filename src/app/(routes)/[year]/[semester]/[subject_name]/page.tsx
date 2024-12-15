@@ -122,14 +122,6 @@ const SubjectDetails = () => {
             >
                 {/* Dark Mode Toggle Button */}
                 <div className="flex justify-end">
-                    <Button
-                        onClick={toggleDarkMode}
-                        variant="ghost"
-                        aria-label="Toggle Dark Mode"
-                        className="text-gray-300 hover:text-gray-100"
-                    >
-                        {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-                    </Button>
                 </div>
 
                 {/* Back Button at the Top Left */}

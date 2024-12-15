@@ -29,12 +29,11 @@ export default function SearchPage() {
     const hasSeenAnnouncement = localStorage.getItem("hasSeenAnnouncement");
 
     if (!hasSeenAnnouncement) {
-      // Show the announcement
+      
       ToastLib.notifyAnnouncement(
         "🎉 We've been busy! Checkout the blog page and see what we've been up to!"
       );
-
-      // Set the flag to localStorage to prevent showing it again
+      
       localStorage.setItem("hasSeenAnnouncement", "true");
     }
   }, []);
@@ -62,7 +61,7 @@ export default function SearchPage() {
     console.log("Search Type:", searchType);
 
     if (searchType === "professor") {
-      // Use the new /last-search API endpoint
+      
       const apiUrl = `https://uiuc-course-api-production.up.railway.app/last-search?last_name=${encodeURIComponent(
         search
       )}`;
@@ -73,7 +72,7 @@ export default function SearchPage() {
         const data = await response.json();
 
         if (Array.isArray(data) && data.length > 0) {
-          // Redirect to the professor list page with the search query
+          
           router.push(
             `/professorSearch?searchQuery=${encodeURIComponent(search)}`
           );
@@ -124,8 +123,7 @@ export default function SearchPage() {
       }
       return false;
     };
-
-    // Function to perform other types of searches for a specific semester
+    
     const performOtherSearch = async (semester: string, year: string) => {
       const term = `${semester.toLowerCase()}+${year}`;
       const getSearchConfig = (): SearchConfig | undefined => {
@@ -176,22 +174,19 @@ export default function SearchPage() {
 
       return false;
     };
-
-    // Handle other search types: class, title, professor, crn
+    
     for (const { semester, year } of semesterConfigs) {
       const found = await performClassSearch(semester, year);
       if (found) {
         return; // Stop if a result is found
       }
     }
-
-    // Handle title, professor, crn searches
+    
     for (const { semester, year } of semesterConfigs) {
       const found = await performOtherSearch(semester, year);
       if (found) return; // Stop if a result is found
     }
-
-    // If no results are found after checking all semesters
+    
     ToastLib.notifyError("No results found in any semester");
   }, [search, searchType, router]);
 

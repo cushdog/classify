@@ -36,19 +36,48 @@ const ProfessorProfile: React.FC<ProfessorProfileProps> = ({
 }) => {
   const router = useRouter();
 
-  const MetricBar = ({ label, value }: { label: string; value: number }) => (
-    <div className="space-y-2">
+  const MetricBar = ({
+    label,
+    value,
+    description,
+  }: {
+    label: string;
+    value: number | null;
+    description: string;
+  }) => (
+    <div className="space-y-1">
       <div className="flex justify-between items-center">
         <span className="text-sm font-medium text-gray-800 dark:text-gray-200">
           {label}
         </span>
-        <span className="text-sm font-bold text-gray-800 dark:text-gray-200">
-          {value}%
-        </span>
+        {value !== null && value > 0 ? (
+          <span className="text-sm font-bold text-gray-800 dark:text-gray-200">
+            {value}%
+          </span>
+        ) : (
+          <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+            No review data available
+          </span>
+        )}
       </div>
-      <Progress value={value} className="h-2" />
+      <p className="text-xs text-gray-500 dark:text-gray-400">{description}</p>
+      {value !== null && value > 0 ? (
+        <Progress value={value} className="h-2" />
+      ) : (
+        <div className="h-2 bg-gray-300 dark:bg-gray-700 rounded-md"></div>
+      )}
     </div>
   );
+
+  const handleReviewClick = () => {
+    const queryParams = new URLSearchParams({
+      firstName: professorData.firstName,
+      lastName: professorData.lastName,
+      department: professorData.department || "",
+    });
+
+    router.push(`/review?${queryParams.toString()}`);
+  };
 
   return (
     <div className="min-h-screen mt-16">
@@ -87,20 +116,29 @@ const ProfessorProfile: React.FC<ProfessorProfileProps> = ({
                   </p>
                 )}
               </div>
-              {/* Metrics */}
+              {/* Metrics + Button */}
               <div className="grid grid-cols-2 gap-4">
                 <MetricBar
                   label="Preparedness"
                   value={professorData.preparednessPercentage}
+                  description="How well-prepared was the professor for classes?"
                 />
                 <MetricBar
                   label="Clarity"
                   value={professorData.clarityPercentage}
+                  description="How clear was the professor in their explanations?"
                 />
                 <MetricBar
                   label="Respect"
                   value={professorData.respectPercentage}
+                  description="How respectful was the professor towards students?"
                 />
+                {/* Submit Review Button below the metrics */}
+                <div className="col-span-2 flex justify-end">
+                  <Button variant="default" onClick={handleReviewClick}>
+                    Submit Review
+                  </Button>
+                </div>
               </div>
             </div>
           </CardContent>
