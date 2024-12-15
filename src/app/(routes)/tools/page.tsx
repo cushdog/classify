@@ -2,10 +2,29 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Calculator, ListChecks, Edit, BookOpen, CheckSquare, Plus, Trash2 } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Calculator, 
+  ListChecks, 
+  Edit, 
+  BookOpen, 
+  CheckSquare, 
+  Plus, 
+  Trash2 
+} from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose
+} from '@/components/ui/dialog';
 
 interface GradeItem {
   name: string;
@@ -21,6 +40,8 @@ const StudentToolsPage = () => {
     { name: "Course 1", grade: "A" },
     { name: "Course 2", grade: "B+" },
   ]);
+
+  // GPA result is now displayed via dialog
   const [gpaResult, setGpaResult] = useState<number | null>(null);
 
   // Notes
@@ -41,6 +62,10 @@ const StudentToolsPage = () => {
   const [desiredFinalGrade, setDesiredFinalGrade] = useState<number>(95);
   const [neededOnFinal, setNeededOnFinal] = useState<number | null>(null);
   const [neededError, setNeededError] = useState<string>('');
+
+  // Dialog state
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [dialogMessage, setDialogMessage] = useState<string>('');
 
   // GPA Calculation Helper
   const gradeToPoint = (grade: string) => {
@@ -66,6 +91,8 @@ const StudentToolsPage = () => {
     const points = gpaCourses.reduce((acc, c) => acc + gradeToPoint(c.grade), 0);
     const average = points / gpaCourses.length;
     setGpaResult(average);
+    setDialogMessage(`Estimated GPA: ${average.toFixed(2)}`);
+    setDialogOpen(true);
   };
 
   const handleAddCourseForGPA = () => {
@@ -119,7 +146,8 @@ const StudentToolsPage = () => {
       return;
     }
     setCalcError("");
-    alert(`Your estimated final grade: ${weightedSum.toFixed(2)}%`);
+    setDialogMessage(`Your estimated final grade: ${weightedSum.toFixed(2)}%`);
+    setDialogOpen(true);
   };
 
   // Needed on Final
@@ -138,6 +166,8 @@ const StudentToolsPage = () => {
     const cw = 1 - fw;
     const needed = (desiredFinalGrade - (currentGrade * cw)) / fw;
     setNeededOnFinal(needed);
+    setDialogMessage(`You need approximately ${needed.toFixed(2)}% on the final.`);
+    setDialogOpen(true);
   };
 
   return (
@@ -200,11 +230,6 @@ const StudentToolsPage = () => {
                 Add Another Course
               </Button>
             </div>
-            {gpaResult !== null && (
-              <div className="dark:text-white">
-                Estimated GPA: {gpaResult.toFixed(2)}
-              </div>
-            )}
           </CardContent>
         </Card>
 
@@ -376,14 +401,30 @@ const StudentToolsPage = () => {
             {neededError && (
               <p className="text-red-500">{neededError}</p>
             )}
-            {neededOnFinal !== null && !neededError && (
-              <p className="dark:text-white">
-                You need approximately {neededOnFinal.toFixed(2)}% on the final.
-              </p>
-            )}
           </CardContent>
         </Card>
       </div>
+
+      {/* Dialog for showing results */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="text-4xl font-bold dark:text-white">
+              Calculation Result
+            </DialogTitle>
+            <DialogDescription className="text-xl dark:text-gray-100">
+              {dialogMessage}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="default" className="dark:text-white dark:bg-slate-800 hover:dark:bg-slate-700">
+                Close
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
