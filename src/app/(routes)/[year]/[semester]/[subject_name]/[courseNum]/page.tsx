@@ -78,8 +78,10 @@ const CourseDetails: React.FC = () => {
   // State variables
   const [expanded, setExpanded] = useState<string | false>(false);
   const [gpaExpanded, setGpaExpanded] = useState<string | false>(false);
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -88,10 +90,12 @@ const CourseDetails: React.FC = () => {
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
 
   // New state variables for syllabus and more info
   const [syllabus, setSyllabus] = useState<string | null>(null);
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [moreInfo, setMoreInfo] = useState<any[]>([]);
 
   // State for contribution dialog
@@ -683,6 +687,7 @@ const CourseDetails: React.FC = () => {
                       color: "#fff",
                     }}
                   >
+                    {/* eslint-disable  @typescript-eslint/no-explicit-any */}
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}
