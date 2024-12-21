@@ -1,4 +1,3 @@
-// app/components/CourseDetails.tsx
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
@@ -28,7 +27,6 @@ import {
   DialogTitle,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-// import AddIcon from "@mui/icons-material/Add";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -43,15 +41,10 @@ import {
   calculateGPA,
 } from "@/lib/commonFunctions";
 import SectionDetails from "@/Custom Components/ui/SectionCard/page";
-// import GPAGauge from "@/Custom Components/ui/GPA Piechart/page";
 import GPABreakdownDialog from "@/Custom Components/ui/Visual GPA Breakdown/page";
 import { PdfPreviewer } from "@/Custom Components/Misc/PDF Preview/page";
-// import { ThemeContext } from "@/lib/ThemeContext";
-
-// Import Mulish font if needed
 import { Mulish } from "next/font/google";
 import { useTheme } from "@mui/material/styles";
-
 import CourseEvaluations from "@/Custom Components/Misc/Evaulations/page";
 import GPADistribution from "@/Custom Components/ui/GPA Distribution/page";
 
@@ -60,7 +53,6 @@ const mulish = Mulish({
   weight: ["400", "700"],
 });
 
-// Term options for selection
 const termOptions = [
   "Fall 2023",
   "Spring 2024",
@@ -79,14 +71,15 @@ interface EvaluationData {
 
 const CourseDetails: React.FC = () => {
   const theme = useTheme();
+  const router = useRouter();
+  const params = useParams();
+  const { year, semester, subject_name, courseNum } = params;
 
   // State variables
   const [expanded, setExpanded] = useState<string | false>(false);
   const [gpaExpanded, setGpaExpanded] = useState<string | false>(false);
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [classData, setClassData] = useState<any | null>(null);
   const [subjectFullName, setSubjectFullName] = useState<string>("");
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [sectionsByType, setSectionsByType] = useState<Record<string, any[][]>>(
     {}
   );
@@ -95,15 +88,11 @@ const CourseDetails: React.FC = () => {
   const [selectedTerm, setSelectedTerm] = useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null);
   const [openGpaDialog, setOpenGpaDialog] = useState<boolean>(false);
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [professorGpaData, setProfessorGpaData] = useState<any[]>([]);
 
   // New state variables for syllabus and more info
   const [syllabus, setSyllabus] = useState<string | null>(null);
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const [moreInfo, setMoreInfo] = useState<any[]>([]);
-  // const [isSyllabusEmpty, setIsSyllabusEmpty] = useState<boolean>(true);
-  // const [isMoreInfoEmpty, setIsMoreInfoEmpty] = useState<boolean>(true);
 
   // State for contribution dialog
   const [contributeDialogOpen, setContributeDialogOpen] =
@@ -114,7 +103,6 @@ const CourseDetails: React.FC = () => {
   const [contributionTitle, setContributionTitle] = useState<string>("");
   const [contributionText, setContributionText] = useState<string>("");
   const [contributionFile, setContributionFile] = useState<File | null>(null);
-  
 
   // Dialogs for empty states
   const [openSyllabusDialog, setOpenSyllabusDialog] = useState<boolean>(false);
@@ -127,15 +115,11 @@ const CourseDetails: React.FC = () => {
     null
   );
 
-  const router = useRouter();
-  const params = useParams();
-  const { year, semester, subject_name, courseNum } = params;
-
   /*eslint-disable  @typescript-eslint/no-explicit-any*/
   const getGpaColor = (gpa: any) => {
-    if (gpa >= 3.5) return '#4CAF50'; // Green
-    if (gpa < 2.5) return '#F44336';  // Red
-    return '#FFEB3B';                  // Yellow
+    if (gpa >= 3.5) return "#4CAF50"; // Green
+    if (gpa < 2.5) return "#F44336"; // Red
+    return "#FFEB3B"; // Yellow
   };
 
   // Set random background color on mount
@@ -188,10 +172,6 @@ const CourseDetails: React.FC = () => {
         .then((data) => {
           if (data?.fileUrl) {
             setSyllabus(data.fileUrl);
-            // setIsSyllabusEmpty(false);
-          } else {
-            // setIsSyllabusEmpty(true);
-            // Do not open the dialog here
           }
         })
         .catch((err) => console.error("Error fetching syllabus:", err));
@@ -202,10 +182,6 @@ const CourseDetails: React.FC = () => {
         .then((data) => {
           if (data.posts && data.posts.length > 0) {
             setMoreInfo(data.posts);
-            // setIsMoreInfoEmpty(false);
-          } else {
-            // setIsMoreInfoEmpty(true);
-            // Do not open the dialog here
           }
         })
         .catch((err) => console.error("Error fetching more info:", err));
@@ -302,7 +278,6 @@ const CourseDetails: React.FC = () => {
 
         const data = await response.json();
         setSyllabus(data.fileUrl);
-        // setIsSyllabusEmpty(false);
         setSnackbarMessage("Syllabus uploaded successfully!");
       } else if (contributeType === "moreInfo") {
         const response = await fetch(`/api/moreInfo`, {
@@ -323,7 +298,6 @@ const CourseDetails: React.FC = () => {
 
         const data = await response.json();
         setMoreInfo((prev) => [...prev, data]);
-        // setIsMoreInfoEmpty(false);
         setSnackbarMessage("Information added successfully!");
       }
 
@@ -337,6 +311,27 @@ const CourseDetails: React.FC = () => {
       console.error("Error submitting contribution:", error);
       setSnackbarMessage("Failed to submit contribution. Please try again.");
     }
+  };
+
+  // 1) ADD THE SUBMIT REVIEW BUTTON
+  //    This will push to /review, autofilling subject & courseNumber
+  const handleSubmitReviewClick = () => {
+    // If subject_name or courseNum might be string[] or undefined, make sure to convert them to a string
+    const subject = Array.isArray(subject_name)
+      ? subject_name[0]
+      : subject_name;
+    const courseNumber = Array.isArray(courseNum) ? courseNum[0] : courseNum;
+
+    // If we have no valid string, just return (or handle however you like)
+    if (!subject || !courseNumber) return;
+
+    // Safely construct the query string
+    const queryParams = new URLSearchParams({
+      subject,
+      courseNumber,
+    }).toString();
+
+    router.push(`/review?${queryParams}`);
   };
 
   return (
@@ -456,84 +451,84 @@ const CourseDetails: React.FC = () => {
                 sx={{ marginY: 2 }}
               />
 
-              {/* GPA Section */}
-
+              {/* GPA Distribution */}
               <Box
-      sx={{
-        backgroundColor: "#2E3B55",
-        borderRadius: "12px",
-        overflow: "hidden",
-        boxShadow:
-          gpaExpanded === "gpa"
-            ? "0px 4px 20px rgba(0, 0, 0, 0.25)"
-            : "0px 2px 10px rgba(0, 0, 0, 0.15)",
-        transition: "box-shadow 0.3s ease, transform 0.3s ease",
-        transform: gpaExpanded === "gpa" ? "scale(1.02)" : "scale(1)",
-        marginBottom: 2,
-      }}
-    >
-      <Box
-        onClick={() =>
-          setGpaExpanded(gpaExpanded === "gpa" ? false : "gpa")
-        }
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "16px 24px",
-          backgroundColor:
-            gpaExpanded === "gpa" ? "#1A2338" : "#2E3B55",
-          cursor: "pointer",
-          transition: "background-color 0.3s ease",
-        }}
-      >
-        <Typography
-          variant="h6"
-          sx={{
-            color: getGpaColor(calculateGPA(classData[22])),
-            fontWeight: "bold",
-          }}
-        >
-          {
-            classData[22] === "N/A" || calculateGPA(classData[22]) === 0.00
-              ? "GPA Data Not Available"
-              : `GPA Information (Average GPA: ${calculateGPA(classData[22]).toFixed(2)})`
-          }
-        </Typography>
-        <ExpandMoreIcon
-          sx={{
-            color: "#FFFFFF",
-            transform:
-              gpaExpanded === "gpa"
-                ? "rotate(180deg)"
-                : "rotate(0deg)",
-            transition: "transform 0.3s ease",
-          }}
-        />
-      </Box>
-      {gpaExpanded === "gpa" && (
-        <Box
-          sx={{
-            padding: "16px 24px",
-            backgroundColor: "#1A2338",
-            color: "#FFFFFF",
-            // Removed maxHeight and overflowY to display the full component
-            // maxHeight: "400px",
-            // overflowY: "auto",
-          }}
-        >
-          <GPADistribution
-            apiUrl={`https://uiuc-course-api-production.up.railway.app/gpa-distribution?class=${encodeURIComponent(subject_name + ' ' + courseNum)}`}
-          />
-        </Box>
-      )}
-    </Box>
+                sx={{
+                  backgroundColor: "#2E3B55",
+                  borderRadius: "12px",
+                  overflow: "hidden",
+                  boxShadow:
+                    gpaExpanded === "gpa"
+                      ? "0px 4px 20px rgba(0, 0, 0, 0.25)"
+                      : "0px 2px 10px rgba(0, 0, 0, 0.15)",
+                  transition: "box-shadow 0.3s ease, transform 0.3s ease",
+                  transform: gpaExpanded === "gpa" ? "scale(1.02)" : "scale(1)",
+                  marginBottom: 2,
+                }}
+              >
+                <Box
+                  onClick={() =>
+                    setGpaExpanded(gpaExpanded === "gpa" ? false : "gpa")
+                  }
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "16px 24px",
+                    backgroundColor:
+                      gpaExpanded === "gpa" ? "#1A2338" : "#2E3B55",
+                    cursor: "pointer",
+                    transition: "background-color 0.3s ease",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: getGpaColor(calculateGPA(classData[22])),
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {classData[22] === "N/A" ||
+                    calculateGPA(classData[22]) === 0.0
+                      ? "GPA Data Not Available"
+                      : `GPA Information (Average GPA: ${calculateGPA(
+                          classData[22]
+                        ).toFixed(2)})`}
+                  </Typography>
+                  <ExpandMoreIcon
+                    sx={{
+                      color: "#FFFFFF",
+                      transform:
+                        gpaExpanded === "gpa"
+                          ? "rotate(180deg)"
+                          : "rotate(0deg)",
+                      transition: "transform 0.3s ease",
+                    }}
+                  />
+                </Box>
+                {gpaExpanded === "gpa" && (
+                  <Box
+                    sx={{
+                      padding: "16px 24px",
+                      backgroundColor: "#1A2338",
+                      color: "#FFFFFF",
+                    }}
+                  >
+                    <GPADistribution
+                      apiUrl={`https://uiuc-course-api-production.up.railway.app/gpa-distribution?class=${encodeURIComponent(
+                        subject_name + " " + courseNum
+                      )}`}
+                    />
+                  </Box>
+                )}
+              </Box>
 
               <Divider
                 className="dark:bg-gray-600 bg-gray-100"
                 sx={{ marginY: 2 }}
               />
 
+              {/* Course Evaluations */}
               {evaluationData ? (
                 <Box
                   sx={{
@@ -560,7 +555,7 @@ const CourseDetails: React.FC = () => {
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center",
-                      padding: "16px 24px",
+                      padding: "12px 24px", // Reduced from 16px
                       backgroundColor:
                         expanded === "evaluations" ? "#1A2338" : "#2E3B55",
                       cursor: "pointer",
@@ -590,7 +585,7 @@ const CourseDetails: React.FC = () => {
                   {expanded === "evaluations" && (
                     <Box
                       sx={{
-                        padding: "16px 24px",
+                        padding: "12px 24px", // Reduced from 16px
                         backgroundColor: "#1A2338",
                         color: "#FFFFFF",
                         maxHeight: "400px",
@@ -598,6 +593,35 @@ const CourseDetails: React.FC = () => {
                       }}
                     >
                       <CourseEvaluations evaluationData={evaluationData} />
+
+                      {/* Improved Submit Review button with reduced spacing */}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+                          marginTop: 2, // Reduced from 3
+                          paddingTop: 2, // Reduced from 3
+                        }}
+                      >
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={handleSubmitReviewClick}
+                          sx={{
+                            fontWeight: "medium",
+                            padding: "6px 20px", // Slightly reduced padding
+                            borderRadius: "8px",
+                            textTransform: "none",
+                            "&:hover": {
+                              transform: "translateY(-1px)",
+                              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                            },
+                          }}
+                        >
+                          Submit a Review
+                        </Button>
+                      </Box>
                     </Box>
                   )}
                 </Box>
@@ -659,7 +683,6 @@ const CourseDetails: React.FC = () => {
                       color: "#fff",
                     }}
                   >
-                    {/*eslint-disable  @typescript-eslint/no-explicit-any*/}
                     {sectionsByType[type].map((section: any, index: number) => (
                       <SectionDetails
                         key={`${selectedTerm}-${type}-${index}`}
@@ -670,99 +693,7 @@ const CourseDetails: React.FC = () => {
                 </Accordion>
               ))}
 
-              {/*/!* Syllabus Section *!/*/}
-              {/*<Box sx={{ marginY: 4 }}>*/}
-              {/*  <Typography variant="h5" gutterBottom>*/}
-              {/*    Syllabus*/}
-              {/*  </Typography>*/}
-              {/*  {syllabus ? (*/}
-              {/*    <PdfPreviewer*/}
-              {/*      pdfUrl={syllabus}*/}
-              {/*      onClose={() => setOpenSyllabusDialog(false)}*/}
-              {/*    />*/}
-              {/*  ) : isSyllabusEmpty ? (*/}
-              {/*    <Box*/}
-              {/*      sx={{*/}
-              {/*        padding: 3,*/}
-              {/*        border: "2px dashed rgba(255, 255, 255, 0.5)",*/}
-              {/*        borderRadius: "8px",*/}
-              {/*        textAlign: "center",*/}
-              {/*        backgroundColor: "rgba(255, 255, 255, 0.1)",*/}
-              {/*      }}*/}
-              {/*    >*/}
-              {/*      <Typography variant="body1" color="white" gutterBottom>*/}
-              {/*        There's no syllabus yet. Be the first to contribute!*/}
-              {/*      </Typography>*/}
-              {/*      <Button*/}
-              {/*        variant="contained"*/}
-              {/*        startIcon={<AddIcon />}*/}
-              {/*        onClick={() => {*/}
-              {/*          setContributeType("syllabus");*/}
-              {/*          setContributeDialogOpen(true);*/}
-              {/*        }}*/}
-              {/*      >*/}
-              {/*        Contribute Syllabus*/}
-              {/*      </Button>*/}
-              {/*    </Box>*/}
-              {/*  ) : null}*/}
-              {/*</Box>*/}
-
-              {/*/!* More Information Section *!/*/}
-              {/*<Box sx={{ marginY: 4 }}>*/}
-              {/*  <Typography variant="h5" gutterBottom>*/}
-              {/*    More Information*/}
-              {/*  </Typography>*/}
-              {/*  {isMoreInfoEmpty ? (*/}
-              {/*    <Box*/}
-              {/*      sx={{*/}
-              {/*        padding: 3,*/}
-              {/*        border: "2px dashed rgba(255, 255, 255, 0.5)",*/}
-              {/*        borderRadius: "8px",*/}
-              {/*        textAlign: "center",*/}
-              {/*        backgroundColor: "rgba(255, 255, 255, 0.1)",*/}
-              {/*      }}*/}
-              {/*    >*/}
-              {/*      <Typography variant="body1" color="white" gutterBottom>*/}
-              {/*        No additional information yet. Be the first to contribute!*/}
-              {/*      </Typography>*/}
-              {/*      <Button*/}
-              {/*        variant="contained"*/}
-              {/*        startIcon={<AddIcon />}*/}
-              {/*        onClick={() => {*/}
-              {/*          setContributeType("moreInfo");*/}
-              {/*          setContributeDialogOpen(true);*/}
-              {/*        }}*/}
-              {/*      >*/}
-              {/*        Contribute Info*/}
-              {/*      </Button>*/}
-              {/*    </Box>*/}
-              {/*  ) : (*/}
-              {/*    <List>*/}
-              {/*      {moreInfo.map((info) => (*/}
-              {/*        <ListItem*/}
-              {/*          key={info.id}*/}
-              {/*          sx={{*/}
-              {/*            backgroundColor: "rgba(255, 255, 255, 0.05)",*/}
-              {/*            borderRadius: "4px",*/}
-              {/*            marginY: 1,*/}
-              {/*            flexDirection: "column",*/}
-              {/*            alignItems: "flex-start",*/}
-              {/*          }}*/}
-              {/*        >*/}
-              {/*          <Typography variant="h6" sx={{ color: "#fff" }}>*/}
-              {/*            {info.title}*/}
-              {/*          </Typography>*/}
-              {/*          <Typography variant="caption" sx={{ color: "rgba(255, 255, 255, 0.6)" }}>*/}
-              {/*            Posted on {new Date(info.datePosted).toLocaleDateString()}*/}
-              {/*          </Typography>*/}
-              {/*          <Typography variant="body1" sx={{ color: "#fff", marginTop: 1 }}>*/}
-              {/*            {info.content}*/}
-              {/*          </Typography>*/}
-              {/*        </ListItem>*/}
-              {/*      ))}*/}
-              {/*    </List>*/}
-              {/*  )}*/}
-              {/*</Box>*/}
+              {/* You can display Syllabus / More Info sections here if desired */}
             </>
           ) : (
             <Box

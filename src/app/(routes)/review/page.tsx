@@ -161,22 +161,34 @@ const ReviewPage: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  // Extract query params
+  // Extract query params for BOTH professor and course
   const queryFirstName = searchParams.get("firstName") || "";
   const queryLastName = searchParams.get("lastName") || "";
   const queryDepartment = searchParams.get("department") || "";
 
+  // New: For course
+  const querySubject = searchParams.get("subject") || "";
+  const queryCourseNumber = searchParams.get("courseNumber") || "";
+
   // Decide initial form type based on search params
+  // If we have a subject & courseNumber, assume it's a course review.
+  // If we have firstName & lastName, assume it's a professor review.
+  // Otherwise default to course if neither are present.
   const initialFormType =
-    queryFirstName && queryLastName ? "professor" : "course";
+    querySubject && queryCourseNumber
+      ? "course"
+      : queryFirstName && queryLastName
+      ? "professor"
+      : "course";
 
   const [formType, setFormType] = useState<"course" | "professor">(
     initialFormType
   );
 
+  // Set initial course form data from URL (if present)
   const [courseFormData, setCourseFormData] = useState<IClassReviewInsert>({
-    subject: "",
-    courseNumber: "",
+    subject: querySubject,
+    courseNumber: queryCourseNumber,
     desireToTakePercentage: 50,
     understandingPercentage: 50,
     workloadPercentage: 50,
@@ -184,6 +196,7 @@ const ReviewPage: React.FC = () => {
     increasedInterestPercentage: 50,
   });
 
+  // Set initial professor form data from URL (if present)
   const [professorFormData, setProfessorFormData] = useState<IProfessorInsert>({
     firstName: queryFirstName,
     lastName: queryLastName,
@@ -193,6 +206,7 @@ const ReviewPage: React.FC = () => {
     respectPercentage: 50,
   });
 
+  // Theme/Mode effect
   useEffect(() => {
     const storedTheme = localStorage.getItem("theme");
     if (storedTheme) {
@@ -242,6 +256,7 @@ const ReviewPage: React.FC = () => {
     setProfessorFormData((prev) => ({ ...prev, department: dep }));
   };
 
+  // Filter department list
   const filteredDepartments = useMemo(() => {
     const query = (professorFormData.department ?? "").toLowerCase().trim();
     if (query === "") {
@@ -263,7 +278,6 @@ const ReviewPage: React.FC = () => {
         }
 
         const result = await insertClassReview(courseFormData);
-
         if (result) {
           notifySuccess("Course review submitted successfully!");
           setCourseFormData({
@@ -287,7 +301,6 @@ const ReviewPage: React.FC = () => {
         }
 
         const result = await insertProfessor(professorFormData);
-
         if (result) {
           notifySuccess("Professor review submitted successfully!");
           setProfessorFormData({
@@ -311,6 +324,7 @@ const ReviewPage: React.FC = () => {
     }
   };
 
+  // Title to show at top
   const searchQuery =
     formType === "professor"
       ? professorFormData.lastName || "Professor"
@@ -333,7 +347,7 @@ const ReviewPage: React.FC = () => {
         }}
         className="transition-colors duration-300"
       >
-        {/* Dark Mode Toggle Button (if needed in the future) */}
+        {/* Dark Mode Toggle Button */}
         <div className="flex justify-end"></div>
 
         {/* Back Button */}
@@ -412,7 +426,10 @@ const ReviewPage: React.FC = () => {
                     label="Desire to Take Again"
                     description="Would you recommend this course to other students?"
                     value={courseFormData.desireToTakePercentage}
-                    onChange={handleSliderChange("desireToTakePercentage", true)}
+                    onChange={handleSliderChange(
+                      "desireToTakePercentage",
+                      true
+                    )}
                   />
                   <ReviewSlider
                     label="Understanding of Material"
@@ -544,7 +561,13 @@ const ReviewPage: React.FC = () => {
 
 const Reviews = () => {
   return (
-    <Suspense fallback={<div className="text-center text-gray-500 dark:text-gray-400">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="text-center text-gray-500 dark:text-gray-400">
+          Loading...
+        </div>
+      }
+    >
       <ReviewPage />
     </Suspense>
   );
