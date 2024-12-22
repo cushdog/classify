@@ -1,6 +1,6 @@
 // db/SupabaseProfessorReviews/operations.ts
 
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/Library Functions and Clients/supabaseClient';
 import { IProfessor, IProfessorInsert } from './types';
 import snakecaseKeys from 'snakecase-keys';
 import camelcaseKeys from 'camelcase-keys';

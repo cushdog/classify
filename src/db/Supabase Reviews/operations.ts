@@ -1,6 +1,6 @@
 // db/operations.ts
 
-import { supabase } from '@/lib/supabaseClient';
+import { supabase } from '@/lib/Library Functions and Clients/supabaseClient';
 import { IClassReview, IClassReviewInsert } from './types';
 import snakecaseKeys from 'snakecase-keys';
 import camelcaseKeys from 'camelcase-keys';

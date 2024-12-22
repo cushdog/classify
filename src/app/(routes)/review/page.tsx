@@ -13,7 +13,7 @@ import { insertClassReview } from "@/db/Supabase Reviews/operations";
 import { insertProfessor } from "@/db/Supabase Professor Reviews/operations";
 import { IClassReviewInsert } from "@/db/Supabase Reviews/types";
 import { IProfessorInsert } from "@/db/Supabase Professor Reviews/types";
-import { ToastLib } from "@/lib/toast";
+import { ToastLib } from "@/lib/Theming/toast";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 

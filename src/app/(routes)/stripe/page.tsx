@@ -1,4 +1,4 @@
-import StripePage from "@/Custom Components/views/Stripe/Main/page";
+import StripePage from "@/Custom Components/pages/Stripe/Main/page";
 import React from 'react'
 
 export default function StripeDefPage() {

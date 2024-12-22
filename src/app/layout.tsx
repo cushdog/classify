@@ -2,15 +2,15 @@ import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import theme from "@/lib/theme";
+import theme from "@/lib/Theming/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import RealNavbar from "@/Custom Components/ui/Nav/navbar";
+import RealNavbar from "@/Custom Components/components/Misc-UI Related/Nav/navbar";
 import Script from "next/script";
 import "./globals.css";
-import ClientOnlyToastContainer from "@/lib/clientToast";
+import ClientOnlyToastContainer from "@/lib/Theming/clientToast";
 import { CSPostHogProvider } from "@/app/providers";
-import { DarkModeProvider } from "@/lib/ThemeContext";
+import { DarkModeProvider } from "@/lib/Theming/ThemeContext";
 
 const mulish = Mulish({
   subsets: ["latin"],
