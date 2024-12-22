@@ -1,255 +1,312 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
-    Box,
-    Typography,
-    Button,
-    CircularProgress,
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { BookOpen, Clock } from 'lucide-react';
-import camelcaseKeys from 'camelcase-keys';
+  Box,
+  Typography,
+  Button,
+  CircularProgress,
+  IconButton,
+  useMediaQuery,
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { BookOpen, Clock } from "lucide-react";
+import camelcaseKeys from "camelcase-keys";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface IBlogPost {
-    id: number;
-    title: string;
-    excerpt: string;
-    content: string;
-    authorId: string;
-    authorName: string;
-    authorRole?: string;
-    authorAvatar?: string;
-    readTime: number;
-    tags: string[];
-    likes: number;
-    comments: number;
-    slug: string;
-    createdAt: string;
-    updatedAt: string;
+  id: number;
+  title: string;
+  excerpt: string;
+  content: string;
+  authorId: string;
+  authorName: string;
+  authorRole?: string;
+  authorAvatar?: string;
+  readTime: number;
+  tags: string[];
+  likes: number;
+  comments: number;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 const BlogLayout = () => {
-    const [posts, setPosts] = useState<IBlogPost[]>([]);
-    const [loading, setLoading] = useState(true);
-    const router = useRouter();
-    const theme = useTheme();
+  const [posts, setPosts] = useState<IBlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
-    useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-                const res = await fetch('/api/blog');
-                if (res.ok) {
-                    const data = await res.json();
-                    const camelCaseData = camelcaseKeys(data, { deep: true });
-                    setPosts(camelCaseData.posts);
-                } else {
-                    console.error('Failed to fetch posts:', res.statusText);
-                }
-            } catch (error) {
-                console.error('Failed to fetch posts:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+  const isMobile = useMediaQuery("(max-width:600px)");
+  const router = useRouter();
+  const theme = useTheme();
 
-        fetchPosts();
-    }, []);
-
-    if (loading) {
-        return (
-            <Box
-                sx={{
-                    minHeight: '100vh',
-                    backgroundColor: theme.palette.mode === 'dark' ? '#121212' : '#f5f5f5',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-            >
-                <CircularProgress sx={{ color: theme.palette.mode === 'dark' ? '#fff' : '#000' }} />
-            </Box>
-        );
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      setIsDarkMode(storedTheme === "dark");
+      if (storedTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    } else {
+      // If no theme is stored, prefer system color scheme
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      setIsDarkMode(prefersDark);
+      if (prefersDark) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
     }
+  }, []);
 
-    if (posts.length === 0) {
-        return (
-            <Box
-                sx={{
-                    minHeight: '100vh',
-                    backgroundColor: theme.palette.mode === 'dark' ? '#121212' : '#f5f5f5',
-                    color: theme.palette.mode === 'dark' ? '#fff' : '#000',
-                }}
-            >
-                {/* Header Section */}
-                <Box
-                    sx={{
-                        width: '100%',
-                        minHeight: '250px',
-                        background: theme.palette.mode === 'dark'
-                            ? 'linear-gradient(to bottom right, #1e88e5, #42a5f5)'
-                            : 'linear-gradient(to bottom right, #3f51b5, #757de8)',
-                        padding: '20px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-end',
-                        position: 'relative',
-                        overflow: 'hidden',
-                    }}
-                >
-                    <Typography
-                        variant="h4"
-                        sx={{
-                            color: '#fff',
-                            fontWeight: 'bold',
-                            marginBottom: 1,
-                        }}
-                    >
-                        Classify Chronicles
-                    </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        sx={{
-                            color: 'rgba(255, 255, 255, 0.8)',
-                            fontSize: '16px',
-                        }}
-                    >
-                        Be the first one to share your thoughts!
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        sx={{ marginTop: 2 }}
-                        onClick={() => router.push('/blog/new')}
-                    >
-                        Create First Post
-                    </Button>
-                </Box>
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("/api/blog");
+        if (res.ok) {
+          const data = await res.json();
+          const camelCaseData = camelcaseKeys(data, { deep: true });
+          setPosts(camelCaseData.posts);
+        } else {
+          console.error("Failed to fetch posts:", res.statusText);
+        }
+      } catch (error) {
+        console.error("Failed to fetch posts:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-                {/* No Posts Content */}
-                <Box sx={{ padding: '20px', textAlign: 'center' }}>
-                    <BookOpen style={{ width: '64px', height: '64px', color: theme.palette.mode === 'dark' ? '#fff' : '#757575' }} />
-                    <Typography variant="h6" sx={{ marginTop: 2 }}>
-                        No Posts Yet
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)', marginBottom: 2 }}>
-                        Be the first one to share your thoughts!
-                    </Typography>
-                </Box>
-            </Box>
-        );
-    }
+    fetchPosts();
+  }, []);
 
+  if (loading) {
     return (
-            <Box
-                className="bg-white dark:bg-slate-800"
-                sx={{
-                    minHeight: '100vh',
-                }}
-            >
-                {/* Header Section */}
-                <Box
-                    sx={{
-                        width: '100%',
-                        minHeight: '250px',
-                        background: theme.palette.mode === 'dark'
-                            ? 'linear-gradient(to bottom right, #1e88e5, #42a5f5)'
-                            : 'linear-gradient(to bottom right, #3f51b5, #757de8)',
-                        padding: '20px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'flex-end',
-                        position: 'relative',
-                        overflow: 'hidden',
-                    }}
-                >
-                    <Typography
-                        variant="h4"
-                        sx={{
-                            color: '#fff',
-                            fontWeight: 'bold',
-                            marginBottom: 1,
-                        }}
-                    >
-                        Classify Chronicles
-                    </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        sx={{
-                            color: 'rgba(255, 255, 255, 0.8)',
-                            fontSize: '16px',
-                        }}
-                    >
-                        Read about the latest happenings with Classify!
-                    </Typography>
-                </Box>
-
-                {/* Main Content */}
-                <Box sx={{ padding: '20px' }}>
-                    <div className="grid gap-6">
-                        {posts.map((post) => (
-                            <Card
-                                key={post.id}
-                                className="group hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
-                                onClick={() => router.push(`/blog/${post.slug}`)}
-                            >
-                                <CardHeader>
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex items-center space-x-4">
-                                            <Avatar>
-                                                <AvatarImage src={post.authorAvatar ?? '/api/placeholder/32/32'} />
-                                                <AvatarFallback>{post.authorName.charAt(0)}</AvatarFallback>
-                                            </Avatar>
-                                            <div>
-                                                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                                                    {post.authorName}
-                                                </Typography>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-center space-x-2 text-sm text-slate-500">
-                                            <Clock className="w-4 h-4" />
-                                            <span>{post.readTime} min read</span>
-                                        </div>
-                                    </div>
-                                    <Typography
-                                        variant="h5"
-                                        sx={{ fontWeight: 'bold', marginBottom: 1 }}
-                                        className="group-hover:text-purple-600 transition-colors duration-200"
-                                    >
-                                        {post.title}
-                                    </Typography>
-                                    <Typography variant="body1" className="mt-2 line-clamp-2">
-                                        {post.excerpt}
-                                    </Typography>
-                                </CardHeader>
-                                <CardContent>
-                                    <div className="flex flex-wrap gap-2">
-                                        {post.tags?.map((tag) => (
-                                            <Badge
-                                                key={tag}
-                                                variant="secondary"
-                                                className="hover:bg-slate-200 transition-colors"
-                                            >
-                                                {tag}
-                                            </Badge>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))}
-                    </div>
-                </Box>
-            </Box>
-
+      <Box
+        sx={{
+          minHeight: "100vh",
+          backgroundColor:
+            theme.palette.mode === "dark" ? "#121212" : "#f5f5f5",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress
+          sx={{ color: theme.palette.mode === "dark" ? "#fff" : "#000" }}
+        />
+      </Box>
     );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <Box
+        sx={{
+          minHeight: "100vh",
+          backgroundColor:
+            theme.palette.mode === "dark" ? "#121212" : "#f5f5f5",
+          color: theme.palette.mode === "dark" ? "#fff" : "#000",
+        }}
+      >
+        {/* Header Section */}
+        <Box
+          sx={{
+            width: "100%",
+            minHeight: "250px",
+            background:
+              theme.palette.mode === "dark"
+                ? "linear-gradient(to bottom right, #1e88e5, #42a5f5)"
+                : "linear-gradient(to bottom right, #3f51b5, #757de8)",
+            padding: "20px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            position: "relative",
+            overflow: "hidden",
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{
+              color: "#fff",
+              fontWeight: "bold",
+              marginBottom: 1,
+            }}
+          >
+            Classify Chronicles
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              color: "rgba(255, 255, 255, 0.8)",
+              fontSize: "16px",
+            }}
+          >
+            Be the first one to share your thoughts!
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ marginTop: 2 }}
+            onClick={() => router.push("/blog/new")}
+          >
+            Create First Post
+          </Button>
+        </Box>
+
+        {/* No Posts Content */}
+        <Box sx={{ padding: "20px", textAlign: "center" }}>
+          <BookOpen
+            style={{
+              width: "64px",
+              height: "64px",
+              color: theme.palette.mode === "dark" ? "#fff" : "#757575",
+            }}
+          />
+          <Typography variant="h6" sx={{ marginTop: 2 }}>
+            No Posts Yet
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              color:
+                theme.palette.mode === "dark"
+                  ? "rgba(255, 255, 255, 0.7)"
+                  : "rgba(0, 0, 0, 0.7)",
+              marginBottom: 2,
+            }}
+          >
+            Be the first one to share your thoughts!
+          </Typography>
+        </Box>
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      className="bg-white dark:bg-slate-800"
+      sx={{
+        minHeight: "100vh",
+      }}
+    >
+      {/* Header Section */}
+      <Box
+        sx={{
+          width: "100%",
+          minHeight: isMobile ? "14em" : "200px",
+          backgroundColor: isDarkMode ? "#1E3A8A" : "#3B82F6",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          position: "relative",
+          overflow: "hidden",
+          color: "#fff",
+        }}
+        className="transition-colors duration-300"
+      >
+        {/* Dark Mode Toggle Button */}
+        <div className="flex justify-end"></div>
+
+        {/* Back Button */}
+        <IconButton
+          onClick={() => router.back()}
+          aria-label="Go back"
+          sx={{
+            color: "#fff",
+            position: "absolute",
+            top: 20,
+            left: 20,
+            display: { xs: "none", md: "inline-flex" },
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+
+        {/* Title */}
+        <Typography
+          variant="h4"
+          sx={{
+            fontWeight: "bold",
+            fontSize: { xs: "1.5rem", md: "2rem" },
+          }}
+        >
+          Classify Chronicles
+        </Typography>
+      </Box>
+
+      {/* Main Content */}
+      <Box sx={{ padding: "20px" }}>
+        <div className="grid gap-6">
+          {posts.map((post) => (
+            <Card
+              key={post.id}
+              className="group hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
+              onClick={() => router.push(`/blog/${post.slug}`)}
+            >
+              <CardHeader>
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-4">
+                    <Avatar>
+                      <AvatarImage
+                        src={post.authorAvatar ?? "/api/placeholder/32/32"}
+                      />
+                      <AvatarFallback>
+                        {post.authorName.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <Typography variant="body2" sx={{ fontWeight: "bold" }}>
+                        {post.authorName}
+                      </Typography>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2 text-sm text-slate-500">
+                    <Clock className="w-4 h-4" />
+                    <span>{post.readTime} min read</span>
+                  </div>
+                </div>
+                <Typography
+                  variant="h5"
+                  sx={{ fontWeight: "bold", marginBottom: 1 }}
+                  className="group-hover:text-purple-600 transition-colors duration-200"
+                >
+                  {post.title}
+                </Typography>
+                <Typography variant="body1" className="mt-2 line-clamp-2">
+                  {post.excerpt}
+                </Typography>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  {post.tags?.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="hover:bg-slate-200 transition-colors"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </Box>
+    </Box>
+  );
 };
 
 export default BlogLayout;
