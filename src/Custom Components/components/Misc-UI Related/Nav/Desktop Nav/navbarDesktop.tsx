@@ -80,13 +80,16 @@ const NAV_ITEMS = [
     ],
   },
   {
+    // label: "Support Us",
+    // href: "/support",
+    // icon: BadgeDollarSign,
+    // children: [
+    //   { label: "Venmo", href: "https://account.venmo.com/pay?amount=1&note=Donation!&recipients=ClassifyUIUC&txn=pay" },
+    //   { label: "Cashapp", href: "https://cash.app/$ClassifyUIUC/1" },
+    // ],
     label: "Support Us",
-    href: "/",
+    href: "/support",
     icon: BadgeDollarSign,
-    children: [
-      { label: "Venmo", href: "https://account.venmo.com/pay?amount=1&note=Donation!&recipients=ClassifyUIUC&txn=pay" },
-      { label: "Cashapp", href: "https://cash.app/$ClassifyUIUC/1" },
-    ],
   },
 ];
 

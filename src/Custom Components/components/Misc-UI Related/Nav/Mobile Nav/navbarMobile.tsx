@@ -90,6 +90,11 @@ export default function MobileNavbar() {
               Submit Review
             </Link>
           </li>
+          <li>
+            <Link href="/support" onClick={toggleMenu}>
+              Support Us
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>
