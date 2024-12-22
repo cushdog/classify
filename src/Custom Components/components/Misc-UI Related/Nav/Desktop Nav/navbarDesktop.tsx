@@ -5,6 +5,7 @@ import {
   BookOpen,
   Rss,
   ChevronDown,
+  BadgeDollarSign
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -76,6 +77,15 @@ const NAV_ITEMS = [
     children: [
       { label: "Blog", href: "/blog" },
       { label: "Feedback", href: "/feedback" },
+    ],
+  },
+  {
+    label: "Support Us",
+    href: "/",
+    icon: BadgeDollarSign,
+    children: [
+      { label: "Venmo", href: "https://account.venmo.com/pay?amount=1&note=Donation!&recipients=ClassifyUIUC&txn=pay" },
+      { label: "Cashapp", href: "https://cash.app/$ClassifyUIUC/1" },
     ],
   },
 ];
