@@ -26,7 +26,7 @@ export default function SearchPage() {
     const hasSeenAnnouncement = localStorage.getItem("hasSeenAnnouncement");
     if (!hasSeenAnnouncement) {
       ToastLib.notifyAnnouncement(
-        "🎉 We've been busy! Checkout the blog page and see what we've been up to!"
+        "🎉 We've been busy! Check out our new support page!"
       );
       localStorage.setItem("hasSeenAnnouncement", "true");
     }
