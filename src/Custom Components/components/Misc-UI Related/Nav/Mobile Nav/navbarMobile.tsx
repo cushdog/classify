@@ -4,13 +4,11 @@ import Link from "next/link";
 import styles from "./MobileNav.module.css";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { ThemeContext } from "@/lib/Theming/ThemeContext"; // Import ThemeContext
-import { Sun, Moon } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import DarkModeToggle from "@/Custom Components/components/Misc-UI Related/Theme Toggle/ThemeToggle";
 
 export default function MobileNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext); // Access theme and toggle function
+  const { theme } = useContext(ThemeContext); // Access theme and toggle function
   const [isDarkMode, setIsDarkMode] = useState(theme === "dark");
 
   // Update dark mode state whenever theme changes
