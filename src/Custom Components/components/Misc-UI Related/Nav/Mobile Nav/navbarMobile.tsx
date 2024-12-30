@@ -6,6 +6,7 @@ import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
 import { ThemeContext } from "@/lib/Theming/ThemeContext"; // Import ThemeContext
 import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import DarkModeToggle from "@/Custom Components/components/Misc-UI Related/Theme Toggle/ThemeToggle";
 
 export default function MobileNavbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,18 +37,7 @@ export default function MobileNavbar() {
 
       {/* Toggle Buttons Section */}
       <div className={styles.toggleButtonsContainer}>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleTheme}
-          className="hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-        >
-          {isDarkMode ? (
-            <Sun className="h-5 w-5 text-yellow-500" />
-          ) : (
-            <Moon className="h-5 w-5 text-indigo-600" />
-          )}
-        </Button>
+        <DarkModeToggle />
         <button className={styles.menuToggle} onClick={toggleMenu}>
           {isMenuOpen ? (
             <AiOutlineClose style={{ color: "white" }} />
